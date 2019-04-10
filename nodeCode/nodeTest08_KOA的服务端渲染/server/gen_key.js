@@ -4,6 +4,7 @@ const KEY_LEN=1024;
 const KEY_COUNT=2048;
 const CHARS='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>?,./;[]{}!@#$%^&*()_+';
 
+// 生成keys
 let arr=[];
 for(let i=0;i<KEY_COUNT;i++){
   let key='';
