@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="button" value="提交" id="btn1">
+    <img id="img1">
+    <script>
+        window.onload = function () {
+            var btn1 = document.querySelector('#btn1');
+            var img1 = document.querySelector('#img1');
+            btn1.onclick = async function () {
+                //1.请求
+                let res = await fetch('data/1.png');//得到一个请求对象
+                //2.解析 处理二进制数据，但是对于太大的文件不适用，会一次性加载
+                let data = await res.blob();
+                let url = URL.createObjectURL(data);
+                img1.src = url;
+
+                console.log(data);
+            }
+        }
+    </script>
+</body>
+
+</html>

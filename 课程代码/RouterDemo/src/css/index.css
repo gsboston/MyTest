@@ -1,0 +1,34 @@
+*{
+    padding:0;
+    margin: 0;
+}
+
+ul li{
+    list-style: none;
+    text-align: center;
+}
+
+.main{
+    display: flex;
+    height:600px;
+}
+
+.main .sidebar{
+    width:200px;
+    border: 2px solid red;
+}
+
+.main .sidebar ul{
+   padding-top: 100px;
+}
+
+.main .sidebar ul li{
+   margin-bottom: 20px;
+   cursor: pointer;
+ }
+
+.main .content{
+    flex:1;
+    border:2px solid green;
+    padding:20px;
+}

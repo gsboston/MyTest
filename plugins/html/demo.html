@@ -1,0 +1,21 @@
+let ajax = new XMLHttpRequest();
+
+        ajax.open('GET', 'http://localhost:8080/test', true);
+        ajax.send();
+
+        // 0 - (未初始化)还没有调用send()方法
+        // 1 - (载入)已调用send()方法，正在发送请求
+        // 2 - (载入完成)send()方法执行完成，
+        // 3 - (交互)正在解析响应内容
+        // 4 - (完成)响应内容解析完成，可以在客户端调用了
+        ajax.onreadystatechange = function () {
+          if (ajax.readyState == 4) {
+            if (ajax.status >= 200 && ajax.status < 300 || ajax.status == 304) {
+              alert('成功');
+              let json = JSON.parse(ajax.responseText);
+              console.log(json);
+            } else {
+              alert('失败');
+            }
+          }
+        };

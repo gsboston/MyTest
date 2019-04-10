@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+
+</body>
+<script>
+    //构造函数的继承方式
+    //当前定义一个动物对象的构造函数
+    function Animal() {
+        this.species = "动物";
+    }
+
+    //这里再定义一个猫对象的构造函数
+    function Cat(name, color) {
+        this.name = name;
+        this.color = color;
+    }
+
+    //如何实现猫继承动物呢？
+    //一、构造函数绑定继承==========================================================================================================
+    //利用call、apply将父对象的构造函数绑定在子对象上，即在子对象的构造函数中加上一句call
+    function Animal(species) {
+        this.species = species || "动物";
+    }
+    function Cat(name, color, species) {
+        Animal.call(this, species);
+        this.name = name;
+        this.color = color;
+    }
+    var cat1 = new Cat("大毛", "黄色", "猫科动物");
+    console.log(cat1.species); // 动物
+    //缺点，无法继承原型链上的属性和方法。
+
+    //二、原型链继承模式==============================================================================================================
+    //这种方式很常见，使用prototype属性，如果猫的prototype对象指向一个Animal的实例，
+    //那么所有猫的实例就能继承Animal了
+    function Animal() {
+        this.species = "动物";
+        this.list = [1, 2, 3];
+    }
+    function Cat(name, color) {
+        this.name = name;
+        this.color = color;
+    }
+    //我们将Cat的prototype对象指向一个Animal的实例。
+    Cat.prototype = new Animal();
+    //上一行它相当于完全删除了prototype 对象原先的值，然后赋予一个新值。
+    //但是，下一行又是什么意思呢？
+    //因为任何一个prototype对象都有一个constructor属性,指向它的构造函数，如果没有Cat.prototype = new Animal();的时候
+    //Cat.prototype.constructor是指向Cat的；加了这一行以后，Cat.prototype.constructor指向Animal。
+    //Cat.prototype.constructor == Animal; //true
+    //更重要的是，每一个实例也有一个constructor属性，默认调用prototype对象的constructor属性。
+    //console.log(cat1.constructor == Cat.prototype.constructor); // true
+    // 因此，在运行"Cat.prototype = new Animal();"这一行之后，cat1.constructor也指向Animal！
+    //console.log(cat1.constructor == Animal); // true
+    //这样会把整个继承关系搞得混乱，cat1 instanceof Cat//true    cat1 instanceof Animal//true 
+    //所以这里手动修改，这是非常重要的一点，要时刻遵守这个原则，即替换了prototype对象，下一步一定要为新的prototype对象设置constructor属性，将它指回原来的构造函数
+    //o.prototype = {};  o.prototype.constructor = o;
+    Cat.prototype.constructor = Cat;
+    var cat1 = new Cat("大毛", "黄色");
+    console.log(cat1.species); // 动物
+    var cat2 = new Cat("小毛", "黑色");
+    //这里cat1&cat2的原型对象都指向同一个Animal的实例，访问属性的时候，如果cat1内没有该属性，就会向上找到Cat.prototype（Animal的一个实例）中。找到并返回
+    //但是这里调用cat1.species去赋值只是在cat1实例中添加一个species属性，并不会影响cat1原型对象（Animal实例）中的属性
+    cat1.species = "猫科动物";
+    console.log(cat2.species);//动物
+    //但是尝试通过下面的方式去修改属性就会导致属性被共用
+    cat1.list.push(4);
+    console.log(cat2.list);//[1,2,3,4]
+    //因为这里调用push方法，cat1会顺着原型链搜索，找到原型对象中的list属性，并修改了值。因为cat2的原型和cat1是同一个对象，所以读取到的值也是改变后的。
+
+    //优点，
+    //简单明了。
+    //实例是子类实例，同时也是父类的实例
+    //父类新增的原型属性和原型方法，子类实例都能访问到
+    //子类原型共享父类原型，父类原型不共享子类原型
+
+    //缺点
+    //继承的实例属性，所有子类共享同一个父类实例的实例属性
+    //无法向父类构造函数传参，无法多继承
+
+    //三、直接继承prototype，原型链继承改版===================================================================================================
+    // 这种方式相当于对第二种方式的改进，由于共用的属性方法都可以直接写入Animal.prototype，所以跳过new Animal直接继承Animal.prototype
+    function Animal() {
+        //这种方式，继承自Animal.prototype，所以Animal构造函数中的属性是无法访问的。
+        this.gender = "mal";
+    }
+    function Cat() {
+
+    }
+
+    Animal.prototype.species = "动物";
+    Cat.prototype = Animal.prototype;
+    //注意，这里不仅修改了Cat.prototype.constructor 也修改了Animal.prototype.constructor
+    Cat.prototype.constructor = Cat;
+    var cat1 = new Cat();
+
+    console.log(cat1.species); // 动物
+    //Animal构造函数中的属性方法是无法访问到的
+    console.log(cat1.gender);// undefined
+    //由于不用执行Animal的初始化，所以效率更高，不占用内存
+    //缺点很明显，Cat.prototype和Animal.prototype现在指向了同一个对象，那么任何对Cat.prototype的修改，都会反映到Animal.prototype。
+    //并且因为Cat.prototype 与 Animal.prototype现在指向了同一个对象，那么Cat.prototype.constructor = Cat;
+    //这句话既修改了Cat.prototype的constructor，同样Animal.prototype的constructor也被修改了。
+    //console.log(Animal.prototype.constructor); // Cat
+
+    // 优点：
+    // 节约内存
+
+    // 缺点
+    // constructor指向不明
+    // 子类添加原型属性后，父类原型也随之更新
+    // 无法继承父类实例属性
+
+    //四、利用空对象作为中介===================================================================================================
+    //解决共享prototype被修改的问题呢，
+    //利用一个空对象作为中介。F是空对象，所以几乎不占内存。这时，修改Cat的prototype对象，就不会影响到Animal的prototype对象。
+    function Animal() { }
+    function Cat() { }
+
+    function extend(Child, Parent) {
+        var F = function () { };
+
+        F.prototype = Parent.prototype;
+
+        Child.prototype = new F();
+
+        Child.prototype.constructor = Child;
+        // 意思是为子对象设一个uber属性，这个属性直接指向父对象的prototype属性。
+        // 这等于在子对象上打开一条通道，可以直接调用父对象的方法。这一行放在这里，只是为了实现继承的完备性，纯属备用性质。
+        Child.uber = Parent.prototype;
+    }
+
+    extend(Cat, Animal);
+    var cat1 = new Cat();
+    console.log(cat1.species); // 动物
+    // 这个extend函数，就是YUI库实现继承的方法。
+
+    //优点
+    //constructor指向明确
+    //子类添加原型属性，父类不会更新
+
+    //缺点
+    //无法继承父类实例属性
+
+    //五、组合继承（构造函数+原型）========================================================================================
+    // 创建父构造函数
+    function Animal(name, age) {
+        this.name = name;
+        this.age = age;
+        this.showName = function () {
+            console.log(this.name);
+        }
+    }
+    // 设置父构造函数的原型对象
+    Animal.prototype.showAge = function () {
+        console.log(this.age);
+    }
+    // 创建子构造函数
+    function Cat(name) {
+        Animal.call(this, name);
+    }
+    Cat.prototype = Animal.prototype;
+    Cat.prototype.constructor = Cat;
+
+    //优点
+    //可以继承实例属性
+    
+    //缺点
+    //子类添加原型属性后，父类原型也随之更新
+
+
+    //六、拷贝继承，prototype属性=====================================================================================
+    //上面是采用prototype对象，实现继承。我们也可以换一种思路，纯粹采用"拷贝"方法实现继承。
+    //简单说，如果把父对象的所有属性和方法，拷贝进子对象，不也能够实现继承吗？
+    function Animal() { }
+
+    Animal.prototype.species = "动物";
+
+    //下面是一个拷贝的函数，遍历构造函数原型对象上的所有属性，把值赋给目标构造函数的原型对象
+    //这个函数的功能就是将父对象的prototype对象中的属性，一一拷贝给子对象的prototype对象。
+    function extend2(Child, Parent) {
+        var p = Parent.prototype;
+        var c = Child.prototype;
+        for (var i in p) {
+            c[i] = p[i];
+        }
+        c.uber = p;
+    }
+    extend2(Cat, Animal);
+    var cat1 = new Cat("大毛", "黄色");
+    console.log(cat1.species); // 动物
+
+    //非构造函数继承================================================================================================
+    //七、object方式继承，针对非构造函数对象================================================================================================
+    //但是当两个对象只是普通的对象，并不是函数，那么我们就没办法获取到prototype对象。就无法实现上面的继承
+    //就可以用object()方法
+    var Chinese = {
+        nation: '中国'
+    };
+    // var Doctor = {
+    //     career: '医生'
+    // }
+    //上面这两个对象就是普通的对象，没有构造函数,也没有prototype属性，无法使用原型属性
+
+    //这个object()函数，其实只做一件事，就是把子对象的prototype属性，指向父对象，从而使得子对象与父对象连在一起。
+    function object(o) {
+        function F() { }
+        F.prototype = o;
+        return new F();
+    }
+
+    //第一步先在父对象的基础上，生成子对象：
+    var Doctor = object(Chinese);
+    //再加上子对象本身的属性：
+    Doctor.career = '医生';
+    //此时修改父对象的属性，子对象也会有新增的属性
+    Chines.color = "yellow";
+    //子对象已经继承了父对象的属性了。
+    console.log(Doctor.nation); //中国
+    console.log(Doctor.color); //yellow
+
+
+    //八、拷贝继承，实例属性
+    //浅拷贝&深拷贝
+    //浅拷贝
+    //把父对象的属性，全部拷贝给子对象就是浅拷贝，
+
+    var Chinese = {
+        nation: '中国'
+    };
+    function extendCopy(p) {
+        var c = {};
+        for (var i in p) {
+            c[i] = p[i];
+        }
+        c.uber = p;
+        return c;
+    }
+    var Doctor = extendCopy(Chinese);
+    Doctor.career = '医生';
+    console.log(Doctor.nation); // 中国
+
+    //但是，这样的拷贝有一个问题。那就是，如果父对象的属性等于数组或另一个对象，那么实际上，子对象获得的只是一个内存地址，而不是真正拷贝，因此存在父对象被篡改的可能。
+
+    Chinese.birthPlaces = ['北京', '上海', '香港'];
+    var Doctor = extendCopy(Chinese);
+    Doctor.birthPlaces.push('厦门');
+    console.log(Doctor.birthPlaces); //北京, 上海, 香港, 厦门
+    console.log(Chinese.birthPlaces); //北京, 上海, 香港, 厦门
+
+
+    //所以，extendCopy()只是拷贝基本类型的数据，我们把这种拷贝叫做"浅拷贝"。这是早期jQuery实现继承的方式。
+
+    //深拷贝
+    //所谓"深拷贝"，就是能够实现真正意义上的数组和对象的拷贝。它的实现并不难，只要递归调用"浅拷贝"就行了。
+
+    function deepCopy(p, c) {
+        var c = c || {};
+        for (var i in p) {
+            if (typeof p[i] === 'object') {
+                c[i] = (p[i].constructor === Array) ? [] : {};
+                deepCopy(p[i], c[i]);
+            } else {
+                c[i] = p[i];
+            }
+        }
+        return c;
+    }
+</script>
+
+</html>

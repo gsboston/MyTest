@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+
+<body>
+    <form id="form1" action="http://localhost:8080/" method="post">
+        用户：
+        <input type="text" name="user" />
+        <br> 密码：
+        <input type="password" name="pass" />
+        <br> 文件：
+        <input type="file" name="f1" />
+        <br>
+        <input type="submit" value="提交">
+    </form>
+</body>
+<script src="jquery.js" charset="utf-8"></script>
+<script>
+    $('#form1').on('submit', function () {
+        let formdata = new FormData(this);
+
+        $.ajax({
+            url: this.action,
+            type: this.method,
+            data: formdata,
+            processData: false,// 告诉jq 不要处理数据，因为fd直接提交
+            contentType: false// 不要随便篡改contenttype
+        }).then(res => {
+            alert('成功');
+        }, res => {
+            alert('失败');
+        });
+
+        return false;
+    });
+</script>
+
+</html>

@@ -1,0 +1,40 @@
+{
+  "devDependencies": {
+    "multiparty": "^4.2.1"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "nodeTest03",
+  "version": "1.0.0",
+  "main": "server.js",
+  "dependencies": {
+    "_depd@1.1.2@depd": "^1.1.2",
+    "_fd-slicer@1.1.0@fd-slicer": "^1.1.0",
+    "_http-errors@1.7.2@http-errors": "^1.7.2",
+    "_inherits@2.0.3@inherits": "^2.0.3",
+    "_multiparty@4.2.1@multiparty": "^4.2.1",
+    "_pend@1.2.0@pend": "^1.2.0",
+    "_random-bytes@1.0.0@random-bytes": "^1.0.0",
+    "_safe-buffer@5.1.2@safe-buffer": "^5.1.2",
+    "_statuses@1.5.0@statuses": "^1.5.0",
+    "_setprototypeof@1.1.1@setprototypeof": "^1.1.1",
+    "_toidentifier@1.0.0@toidentifier": "^1.0.0",
+    "_uid-safe@2.1.5@uid-safe": "^2.1.5",
+    "depd": "^1.1.2",
+    "http-errors": "^1.7.2",
+    "fd-slicer": "^1.1.0",
+    "inherits": "^2.0.3",
+    "pend": "^1.2.0",
+    "random-bytes": "^1.0.0",
+    "safe-buffer": "^5.1.2",
+    "setprototypeof": "^1.1.1",
+    "statuses": "^1.5.0",
+    "toidentifier": "^1.0.0",
+    "uid-safe": "^2.1.5"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

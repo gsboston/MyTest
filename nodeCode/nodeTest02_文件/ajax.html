@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <script>
+    window.onload = function () {
+      let oBtn = document.getElementById('btn1');
+
+      oBtn.onclick = function () {
+        let ajax = new XMLHttpRequest();
+        ajax.open('GET', 'http://127.0.0.1:8080/upload', true);
+        ajax.send();
+
+        ajax.onreadystatechange = function () {
+          if (ajax.readyState == 4) {
+            if (ajax.status >= 200 && ajax.status < 300 || ajax.status == 304) {
+              alert('success');
+              let json = JSON.parse(ajax.responseText);
+              console.log(json);
+            } else {
+              alert('faild');
+            }
+          }
+        };
+
+      };
+    };
+  </script>
+</head>
+
+<body>
+  <input type="button" value="请求" id="btn1">
+</body>
+
+</html>

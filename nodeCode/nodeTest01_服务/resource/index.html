@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <label>用户名：</label>
+    <input type="text" id="name">
+    <label>密码：</label>
+    <input type="password" id="pwd">
+    <button id="reg">注册</button>
+    <button id="login">登录</button>
+
+    <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+    <script>
+
+        $(function () {
+            $('#reg').click(() => {
+                var name = $('#name').val();
+                var pwd = $('#pwd').val();
+                $.ajax({
+                    type: 'GET',
+                    url: '/reg',
+                    data: {
+                        name: name,
+                        pwd: pwd,
+                    },
+                    dataType: 'json'
+                }).then(json => {
+                    if (json.error) {
+                        console.log(json.msg);
+                    } else {
+                        console.log(json.msg);
+                    }
+                }, err => {
+                    console.log(err);
+                });
+            });
+
+            $('#login').click(() => {
+                var name = $('#name').val();
+                var pwd = $('#pwd').val();
+                $.ajax({
+                    type: 'POST',
+                    url: '/login',
+                    data: {
+                        name: name,
+                        pwd: pwd,
+                    },
+                    dataType: 'json'
+                }).then(json => {
+                    if (json.error) {
+                        console.log(json.msg);
+                    } else {
+                        console.log(json.msg);
+                    }
+                }, err => {
+                    console.log(err);
+                });
+            });
+        })
+
+    </script>
+</body>
+
+</html>

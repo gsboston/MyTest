@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "koa-better-body": "^3.0.4",
+    "koa-static": "^5.0.0"
+  }
+}

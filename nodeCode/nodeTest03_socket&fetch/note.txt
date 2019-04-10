@@ -1,0 +1,12 @@
+fetch-原生
+替代ajax（xhr）
+
+jsonp
+安全性弱，使用少，被能跨域的ajax取代，
+原理就是一个script标签
+
+ajax2.0
+FormData(将表单转换成fd，或者创建新的添加数据)
+
+websocket
+

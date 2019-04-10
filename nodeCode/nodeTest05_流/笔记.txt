@@ -1,0 +1,56 @@
+流操作
+fs.readFile('www/1.html', (err, buffer)=>{
+  res.wrtie(buffer);
+});
+
+1.占用内存
+2.资源使用不均匀(磁盘、网络)
+
+好的：
+读一块、发一块
+
+--------------------------------------------------------------------------------
+
+读写流——压缩、加密
+
+配合http——
+  content-encoding: gzip
+
+
+如何创建一个下载链接呢？￼
+
+--------------------------------------------------------------------------------
+
+启动器
+forever
+
+npm i forever -g
+
+forever start xxx.js
+forever restart xxx.js
+forever stop xxx.js
+forever stopall
+forever start xxx.js -l c:/a.log -e c:/err.log -a
+
+--------------------------------------------------------------------------------
+
+1.合在一块
+2.router
+
+--------------------------------------------------------------------------------
+
+http://localhost:8080/add?title=item1&price=19.8&count=200
+INSERT INTO item_table (title, price, count) VALUES('item1', 19.8, 200)
+
+
+http://localhost:8080/add?title=a')%3B%20DELETE%20FROM%20item_table%3B%20SELECT%20(1&price=19.8&count=200
+INSERT INTO item_table (title, price, count) VALUES('a'); DELETE FROM item_table; SELECT (1', 19.8, 200)
+
+db.query('start transaction(); ')
+db.query('SELECT (); UPDATE();')
+db.query('commit();')
+
+
+杀进程
+1、进入cmd命令窗口，输入:netstat -ano|findstr “3010”
+2、 找到对应的PID值‘ 4488 ’，输入：taskkill -pid 4488 -f

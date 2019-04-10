@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="text" id="oTxt">
+    <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+    <script>
+        window.onload = function () {
+            $('#oTxt').on('input',function () {
+                $.ajax({
+                    type: 'GET',
+                    url: 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su',
+                    data: { wd: $(this).val() },
+                    dataType: 'jsonp',
+                    jsonp: 'cb'
+                }).then(({ s }) => {
+                    console.log(s);
+                }, res => {
+                    alert('faild');
+                })
+            })
+        }
+    </script>
+</body>
+
+</html>

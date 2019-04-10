@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="text" id="txt1">
+
+    <script>
+        // 使用百度热搜jsonp
+        window.onload = function () {
+            let txt1 = document.querySelector('#txt1');
+            txt1.oninput = function () {
+                let url = `https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=${this.value}&json=1&p=3&csor=1&cb=showHotWords`;
+                let eleS = document.createElement('script');
+                eleS.src = url;
+                document.head.appendChild(eleS2);
+            }
+        }
+
+        // 基础用法
+        function show(data) {
+            // console.log(data.a + '&' + data.b);
+        }
+
+        function showHotWords(json) {
+            console.log(json.s);
+        }
+    </script>
+
+    <script src="js/1.js"></script>
+
+</body>
+
+</html>
