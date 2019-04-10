@@ -10,6 +10,7 @@ router.get('/login', async ctx => {
 
 router.post('/login', async ctx => {
   let { user, pass } = ctx.request.fields;
+  
   let admins = JSON.parse((await fs.readFile(
     path.resolve(__dirname, '../../admins.json')
   )).toString());
