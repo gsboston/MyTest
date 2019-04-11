@@ -53,7 +53,7 @@ let router=new Router();
 
 router.use('/admin', require('./routers/admin'));
 router.use('/api', require('./routers/api'));
-router.use('', require('./routers/www'));
+router.use('/', require('./routers/www'));
 static(router);
 
 server.use(router.routes());
