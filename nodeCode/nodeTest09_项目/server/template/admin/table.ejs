@@ -29,7 +29,9 @@
           <th>ID</th>
 
           <%fields.forEach(field=>{%>
-          <th><%=field.title%></th>
+            <%if(field.type!='textarea'){%>
+              <th><%=field.title%></th>
+            <%}%>
           <%})%>
 
           <th></th>
@@ -41,14 +43,16 @@
           <td width="50"><%=data.ID%></td>
 
           <%fields.forEach(field=>{%>
-          <td><%=data[field.name]%></td>
+            <%if(field.type!='textarea'){%>
+              <td><%=data[field.name]%></td>
+            <%}%>
           <%})%>
 
           <td width="250">
             <a
               href="<%=HTTP_ROOT%>/admin/<%=page_type%>/delete/<%=data.ID%>"
               class="btn btn-danger glyphicon glyphicon-trash"
-              onclick="return confirm('你是否真的确认要删除')"
+              onclick="return confirm('你是否真的确认要删除') "
             >删除</a>
 
             <a
@@ -77,7 +81,13 @@
             <label class="col-sm-2 control-label"><%=field.title%></label>
             <div class="col-sm-10">
               <%if(field.type=='textarea'){%>
-                <textarea class="form-control" name="<%=field.name%>" placeholder="<%=field.title%>" rows="2  0"></textarea>
+                <textarea class="form-control" name="<%=field.name%>" placeholder="<%=field.title%>" rows="20"></textarea>
+              <%}else if(field.type=='select'){%>
+                <select class="form-control" name="<%=field.name%>">
+                  <%field.items.forEach(item=>{%>
+                    <option value="<%=item.ID%>"><%=item.title%></option>
+                  <%})%>
+                </select>
               <%}else{%>
                 <input type="<%=field.type%>" class="form-control" name="<%=field.name%>" placeholder="<%=field.title%>">
               <%}%>
@@ -135,6 +145,10 @@
       dataType: 'json'
     });
 
+    function toDou(n){
+      return n<10?`0${n}`:''+n;
+    }
+
     if(data.err){
       alert(data.msg);
     }else{
@@ -146,12 +160,15 @@
       $('.my-panel .panel-title').html('修改');
       $('.my-panel form').attr('action', `${HTTP_ROOT}/admin/${page_type}/modify/${id}`);
 
-      console.log(old_data);
-
-      $('.my-panel input').each(function (){
-        if(old_data[this.name]){
+      $('.my-panel input, .my-panel textarea, .my-panel select').each(function (){
+        if(old_data[this.name]!==undefined){
           try{
-            this.value=old_data[this.name];
+            if(this.type=='date'){
+              let oDate=new Date(old_data[this.name]*1000);
+              this.value=`${oDate.getFullYear()}-${toDou(oDate.getMonth()+1)}-${toDou(oDate.getDate())}`;
+            }else{
+              this.value=old_data[this.name];
+            }
           }catch(e){}
         }
       });

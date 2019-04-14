@@ -36,6 +36,24 @@ ejs(server, {
   debug: false
 });
 
+server.use(async (ctx, next)=>{
+  let {HTTP_ROOT}=ctx.config;
+
+  try{
+    await next();
+
+    if(!ctx.body){
+      await ctx.render('www/404', {
+        HTTP_ROOT
+      });
+    }
+  }catch(e){
+    await ctx.render('www/404', {
+      HTTP_ROOT
+    });
+  }
+});
+
 //路由和static
 let router=new Router();
 
