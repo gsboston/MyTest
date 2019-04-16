@@ -1,0 +1,754 @@
+<div id="zzq" class="root-content">
+    <Row>
+        <i-form class="invoice-form" ref="form" :model="form" label-position="left" :label-width="120">
+            <i-col span="24">
+                <Form-item label="服务期限" prop="serviceDate">
+                    <span class="normal-font">合约签约日期：{{param.signedDate | formatDate}}</span>
+                    <i-input v-if="allowEdit" v-model="form.serviceDate" :disabled="!allowEdit" type="textarea" :rows="4" placeholder="请输入服务期限" :maxlength="500"></i-input>
+                    <span v-else class="normal-font">{{form.serviceDate}}</span>
+                </Form-item>
+            </i-col>
+
+            <i-col span="24">
+                <Form-item label="服务内容" prop="serviceContent" style="margin-bottom: 0;">
+                    <i-col span="4" offset="20" v-if="allowEdit && form.copyrightContent.length > 1">
+                        <i-button v-if="!isUnPack" size="small" class="check-button active" @click.native="unPack">拆分</i-button>
+                        <i-button v-else size="small" class="check-button active" @click.native="unPackCancel">取消拆分</i-button>
+                    </i-col>
+                </Form-item>
+                <Form-item label="" prop="serviceContent" style="margin-left: -50px;">
+                    <Row class="serviceList">
+                        <i-col span="24">1、普通登记类</i-col>
+
+                        <i-col span="12" v-if="form.softwareCopyright">
+                            <div style="padding-left: 20px; width:200px; height:30px;" class="form-item-height">
+                                <Checkbox class="serviceListItem" v-model="form.softwareCopyright" :disabled="true">软件著作权登记</Checkbox>
+                            </div>
+                        </i-col>
+                        <i-col span="12" v-if="form.writingCopyright">
+                            <div style="padding-left: 20px; width:200px; height:30px;" class="form-item-height">
+                                <Checkbox v-model="form.writingCopyright" :disabled="true">作品版权登记</Checkbox>
+                            </div>
+                        </i-col>
+                        <i-col span="12" v-if="form.softwareCopyrightTransfer">
+                            <div style="padding-left: 20px; width:200px; height:30px;" class="form-item-height">
+                                <Checkbox v-model="form.softwareCopyrightTransfer" :disabled="true">软件著作权转让</Checkbox>
+                            </div>
+                        </i-col>
+                        <i-col span="12" v-if="form.writingCopyrightTransfer">
+                            <div style="padding-left: 20px; width:200px; height:30px;" class="form-item-height">
+                                <Checkbox v-model="form.writingCopyrightTransfer" :disabled="true">作品版权转让</Checkbox>
+                            </div>
+                        </i-col>
+                        <i-col span="12" v-if="form.softwareCopyrightChange">
+                            <div style="padding-left: 20px; width:200px; height:30px;" class="form-item-height">
+                                <Checkbox v-model="form.softwareCopyrightChange" :disabled="true">软件著作权变更</Checkbox>
+                            </div>
+                        </i-col>
+                        <i-col span="12" v-if="form.writingCopyrightChange">
+                            <div style="padding-left: 20px; width:200px; height:30px;" class="form-item-height">
+                                <Checkbox v-model="form.writingCopyrightChange" :disabled="true">作品版权变更</Checkbox>
+                            </div>
+                        </i-col>
+                        <i-col span="24">2、加急登记类</i-col>
+
+                        <i-col span="12" v-if="form.fastSoftwareCopyright">
+                            <div style="padding-left: 20px; display: inline-flex; width: 100%; height:30px; font-size: 14px;">
+                                <Checkbox v-model="form.fastSoftwareCopyright" :disabled="true">加急软件著作权登记</Checkbox>
+                            </div>
+                        </i-col>
+                        <i-col span="12" v-if="form.fastWritingCopyright">
+                            <div style="padding-left: 20px; display: inline-flex; width: 100%; height:30px; font-size: 14px;">
+                                <Checkbox v-model="form.fastWritingCopyright" :disabled="true">加急作品版权登记&emsp;</Checkbox>
+                            </div>
+                        </i-col>
+                        <i-col span="12" v-if="form.fastSoftwareCopyrightTransfer">
+                            <div style="padding-left: 20px; display: inline-flex; width: 100%; height:30px; font-size: 14px;">
+                                <Checkbox v-model="form.fastSoftwareCopyrightTransfer" :disabled="true">加急软件著作权转让</Checkbox>
+                            </div>
+                        </i-col>
+                        <i-col span="12" v-if="form.fastWritingCopyrightTransfer">
+                            <div style="padding-left: 20px; display: inline-flex; width: 100%; height:30px; font-size: 14px;">
+                                <Checkbox v-model="form.fastWritingCopyrightTransfer" :disabled="true">加急作品版权转让&emsp;</Checkbox>
+                            </div>
+                        </i-col>
+                        <i-col span="12" v-if="form.fastSoftwareCopyrightChange">
+                            <div style="padding-left: 20px; display: inline-flex; width: 100%; height:30px; font-size: 14px;">
+                                <Checkbox v-model="form.fastSoftwareCopyrightChange" :disabled="true">加急软件著作权变更</Checkbox>
+                            </div>
+                        </i-col>
+                        <i-col span="12" v-if="form.fastWritingCopyrightChange">
+                            <div style="padding-left: 20px; display: inline-flex; width: 100%; height:30px; font-size: 14px;">
+                                <Checkbox v-model="form.fastWritingCopyrightChange" :disabled="true">加急作品版权变更&emsp;</Checkbox>
+                            </div>
+                        </i-col>
+                        <i-col span="24" style="text-align: justify; color: rgb(51,51,51);" v-if="form.otherService">
+                            <div style="display: inline-flex; width: 100%; min-height:30px; font-size: 14px;">
+                                <span style="font-size: 12px;">3、</span>
+                                <Checkbox v-model="form.otherService" :disabled="true" style="width: 70px;">
+                                    其他业务
+                                </Checkbox>
+                                <Tooltip v-if="allowEdit" placement="right">
+                                    <Icon type="ios-help-outline" style="font-size: 18px;"></Icon>
+                                    <p slot="content">{{ form.otherServiceContent }}</p>
+                                </Tooltip>
+                                <span v-else class="normal-font" style="flex: 1;">{{form.otherServiceContent}}</span>
+                            </div>
+                        </i-col>
+                    </Row>
+                </Form-item>
+                <Form-item label="" :label-width="50">
+                    <i-col span="24">
+                        <i-table ref="selection" border :columns="columns" :data="form.copyrightContent" class="table" @on-select="selectUnpackData" @on-select-cancel="selectUnpackDataCancel"></i-table>
+                        <!--@on-select="selectUnpackData" @on-select-cancel="selectUnpackDataCancel"-->
+                    </i-col>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="服务方式" prop="serviceMethod">
+                    <i-input v-if="allowEdit" v-model="form.serviceMethod" :disabled="!allowEdit" type="textarea" :rows="4" placeholder="请输入服务方式"></i-input>
+                    <pre v-else class="normal-font">{{form.serviceMethod}}</pre>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="其他内容" prop="otherContent">
+                    <i-input v-if="allowEdit" v-model="form.otherContent" :disabled="!allowEdit" type="textarea" :rows="4" placeholder="请输入其他内容"></i-input>
+                    <pre v-else class="normal-font">{{form.otherContent}}</pre>
+                </Form-item>
+            </i-col>
+        </i-form>
+    </Row>
+</div>
+
+<script>
+    new Vue({
+        el: "#zzq",
+        data: function() {
+            var vm = this;
+            return {
+                form: {
+                    copyrightContent: [],
+                    serviceDate: '自本合同签字或盖章之日起至委托事项完成，以相关机关下发的证书、通知书视为委托事项完成。',
+                    serviceMethod: '甲方提供办理著作权所需的全部资料，乙方在乙方驻地或著作权申请地进行相应工作。',
+                    otherContent: '',
+                    validState: {}
+                },
+                columns: [{
+                    title: '软件/作品名称',
+                    align: 'center',
+                    width: 120,
+                    render: function(h, params) {
+                        var str;
+                        if (vm.allowEdit) {
+                            str = h('div', [
+                                h('Input', {
+                                    props: {
+                                        value: !vm.param.serviceInfo ? params.row.copyrightName : (params.row.copyrightNameNew ? params.row.copyrightNameNew : params.row.copyrightName),
+                                        // disabled: (this.param.allowEdit && this.form.copyrightContent.length > 1) ? false : true
+                                    },
+                                    on: {
+                                        'on-change': function(val) {
+                                            vm.isValueChange = true;
+                                            vm.form.copyrightContent[params.index]['copyrightNameNew'] = val.target.value;
+                                            vm.serviceInfoOne.copyrightContent.forEach(function(item, index) {
+                                                if (params.row.id == item.id) {
+                                                    vm.serviceInfoOne.copyrightContent[index].copyrightNameNew = val.target.value;
+                                                }
+                                            });
+                                            vm.serviceInfoTwo.copyrightContent.forEach(function(item, index) {
+                                                if (params.row.id == item.id) {
+                                                    vm.serviceInfoTwo.copyrightContent[index].copyrightNameNew = val.target.value;
+                                                }
+                                            });
+                                            if (String.isNullOrBlank(val.target.value)) {
+                                                vm.form.validState.copyrightContent = {
+                                                    isNull: true,
+                                                    content: '服务内容中可修改内容不能为空'
+                                                };
+                                            }else {
+                                                vm.form.validState.copyrightContent = {
+                                                    isNull: false,
+                                                    content: ''
+                                                };
+                                            }
+                                        }
+                                    }
+                                })
+                            ]);
+                        }else {
+                            str = (params.row.copyrightNameNew ? params.row.copyrightNameNew : params.row.copyrightName);
+                        }
+                        return str;
+                    }
+                },{
+                    title: '简称',
+                    align: 'center',
+                    render: function(h, params) {
+                        var str;
+                        if (vm.allowEdit) {
+                            str = h('div', [
+                                h('Input', {
+                                    props: {
+                                        value: !vm.param.serviceInfo ? params.row.copyrightShortName : (params.row.copyrightShortNameNew ? params.row.copyrightShortNameNew : params.row.copyrightShortName),
+                                        // disabled: (this.param.allowEdit && this.form.copyrightContent.length > 1) ? false : true
+                                    },
+                                    on: {
+                                        'on-change': function(val) {
+                                            vm.isValueChange = true;
+                                            vm.form.copyrightContent[params.index].copyrightShortNameNew = val.target.value;
+                                            vm.serviceInfoOne.copyrightContent.forEach(function(item, index) {
+                                                if (params.row.id == item.id) {
+                                                    vm.serviceInfoOne.copyrightContent[index].copyrightShortNameNew = val.target.value;
+                                                }
+                                            });
+                                            vm.serviceInfoTwo.copyrightContent.forEach(function(item, index) {
+                                                if (params.row.id == item.id) {
+                                                    vm.serviceInfoTwo.copyrightContent[index].copyrightShortNameNew = val.target.value;
+                                                }
+                                            });
+                                        }
+                                    }
+                                })
+                            ]);
+                        }else {
+                            str = (params.row.copyrightShortNameNew ? params.row.copyrightShortNameNew : params.row.copyrightShortName);
+                        }
+                        return str;
+                    }
+                },{
+                    title: '版本号',
+                    align: 'center',
+                    render: function(h, params) {
+                        var str;
+                        if (vm.allowEdit) {
+                            str = h('div', [
+                                h('Input', {
+                                    props: {
+                                        value: !vm.param.serviceInfo ? params.row.version : (params.row.versionNew ? params.row.versionNew : params.row.version),
+                                        // disabled: (this.param.allowEdit && this.form.copyrightContent.length > 1) ? false : true
+                                    },
+                                    on: {
+                                        'on-change': function(val) {
+                                            vm.isValueChange = true;
+                                            vm.form.copyrightContent[params.index].versionNew = val.target.value;
+                                            vm.serviceInfoOne.copyrightContent.forEach(function(item, index) {
+                                                if (params.row.id == item.id) {
+                                                    vm.serviceInfoOne.copyrightContent[index].versionNew = val.target.value;
+                                                }
+                                            });
+                                            vm.serviceInfoTwo.copyrightContent.forEach(function(item, index) {
+                                                if (params.row.id == item.id) {
+                                                    vm.serviceInfoTwo.copyrightContent[index].versionNew = val.target.value;
+                                                }
+                                            });
+                                        }
+                                    }
+                                })
+                            ])
+                        }else {
+                            str = (params.row.versionNew ? params.row.versionNew : params.row.version);
+                        }
+                        return str;
+                    }
+                },{
+                    title: '对应委托事项',
+                    align: 'center',
+                    width: 220,
+                    render: function(h, params) {
+                        var optionList = [];
+                        if (vm.copyrightBaseContent.contentList) {
+                            vm.copyrightBaseContent.contentList.forEach(function(item) {
+                                if (item.isShow) {
+                                    var currentItem = h('Option', {
+                                        props: {
+                                            value: item.code
+                                        },
+                                        domProps:{
+                                            innerHTML: item.name
+                                        }
+                                    });
+                                    optionList.push(currentItem);
+                                }
+                            });
+                        }
+                        return h('div', [
+                            h('Select', {
+                                props: {
+                                    multiple: true,
+                                    transfer: true,
+                                    disabled: !vm.allowEdit,
+                                    value: !vm.param.serviceInfo ? params.row.otherContent : (params.row.otherContentNew ? params.row.otherContentNew : params.row.otherContent),
+                                },
+                                on: {
+                                    'on-change': function(val) {
+                                        vm.isValueChange = true;
+                                        vm.form.copyrightContent[params.index].otherContentNew = val;
+                                        vm.serviceInfoOne.copyrightContent.forEach(function(item, index) {
+                                            if (params.row.id == item.id) {
+                                                vm.serviceInfoOne.copyrightContent[index].otherContentNew = val;
+                                            }
+                                        });
+                                        vm.serviceInfoTwo.copyrightContent.forEach(function(item, index) {
+                                            if (params.row.id == item.id) {
+                                                vm.serviceInfoTwo.copyrightContent[index].otherContentNew = val;
+                                            }
+                                        });
+                                    }
+                                }
+                            }, [optionList])
+                        ]);
+                    }
+                }],
+                allowEdit: true,
+                isValueChange: false,
+                isUnPack: false,
+                copyrightBaseContent: {},
+                serviceInfoOne: {
+                    copyrightContent: [],
+                    serviceDate: '自本合同签字或盖章之日起至委托事项完成，以相关机关下发的证书、通知书视为委托事项完成。',
+                    serviceMethod: '甲方提供办理著作权所需的全部资料，乙方在乙方驻地或著作权申请地进行相应工作。',
+                    otherContent: ''
+                },
+                serviceInfoTwo: {
+                    copyrightContent: [],
+                    serviceDate: '自本合同签字或盖章之日起至委托事项完成，以相关机关下发的证书、通知书视为委托事项完成。',
+                    serviceMethod: '甲方提供办理著作权所需的全部资料，乙方在乙方驻地或著作权申请地进行相应工作。',
+                    otherContent: ''
+                },
+                param: {}
+            }
+        },
+        filters: {
+            formatDate: function(value) {
+                if (value) {
+                    var newDate = new Date(value);
+                    if (newDate) {
+                        var y = newDate.getFullYear();
+                        var m = newDate.getMonth() + 1;
+                        m = m < 10 ? '0' + m : m;
+                        var d = newDate.getDate();
+                        d = d < 10 ? ('0' + d) : d;
+                        return y + '/' + m + '/' + d;
+                    }
+                }
+                return value;
+            }
+        },
+        watch: {
+            'form.serviceDate': function(val) {
+                this.form.serviceDate = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.serviceDate = {
+                        isNull: true,
+                        content: '服务期限不能为空'
+                    };
+                }else {
+                    this.form.validState.serviceDate = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.serviceInfoOne.serviceDate = val;
+                this.serviceInfoTwo.serviceDate = val;
+                this.$api.saveServiceData(this.form);
+            },
+            'form.serviceMethod': function(val) {
+                this.form.serviceMethod = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.serviceMethod = {
+                        isNull: true,
+                        content: '服务方式不能为空'
+                    };
+                }else {
+                    this.form.validState.serviceMethod = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.serviceInfoOne.serviceMethod = val;
+                this.serviceInfoTwo.serviceMethod = val;
+                this.$api.saveServiceData(this.form);
+            },
+            'form.otherContent': function(val) {
+                this.form.otherContent = val;
+                this.serviceInfoOne.otherContent = val;
+                this.serviceInfoTwo.otherContent = val;
+                this.$api.saveServiceData(this.form);
+            },
+
+            isValueChange: function(val) {
+                this.isValueChange = val;
+                if (val) {
+                    this.form.serviceInfoOne = this.serviceInfoOne;
+                    this.form.serviceInfoTwo = this.serviceInfoTwo;
+                    this.$api.saveServiceData(this.form);
+                    this.isValueChange = false;
+                }
+            },
+
+            isUnPack: function(val) {
+                this.isUnPack = val;
+                this.form.isUnPack = val;
+                this.form.serviceInfoOne = this.serviceInfoOne;
+                this.form.serviceInfoTwo = this.serviceInfoTwo;
+                this.$api.saveServiceData(this.form);
+            }
+        },
+        methods: {
+            init: function(param) {
+                var vm = this;
+                vm.param = param;
+                if (param.serviceInfo) {
+                    vm.allowEdit = param.isEdit;
+                    if (param.serviceInfo.templeteData) {
+                        var content = JSON.parse(param.serviceInfo.templeteData);
+                        if (content) {
+                            vm.form.copyrightContent = content.copyrightContent;
+                            vm.initCopyrightCheckData(vm.form, content);
+
+                            vm.form.copyrightContent.forEach(function(item, index) {
+                                item.otherContentNew.forEach(function(item1) {
+                                    if (item1 == 'softwareCopyright') {
+                                        vm.form.softwareCopyright = true;
+                                    }
+                                    if (item1 == 'softwareCopyrightTransfer') {
+                                        vm.form.softwareCopyrightTransfer = true;
+                                    }
+                                    if (item1 == 'softwareCopyrightChange') {
+                                        vm.form.softwareCopyrightChange = true;
+                                    }
+                                    if (item1 == 'writingCopyright') {
+                                        vm.form.writingCopyright = true;
+                                    }
+                                    if (item1 == 'writingCopyrightTransfer') {
+                                        vm.form.writingCopyrightTransfer = true;
+                                    }
+                                    if (item1 == 'writingCopyrightChange') {
+                                        vm.form.writingCopyrightChange = true;
+                                    }
+
+                                    if (item1 == 'fastSoftwareCopyright') {
+                                        vm.form.fastSoftwareCopyright = true;
+                                    }
+                                    if (item1 == 'fastSoftwareCopyrightTransfer') {
+                                        vm.form.fastSoftwareCopyrightTransfer = true;
+                                    }
+                                    if (item1 == 'fastSoftwareCopyrightChange') {
+                                        vm.form.fastSoftwareCopyrightChange = true;
+                                    }
+                                    if (item1 == 'fastWritingCopyright') {
+                                        vm.form.fastWritingCopyright = true;
+                                    }
+                                    if (item1 == 'fastWritingCopyrightTransfer') {
+                                        vm.form.fastWritingCopyrightTransfer = true;
+                                    }
+                                    if (item1 == 'fastWritingCopyrightChange') {
+                                        vm.form.fastWritingCopyrightChange = true;
+                                    }
+                                    if (item1 == 'otherService') {
+                                        vm.form.otherService = true;
+                                    }
+                                });
+                            });
+
+                            vm.copyrightBaseContent = Object.assign(vm.copyrightBaseContent, vm.form);
+                            vm.copyrightBaseContent['contentList'] = [
+                                {'code': 'softwareCopyright', 'name': '软件著作权登记', isShow: vm.form.softwareCopyright},
+                                {'code': 'softwareCopyrightTransfer', 'name': '软件著作权转让', isShow: vm.form.softwareCopyrightTransfer},
+                                {'code': 'softwareCopyrightChange', 'name': '软件著作权变更', isShow: vm.form.softwareCopyrightChange},
+                                {'code': 'writingCopyright', 'name': '作品版权登记', isShow: vm.form.writingCopyright},
+                                {'code': 'writingCopyrightTransfer', 'name': '作品版权转让', isShow: vm.form.writingCopyrightTransfer},
+                                {'code': 'writingCopyrightChange', 'name': '作品版权变更', isShow: vm.form.writingCopyrightChange},
+
+                                {'code': 'fastSoftwareCopyright', 'name': '加急软件著作权登记', isShow: vm.form.fastSoftwareCopyright},
+                                {'code': 'fastSoftwareCopyrightTransfer', 'name': '加急软件著作权转让', isShow: vm.form.fastSoftwareCopyrightTransfer},
+                                {'code': 'fastSoftwareCopyrightChange', 'name': '加急软件著作权变更', isShow: vm.form.fastSoftwareCopyrightChange},
+                                {'code': 'fastWritingCopyright', 'name': '加急作品版权登记', isShow: vm.form.fastWritingCopyright},
+                                {'code': 'fastWritingCopyrightTransfer', 'name': '加急作品版权转让', isShow: vm.form.fastWritingCopyrightTransfer},
+                                {'code': 'fastWritingCopyrightChange', 'name': '加急作品版权变更', isShow: vm.form.fastWritingCopyrightChange},
+                                {'code': 'otherService', 'name': '其他业务', isShow: vm.form.otherService},
+                            ];
+
+                            vm.form.serviceDate = content.serviceDate;
+                            vm.form.serviceMethod = content.serviceMethod;
+                            vm.form.otherContent = content.otherContent;
+                            vm.$api.saveServiceData(vm.form);
+                        }else {
+                            vm.getContractInfo(param);
+                        }
+                    }else {
+                        vm.getContractInfo(param);
+                    }
+                }else {
+                    vm.allowEdit = true;
+                    vm.getContractInfo(param);
+                }
+            },
+            getContractInfo: function(param) {
+                var vm = this;
+                if (param.contractId) {
+                    vm.request({
+                        url: "/signCloud/contractBuilder/view.do?id=" + param.contractId
+                    }).then(function(data) {
+                        var content = JSON.parse(data.content);
+                        if (content) {
+                            vm.form.copyrightContent = content.selectedCopyright;
+                            vm.form.copyrightContent.forEach(function(item, index) {
+                                vm.form.copyrightContent[index].id = index + 1;
+                                vm.form.copyrightContent[index].type = 1;
+                                vm.form.copyrightContent[index].otherContent = new Array();
+                                vm.form.copyrightContent[index].otherContentNew = new Array();
+                            });
+                            vm.serviceInfoOne.copyrightContent = Object.assign(vm.serviceInfoOne.copyrightContent, vm.form.copyrightContent);
+                            vm.initCopyrightCheckData(vm.form, content);
+
+                            vm.copyrightBaseContent = Object.assign(vm.copyrightBaseContent, content);
+                            vm.copyrightBaseContent['contentList'] = [
+                                {'code': 'softwareCopyright', 'name': '软件著作权登记', isShow: content.softwareCopyright},
+                                {
+                                    'code': 'softwareCopyrightTransfer',
+                                    'name': '软件著作权转让',
+                                    isShow: content.softwareCopyrightTransfer
+                                },
+                                {
+                                    'code': 'softwareCopyrightChange',
+                                    'name': '软件著作权变更',
+                                    isShow: content.softwareCopyrightChange
+                                },
+                                {'code': 'writingCopyright', 'name': '作品版权登记', isShow: content.writingCopyright},
+                                {
+                                    'code': 'writingCopyrightTransfer',
+                                    'name': '作品版权转让',
+                                    isShow: content.writingCopyrightTransfer
+                                },
+                                {
+                                    'code': 'writingCopyrightChange',
+                                    'name': '作品版权变更',
+                                    isShow: content.writingCopyrightChange
+                                },
+
+                                {
+                                    'code': 'fastSoftwareCopyright',
+                                    'name': '加急软件著作权登记',
+                                    isShow: content.fastSoftwareCopyright
+                                },
+                                {
+                                    'code': 'fastSoftwareCopyrightTransfer',
+                                    'name': '加急软件著作权转让',
+                                    isShow: content.fastSoftwareCopyrightTransfer
+                                },
+                                {
+                                    'code': 'fastSoftwareCopyrightChange',
+                                    'name': '加急软件著作权变更',
+                                    isShow: content.fastSoftwareCopyrightChange
+                                },
+                                {
+                                    'code': 'fastWritingCopyright',
+                                    'name': '加急作品版权登记',
+                                    isShow: content.fastWritingCopyright
+                                },
+                                {
+                                    'code': 'fastWritingCopyrightTransfer',
+                                    'name': '加急作品版权转让',
+                                    isShow: content.fastWritingCopyrightTransfer
+                                },
+                                {
+                                    'code': 'fastWritingCopyrightChange',
+                                    'name': '加急作品版权变更',
+                                    isShow: content.fastWritingCopyrightChange
+                                },
+                                {'code': 'otherService', 'name': '其他业务', isShow: content.otherService},
+                            ];
+                        }
+                        vm.$api.saveServiceData(vm.form);
+                    });
+                }
+            },
+            unPack: function() {
+                this.isUnPack = true;
+                this.columns.unshift({
+                    type: 'selection',
+                    width: 40,
+                    align: 'center'
+                });
+            },
+            unPackCancel: function() {
+                this.isUnPack = false;
+                this.columns.shift({
+                    type: 'selection',
+                    width: 40,
+                    align: 'center'
+                });
+            },
+            selectUnpackData: function(selection, row) {
+                var vm = this;
+                vm.serviceInfoOne.copyrightContent = [];
+                vm.form.copyrightContent.forEach(function(item) {
+                    var isExist = false;
+                    for (var i = 0; i < selection.length; i++) {
+                        var selected = selection[i];
+                        if (selected.id == item.id) {
+                            isExist = true;
+                            break;
+                        }
+                    }
+                    if (!isExist) {
+                        vm.serviceInfoOne.copyrightContent.push(item);
+                    }
+                });
+                vm.serviceInfoTwo.copyrightContent = selection;
+
+                vm.form.serviceInfoOne = vm.serviceInfoOne;
+                vm.form.serviceInfoTwo = vm.serviceInfoTwo;
+                vm.$api.saveServiceData(vm.form);
+            },
+            selectUnpackDataCancel: function(selection, row) {
+                var vm = this;
+                vm.serviceInfoOne.copyrightContent = [];
+                vm.form.copyrightContent.forEach(function(item) {
+                    var isExist = false;
+                    for (var i = 0; i < selection.length; i++) {
+                        var selected = selection[i];
+                        if (selected.id == item.id) {
+                            isExist = true;
+                            break;
+                        }
+                    }
+                    if (!isExist) {
+                        vm.serviceInfoOne.copyrightContent.push(item);
+                    }
+                });
+                vm.serviceInfoTwo.copyrightContent = selection;
+
+                vm.form.serviceInfoOne = vm.serviceInfoOne;
+                vm.form.serviceInfoTwo = vm.serviceInfoTwo;
+                vm.$api.saveServiceData(vm.form);
+            },
+            initCopyrightCheckData: function(newData, content) {
+                newData.softwareCopyright = content.softwareCopyright;
+                newData.softwareCopyrightTransfer = content.softwareCopyrightTransfer;
+                newData.softwareCopyrightChange = content.softwareCopyrightChange;
+                newData.writingCopyright = content.writingCopyright;
+                newData.writingCopyrightTransfer = content.writingCopyrightTransfer;
+                newData.writingCopyrightChange = content.writingCopyrightChange;
+
+                newData.fastSoftwareCopyright = content.fastSoftwareCopyright;
+                newData.fastSoftwareCopyrightDateNum = content.fastSoftwareCopyrightDateNum;
+                newData.fastSoftwareCopyrightTransfer = content.fastSoftwareCopyrightTransfer;
+                newData.fastSoftwareCopyrightTransferDateNum = content.fastSoftwareCopyrightTransferDateNum;
+                newData.fastSoftwareCopyrightChange = content.fastSoftwareCopyrightChange;
+                newData.fastSoftwareCopyrightChangeDateNum = content.fastSoftwareCopyrightChangeDateNum;
+                newData.fastWritingCopyright = content.fastWritingCopyright;
+                newData.fastWritingCopyrightDateNum = content.fastWritingCopyrightDateNum;
+                newData.fastWritingCopyrightTransfer = content.fastWritingCopyrightTransfer;
+                newData.fastWritingCopyrightTransferDateNum = content.fastWritingCopyrightTransferDateNum;
+                newData.fastWritingCopyrightChange = content.fastWritingCopyrightChange;
+                newData.fastWritingCopyrightChangeDateNum = content.fastWritingCopyrightChangeDateNum;
+
+                newData.otherService = content.otherService;
+                newData.otherServiceContent = content.otherServiceContent;
+                this.serviceInfoOne.otherServiceContent = content.otherServiceContent;
+                this.serviceInfoTwo.otherServiceContent = content.otherServiceContent;
+            }
+        }
+    })
+</script>
+
+<style>
+    #zzq .service-item-desc {
+        line-height: 36px;
+    }
+
+    #zzq input {
+        height: 20px;
+        padding: 2px;
+        border: 0;
+        border-bottom: 1px solid #dddee1;
+        text-align: center;
+    }
+
+    #zzq .form-input-copyright-single-date {
+        width: 50px;
+    }
+
+    #zzq .form-input-copyright-single-date > input{
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        text-align: center;
+        position: relative;
+        width: 45px;
+        font-size: 16px !important;
+        text-align: center;
+        height: 24px;
+        margin-top: 3px;
+    }s
+
+    #zzq .form-input-copyright-single-other > input{
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        text-align: center;
+        position: relative;
+        width: 100%;
+        font-size: 16px !important;
+        height: 24px;
+        text-align: left;
+        margin: 3px;
+    }
+
+    #zzq .check-button {
+        background-color: #FFF;
+        border: 1px solid #54B499;
+        border-radius: 4px;
+        color: #54B499;
+        font-size: 12px;
+        line-height: initial;
+        vertical-align: initial;
+        padding: 5px;
+    }
+
+    #zzq .check-button.active {
+        background-color: #54B499;
+        color: #FFF;
+        padding: 2px 10px;
+        margin-top: 12px;
+    }
+
+    #zzq .ivu-table-header .ivu-table-column-center:first-child .ivu-table-cell .ivu-checkbox-wrapper {
+        display: none!important;
+    }
+
+    #zzq .normal-font {
+        font-size: 14px;
+        color: #8c8c8c;
+    }
+
+    #zzq .hideColumn {
+        display: none!important;
+    }
+
+    #zzq .ivu-form-item {
+        margin-bottom: 15px;
+    }
+
+    #zzq pre {
+        font-family: Helvetica Neue,Helvetica,Arial,Microsoft Yahei,Hiragino Sans GB,Heiti SC,WenQuanYi Micro Hei,sans-serif!important;
+        white-space: pre-wrap;
+        margin: 0;
+    }
+
+    #zzq .ivu-tag, #zzq .ivu-tag .ivu-icon-ios-close-empty {
+        cursor: default;
+    }
+
+    #zzq .ivu-table-cell {
+        padding: 0 12px;
+    }
+
+    #zzq .ivu-tooltip-inner {
+        white-space: normal;
+        max-width: 350px;
+        word-wrap: break-word;
+    }
+</style>

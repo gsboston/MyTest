@@ -1,0 +1,393 @@
+<div id="dljzService" class="root-content">
+    <Row>
+        <i-form class="invoice-form" ref="form" :model="form" label-position="left" :label-width="120">
+            <i-col span="24" class="date-div">
+                <Form-item class="normal" label="服务期限">
+                    <p style="line-height: 36px;font-size: 14px;color: #8c8c8c;">{{ form.periodType=='START_END' ? form.totalMonth : form.noneTypeMonth}}期</p>
+                    <div v-if="allowEdit">
+                        <Row style="line-height: 36px;">
+                            <span style="display: inline-block">经双方商定，委托代理期限为</span>
+                            <Form-item :label-width="1" prop="totalMonth" style="display: inline-block">
+                                <i-input :maxlength="2" class="text-input" style="width: 65px;" type="text" @on-change="updateEndDate" v-model="form.totalMonth" :readonly="!allowEdit"></i-input>
+                            </Form-item>
+                            <span style="display: inline-block">个月</span>
+                        </Row>
+                        <Row style="line-height: 36px;">
+                            <span style="display: inline-block">自</span>
+                            <Form-item class="entrustment-data" prop="periodStart" :label-width="1" style="display: inline-block;width: 120px">
+                                <date-picker placeholder="选择日期" v-model="form.periodStart" @on-change="changeStartDate" :disabled="!allowEdit"></date-picker>
+                            </Form-item>
+                            <span style="display: inline-block">日至</span>
+                            <Form-item class="entrustment-data" :label-width="1" style="display: inline-block;width: 120px">
+                                <date-picker placeholder="选择日期" v-model="form.periodEnd" disabled></date-picker>
+                            </Form-item>
+                            <span>日。</span>
+                        </Row>
+                    </div>
+                    <div v-else>
+                        <Row style="line-height: 36px;">
+                            <span style="display: inline-block">经双方商定，委托代理期限为（{{form.totalMonth}}）个月</span>
+                        </Row>
+                        <Row style="line-height: 36px;">
+                            <span style="display: inline-block">自（{{form.periodStart | formatDate}}）日至（{{form.periodEnd | formatDate}}）日。</span>
+                        </Row>
+                    </div>
+                </Form-item>
+            </i-col>
+
+            <i-col span="24">
+                <Form-item label="服务内容" prop="serviceContent">
+                    <i-input v-if="allowEdit" v-model="form.serviceContent" :disabled="!allowEdit" type="textarea" :rows="4" placeholder="请输入服务内容"></i-input>
+                    <pre v-else class="normal-font">{{form.serviceContent}}</pre>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="其他内容" prop="otherContent">
+                    <i-input v-if="allowEdit" v-model="form.otherContent" :disabled="!allowEdit" placeholder="请输入其他内容"></i-input>
+                    <span v-else class="normal-font">{{form.otherContent}}</span>
+                </Form-item>
+            </i-col>
+            <i-col span="24" style="text-align: center;">
+                <i-button class="short-desc-info" style="text-align: center;" @click.native="descInfo=true">托管类服务甲（丙）方、乙方的权利和义务（部分提炼）</i-button>
+            </i-col>
+
+            <Modal v-model="descInfo" width="600">
+                <p slot="header" style="text-align:center">
+                    <span>托管类服务甲（丙）方、乙方的权利和义务（部分提炼）</span>
+                </p>
+                <div class="desc-info">
+                    <Row>
+                        <p class="desc-info-title">
+                            甲（丙）方的权利
+                        </p>
+                        <p>
+                            1）在合同期间，有权要求乙方就委托事项办理情况及时进行反馈和答疑；有权了解自身的账务信息并要求乙方答疑，并提供相应的财务资料。
+                        </p>
+                        <p>
+                            2）甲方（丙方）有权要求乙方更换或调整为其做账、取票的会计人员，无正当理由除外。
+                        </p>
+                        <p class="desc-info-title">
+                            甲（丙）方的义务
+                        </p>
+                        <p>
+                            1）安排专人负责出纳工作，收集、保管、整理需要入账的原始单据，按双方约定的时间移交给乙方指定人员。依据财务管理制度要求，甲方（丙方）准备的资料需做到资金、账目、发票一致，所有的开发票行为反映真实合法业务。如不符，甲方（丙方）有义务提供材料证明其正当合理性或及时更正，甲方（丙方）对其提供的所有单、票、证等资料的真实性、合法性负责，乙方只是根据甲方（丙方）的授权进行委托事项代理服务；
+                        </p>
+                        <p>
+                            2）甲方（丙方）应于每月（{{ form.payWayOnceDaysCompany }}）日前（一般纳税人于每月（{{ form.payWayOnceDaysPerson }}）日前）或按乙方要求将上月会计做账所需完整、有效的原始票据及资料移交给乙方，移交资料清单由乙方另行提供；
+                        </p>
+                        <p>
+                            3）甲方（丙方）对于乙方退回的不符合会计制度的原始票据，应当及时予以更正、补充。因未及时更正补充而造成的损失由甲方（丙方）负责。因甲方（丙方）更正、补充材料所延误的期限，不计算在合作期限内，合作期限自动顺延。
+                        </p>
+                    </Row>
+                    <Row>
+                        <p class="desc-info-title">
+                            乙方的权利
+                        </p>
+                        <p>
+                            1）有权要求甲方（丙方）按国家财税法的规定及时提供会计资料进行税会处理，甲方（丙方）需承担答疑义务并积极配合乙方工作；
+                        </p>
+                        <p>
+                            2）有权依据财务管理制度要求甲方（丙方）准备的资料做到资金、账目、发票一致，所有的开发票行为反映真实合法业务，如乙方发现有虚假、舞弊等不合法、不合规情况，有权要求甲方（丙方）及时更正或拒绝接受。
+                        </p>
+                        <p class="desc-info-title">
+                            乙方的义务
+                        </p>
+                        <p>
+                            1）根据甲方（丙方）移交的会计资料，依据国家财税法律法规的规定，完成甲方（丙方）委托事项代理服务；
+                        </p>
+                        <p>
+                            2）承担由乙方原因造成甲方（丙方）逾期报税所导致的罚款及滞纳金；
+                        </p>
+                        <p>
+                            3）负责指导甲方（丙方）正确移交会计资料，并接受甲方（丙方）关于日常财务、税务知识的咨询；
+                        </p>
+                        <p>
+                            4）乙方相关信息变更，需及时通知甲方（丙方），因乙方未及时通知甲方（丙方）而延误记账、报税工作，责任由乙方承担；
+                        </p>
+                        <p>
+                            5）乙方交接财务资料时只交付于甲方（丙方）法定代表人或其指定人员（含书面指定书）；
+                        </p>
+                        <p>
+                            6）财务托管业务结束后，乙方应及时将取得的甲方材料返回给甲方（丙方），甲方（丙方）需支付资料费的除外。
+                        </p>
+                    </Row>
+                </div>
+                <div slot="footer" style="text-align: center;">
+
+                </div>
+            </Modal>
+        </i-form>
+    </Row>
+</div>
+
+<script>
+    new Vue({
+        el: "#dljzService",
+        data: function() {
+            return {
+                form: {
+                    serviceLifeStart: null,
+                    serviceLifeEnd: null,
+                    serviceLifeNum: 1,
+                    units: 'MONTH',
+                    totalMonth: '',
+                    periodStart: '',
+                    periodEnd: '',
+                    serviceContent: '财税外包托管；银行对账；税务申报；税控装置托管，其中包含了开票电脑费用、税控设备购买费用、税控装置服务费、每月免费开票25张（外地客户免费顺丰快递）；发票领购；发票认证；所得税汇算清缴；招商局、财政局、国地税务局等部门税收优惠备案服务；税收优惠返还申请、对账。 ',
+                    otherContent: '',
+                    validState: {}
+                },
+                allowEdit: true,
+                descInfo: false,
+                param: {}
+            }
+        },
+        filters: {
+            formatDate: function(value) {
+                if (value) {
+                    var newDate = new Date(value);
+                    if (newDate) {
+                        var y = newDate.getFullYear();
+                        var m = newDate.getMonth() + 1;
+                        m = m < 10 ? '0' + m : m;
+                        var d = newDate.getDate();
+                        d = d < 10 ? ('0' + d) : d;
+                        return y + '/' + m + '/' + d;
+                    }
+                }
+                return value;
+            }
+        },
+        watch: {
+            'form.totalMonth': function(val) {
+                this.form.totalMonth = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.totalMonth = {
+                        isNull: true,
+                        content: '委托代理期限不能为空'
+                    };
+                }else {
+                    if (!(/^[1-9]\d*$/.test(val))) {
+                        this.form.validState.totalMonth = {
+                            isNull: true,
+                            content: '委托代理期限需为正整数'
+                        };
+                    }else {
+                        this.form.serviceLifeNum = val;
+                        this.form.validState.totalMonth = {
+                            isNull: false,
+                            content: ''
+                        };
+                    }
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.periodStart': function(val) {
+                this.form.periodStart = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.periodStart = {
+                        isNull: true,
+                        content: '起始日期不能为空'
+                    };
+                }else {
+                    this.form.serviceLifeStart = val;
+                    this.form.validState.periodStart = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.periodEnd': function(val) {
+                this.form.periodEnd = val;
+                this.form.serviceLifeEnd = val;
+                this.$api.saveServiceData(this.form);
+            },
+            'form.serviceContent': function(val) {
+                this.form.serviceContent = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.serviceContent = {
+                        isNull: true,
+                        content: '服务内容不能为空'
+                    };
+                }else {
+                    this.form.validState.serviceContent = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.otherContent': function(val) {
+                this.form.otherContent = val;
+                this.$api.saveServiceData(this.form);
+            }
+        },
+        methods: {
+            init: function(param) {
+                this.param = param;
+                if (param.serviceInfo) {
+                    this.allowEdit = param.isEdit;
+                    if (param.serviceInfo.templeteData) {
+                        var content = JSON.parse(param.serviceInfo.templeteData);
+                        if (content) {
+                            this.form.periodType = content.periodType;
+                            this.form.periodStart = new Date(content.periodStart);
+                            this.form.serviceLifeStart = new Date(content.periodStart);
+                            this.form.periodEnd = new Date(content.periodEnd);
+                            this.form.serviceLifeEnd = new Date(content.periodEnd);
+                            this.form.totalMonth = content.totalMonth;
+                            this.form.serviceLifeNum = content.totalMonth;
+                            this.form.serviceContent = content.serviceContent;
+                            this.form.otherContent = content.otherContent;
+                            this.form.payWayOnceDaysCompany = content.payWayOnceDaysCompany;
+                            this.form.payWayOnceDaysPerson = content.payWayOnceDaysPerson;
+
+                            this.$api.saveServiceData(this.form);
+                        }else {
+                            this.getContractInfo(param);
+                        }
+                    }else {
+                        this.getContractInfo(param);
+                    }
+                }else {
+                    this.allowEdit = true;
+                    this.getContractInfo(param);
+                }
+            },
+            getContractInfo: function(param) {
+                var vm = this;
+                if (param.contractId) {
+                    vm.request({
+                        url: "/signCloud/contractBuilder/view.do?id=" + param.contractId
+                    }).then(function(data) {
+                        var content = JSON.parse(data.content);
+                        if (content) {
+                            vm.form.periodType = data.periodType;
+
+                            vm.form.periodStart = new Date(data.periodStart);
+                            vm.form.serviceLifeStart = new Date(data.periodStart);
+                            vm.form.periodEnd = new Date(data.periodEnd);
+                            vm.form.serviceLifeEnd = new Date(data.periodEnd);
+                            vm.form.totalMonth = content.totalMonth;
+                            vm.form.serviceLifeNum = content.totalMonth;
+
+                            vm.form.payWayOnceDaysCompany = content.payWayOnceDaysCompany;
+                            vm.form.payWayOnceDaysPerson = content.payWayOnceDaysPerson;
+
+                            vm.$api.saveServiceData(vm.form);
+                        }
+                    });
+                }
+            },
+            changeStartDate:function(start){
+                if(this.form.totalMonth && start!=''){
+                    var startDate = new Date(start);
+                    this.computationEndData(startDate);
+                }
+            },
+            updateEndDate: function () {
+                if(this.form.totalMonth && this.form.periodStart){
+                    var startDate = new Date(this.form.periodStart);
+                    this.computationEndData(startDate);
+                }else{
+                    this.$set(this.form,"periodEnd", "");
+                }
+            },
+            computationEndData:function (startDate) {
+                var totalMonth = this.form.totalMonth;
+                var endDate = new Date();
+                var tempYear = parseInt((startDate.getMonth()+1 + Number(totalMonth))/12);
+                var tempMonth = (startDate.getMonth()+1 + Number(totalMonth))%12;
+                var tempDay = startDate.getDate();
+                endDate.setFullYear(startDate.getFullYear()+tempYear);
+                endDate.setMonth(tempMonth-1);
+                if(tempDay > 30){
+                    if(tempMonth==1 || tempMonth==3 || tempMonth==5 || tempMonth==7 || tempMonth==8 || tempMonth==10 || tempMonth==12){
+                        endDate.setDate(tempDay);
+                    }else if (tempMonth==2){
+                        endDate.setDate(28);
+                    }else{
+                        endDate.setDate(30);
+                    }
+                }else if (tempDay > 28){
+                    if(tempMonth!=2){
+                        endDate.setDate(tempDay);
+                    }else if (tempMonth==2){
+                        endDate.setDate(28);
+                    }
+                }else{
+                    endDate.setDate(tempDay);
+                }
+                this.$set(this.form,"periodStart", startDate);
+                this.$set(this.form,"periodEnd", endDate);
+            },
+        }
+    })
+</script>
+
+<style>
+    #dljzService .service-item-desc {
+        line-height: 36px;
+    }
+
+    #dljzService .date-div span{
+        font-size: 14px!important;
+        color: #8c8c8c!important;
+    }
+
+    #dljzService .date-div input {
+        height: 30px;
+    }
+
+    #dljzService .check-button {
+        background-color: #FFF;
+        border: 1px solid #54B499;
+        border-radius: 4px;
+        color: #54B499;
+        font-size: 12px;
+        line-height: initial;
+        vertical-align: initial;
+    }
+
+    #dljzService .check-button.active {
+        background-color: #54B499;
+        color: #FFF;
+    }
+
+    #dljzService .normal-font {
+        font-size: 14px;
+        color: #8c8c8c;
+    }
+
+    .desc-info {
+        /*padding: 10px;*/
+        /*font-size: 14px;*/
+        /*color: #8c8c8c;*/
+    }
+
+    .desc-info p {
+        width: 100%;
+        white-space: normal;
+    }
+
+    .desc-info-title {
+        margin: 5px 0;
+        color: #000;
+        font-weight: 700;
+    }
+
+    #dljzService .short-desc-info {
+
+    }
+
+    #dljzService .ivu-form-item {
+        margin-bottom: 15px;
+    }
+
+    #dljzService pre {
+        font-family: Helvetica Neue,Helvetica,Arial,Microsoft Yahei,Hiragino Sans GB,Heiti SC,WenQuanYi Micro Hei,sans-serif!important;
+        white-space: pre-wrap;
+        margin: 0;
+    }
+</style>

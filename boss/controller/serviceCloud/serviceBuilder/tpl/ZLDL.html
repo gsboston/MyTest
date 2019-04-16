@@ -1,0 +1,395 @@
+<div id="zldl" class="root-content">
+    <Row>
+        <i-form class="invoice-form" ref="form" :model="form" label-position="left" :label-width="120">
+            <i-col span="24">
+                <Form-item class="normal" label="服务期限" prop="serviceDate">
+                    <span class="normal-font">合约签约日期：{{param.signedDate | formatDate}}</span>
+                    <i-input v-if="allowEdit" v-model="form.serviceDate" :disabled="!allowEdit" placeholder="请输入服务期限" :maxlength="500"></i-input>
+                    <span v-else class="normal-font">{{form.serviceDate}}</span>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="服务内容" prop="serviceContent">
+                    <Row v-if="form.commitments && form.commitments.length > 0">
+                        <i-col span="12" v-if="form.commitments[0].checked">
+                            <Checkbox v-model="form.commitments[0].checked" :disabled="true">发明专利申请</Checkbox>
+                        </i-col>
+                        <i-col span="12" v-if="form.commitments[1].checked">
+                            <Checkbox v-model="form.commitments[1].checked" :disabled="true">实用新型专利申请</Checkbox>
+                        </i-col>
+                        <i-col span="12" v-if="form.commitments[2].checked">
+                            <Checkbox v-model="form.commitments[2].checked" :disabled="true">外观设计专利申请</Checkbox>
+                        </i-col>
+                        <i-col span="12" v-if="form.commitments[3].checked">
+                            <Checkbox v-model="form.commitments[3].checked" :disabled="true">专利续费</Checkbox>
+                        </i-col>
+                        <i-col span="12" v-if="form.commitments[4].checked">
+                            <Checkbox v-model="form.commitments[4].checked" :disabled="true">专利转让</Checkbox>
+                        </i-col>
+                        <i-col span="12" v-if="form.commitments[5].checked">
+                            <Checkbox v-model="form.commitments[5].checked" :disabled="true">专利变更</Checkbox>
+                        </i-col>
+                        <i-col span="24" v-if="form.commitments[6].checked">
+                            <Form-item :label-width='1' prop="commitments[6].otherThingValue">
+                                <Checkbox v-model="form.commitments[6].checked" :disabled="true">其他事项:</Checkbox>
+                                <span>{{form.commitments[6].otherThingValue}}</span>
+                                <!--<i-input :maxlength="50" style="width:415px;" class="form-input-copyright-single-other" type="text" @click.native="editForm" v-model="form.commitments[6].otherThingValue" :disabled="true"></i-input>-->
+                            </Form-item>
+                        </i-col>
+                        <i-col span="24" style="margin-top: 10px;">
+                            <i-table :columns="columns" :data="form.thingsList" class="table"></i-table>
+                        </i-col>
+                    </Row>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="服务方式" prop="serviceMethod">
+                    <i-input v-if="allowEdit" v-model="form.serviceMethod" :disabled="!allowEdit" type="textarea" :rows="4" placeholder="请输入相关服务方式"></i-input>
+                    <pre v-else class="normal-font">{{form.serviceMethod}}</pre>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="工作成果确认" prop="workResult">
+                    <i-input v-if="allowEdit" v-model="form.workResult" :disabled="!allowEdit" type="textarea" :rows="4" placeholder="请输入工作成果确认"></i-input>
+                    <pre v-else class="normal-font">{{form.workResult}}</pre>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="其他内容" prop="otherContent">
+                    <i-input v-if="allowEdit" v-model="form.otherContent" :disabled="!allowEdit" placeholder="请输入相关服务补充备注"></i-input>
+                    <span v-else class="normal-font">{{form.otherContent}}</span>
+                </Form-item>
+            </i-col>
+        </i-form>
+    </Row>
+</div>
+
+<script>
+    new Vue({
+        el: "#zldl",
+        data: function() {
+            var vm = this;
+            return {
+                param: {},
+                form: {
+                    commitments: [
+                        {
+                            name:"发明专利申请",
+                            code: 'invention',
+                            checked: false,
+                            applicationFee: true,
+                            registrationFee: true,
+                            agencyFee: true,
+                            examinationFee: true,
+                            unitPrice: 0.00,
+                            num: 0,
+                            subtotal: 0,
+                        },
+                        {
+                            name:"实用新型专利申请",
+                            code: 'new_type',
+                            checked: false,
+                            applicationFee: true,
+                            registrationFee: true,
+                            agencyFee: true,
+                            unitPrice: 0,
+                            num: 0,
+                            subtotal: 0,
+                        },
+                        {
+                            name:"外观设计专利申请",
+                            code: 'appearance',
+                            checked: false,
+                            applicationFee: true,
+                            registrationFee: true,
+                            agencyFee: true,
+                            unitPrice: 0,
+                            num: 0,
+                            subtotal: 0,
+                        },
+                        {
+                            name:"专利续费",
+                            code: 'renew',
+                            checked: false,
+                            applicationFee: true,
+                            registrationFee: true,
+                            agencyFee: true,
+                            unitPrice: 0,
+                            num: 0,
+                            subtotal: 0,
+                        },
+                        {
+                            name:"专利转让",
+                            code: 'transfer',
+                            checked: false,
+                            applicationFee: true,
+                            registrationFee: true,
+                            agencyFee: true,
+                            unitPrice: 0,
+                            num: 0,
+                            subtotal: 0,
+                        },
+                        {
+                            name:"专利变更",
+                            code: 'change',
+                            checked: false,
+                            applicationFee: true,
+                            registrationFee: true,
+                            agencyFee: true,
+                            unitPrice: 0,
+                            num: 0,
+                            subtotal: 0,
+                        },
+                        {
+                            name:"其他事项",
+                            code: 'other',
+                            checked: false,
+                            applicationFee: true,
+                            registrationFee: true,
+                            agencyFee: true,
+                            unitPrice: 0,
+                            num: 0,
+                            subtotal: 0,
+                            otherThingValue: "",
+                        },
+                    ],
+                    thingsList: [],
+                    serviceDate: '自本合同签字或盖章之日起至委托事项完成。',
+                    serviceMethod: '甲方提供专利申请办理所需的资料，乙方在乙方驻地或北京等其它城市进行相应工作。',
+                    workResult: '在合同存续期间，乙方完成甲方委托事宜，以相关机关受理、批准、公示或下发相应证书、文件视为委托事项完成。',
+                    otherContent: '',
+                    validState: {}
+                },
+                columns: [{
+                    title: '序号',
+                    align: 'center',
+                    width: 60,
+                    render: function(h, params) {
+                        return (params.index + 1);
+                    }
+                },{
+                    title: '专利业务类型',
+                    align: 'center',
+                    render: function(h, params) {
+                        var str;
+                        if (vm.allowEdit) {
+                            str = h('div', [
+                                h('Input', {
+                                    props: {
+                                        value: vm.param.contractId ? params.row.patentType : (params.row.patentTypeNew ? params.row.patentTypeNew : params.row.patentType),
+                                        disabled: vm.param.contractId ? false : true
+                                    },
+                                    on: {
+                                        'on-change': function(val) {
+                                            vm.isValueChange = true;
+                                            vm.form.thingsList[params.index].patentTypeNew = val.target.value;
+                                            if (String.isNullOrBlank(val.target.value)) {
+                                                vm.form.validState.thingsList = {
+                                                    isNull: true,
+                                                    content: '服务内容中可修改内容不能为空'
+                                                };
+                                            }else {
+                                                vm.form.validState.thingsList = {
+                                                    isNull: false,
+                                                    content: ''
+                                                };
+                                            }
+                                        }
+                                    }
+                                })
+                            ]);
+                        }else {
+                            str = (params.row.patentTypeNew ? params.row.patentTypeNew : params.row.patentType);
+                        }
+                        return str;
+                    }
+                },{
+                    title: '专利名称',
+                    align: 'center',
+                    render: function(h, params) {
+                        var str;
+                        if (vm.allowEdit) {
+                            str = h('div', [
+                                h('Input', {
+                                    props: {
+                                        value: vm.param.contractId ? params.row.patentName : (params.row.patentNameNew ? params.row.patentNameNew : params.row.patentName),
+                                        disabled: vm.param.contractId ? false : true
+                                    },
+                                    on: {
+                                        'on-change': function(val) {
+                                            vm.isValueChange = true;
+                                            vm.form.thingsList[params.index].patentNameNew = val.target.value;
+                                            if (String.isNullOrBlank(val.target.value)) {
+                                                vm.form.validState.thingsList = {
+                                                    isNull: true,
+                                                    content: '服务内容中可修改内容不能为空'
+                                                };
+                                            }else {
+                                                vm.form.validState.thingsList = {
+                                                    isNull: false,
+                                                    content: ''
+                                                };
+                                            }
+                                        }
+                                    }
+                                })
+                            ])
+                        }else {
+                            str = (params.row.patentNameNew ? params.row.patentNameNew : params.row.patentName);
+                        }
+                        return str;
+                    }
+                }],
+                allowEdit: true,
+                isValueChange: false
+            }
+        },
+        watch: {
+            'form.serviceDate': function(val) {
+                this.form.serviceDate = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.serviceDate = {
+                        isNull: true,
+                        content: '服务期限不能为空'
+                    };
+                }else {
+                    this.form.validState.serviceDate = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.thingsList': function(val) {
+                this.form.thingsList = val;
+                this.$api.saveServiceData(this.form);
+            },
+            'form.serviceMethod': function(val) {
+                this.form.serviceMethod = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.serviceMethod = {
+                        isNull: true,
+                        content: '服务方式不能为空'
+                    };
+                }else {
+                    this.form.validState.serviceMethod = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.workResult': function(val) {
+                this.form.workResult = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.workResult = {
+                        isNull: true,
+                        content: '工作成果确认不能为空'
+                    };
+                }else {
+                    this.form.validState.workResult = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.otherContent': function(val) {
+                this.form.otherContent = val;
+                this.$api.saveServiceData(this.form);
+            },
+            isValueChange: function(val) {
+                this.isValueChange = val;
+                if (val) {
+                    this.$api.saveServiceData(this.form);
+                    this.isValueChange = false;
+                }
+            },
+        },
+        filters: {
+            formatDate: function(value) {
+                if (value) {
+                    var newDate = new Date(value);
+                    if (newDate) {
+                        var y = newDate.getFullYear();
+                        var m = newDate.getMonth() + 1;
+                        m = m < 10 ? '0' + m : m;
+                        var d = newDate.getDate();
+                        d = d < 10 ? ('0' + d) : d;
+                        return y + '/' + m + '/' + d;
+                    }
+                }
+                return value;
+            }
+        },
+        methods: {
+            init: function(param) {
+                this.param = param;
+                if (param.serviceInfo) {
+                    this.allowEdit = param.isEdit;
+                    if (param.serviceInfo.templeteData) {
+                        var content = JSON.parse(param.serviceInfo.templeteData);
+                        if (content && !Object.isEmpty(content)) {
+                            this.form.commitments = Object.assign(this.form.commitments, content.commitments);
+                            this.form.thingsList = content.thingsList;
+                            this.form.serviceDate = content.serviceDate;
+                            this.form.serviceMethod = content.serviceMethod;
+                            this.form.workResult = content.workResult;
+                            this.form.otherContent = content.otherContent;
+                        }else {
+                            this.getContractInfo(param);
+                        }
+                    }else {
+                        this.getContractInfo(param);
+                    }
+                }else {
+                    this.allowEdit = true;
+                    this.getContractInfo(param);
+                }
+            },
+            getContractInfo: function(param) {
+                var vm = this;
+                if (param.contractId) {
+                    vm.request({
+                        url: "/signCloud/contractBuilder/view.do?id=" + param.contractId
+                    }).then(function(data) {
+                        var content = JSON.parse(data.content);
+                        if (content) {
+                            vm.form.commitments = content.commitments;
+                            vm.form.thingsList = content.thingsList;
+                        }
+                    });
+                }
+            }
+        }
+    })
+</script>
+
+<style>
+    #zldl .service-item-desc {
+        line-height: 36px;
+    }
+
+    #zldl .table input {
+        height: 20px;
+        padding: 2px;
+        border: 0;
+        border-bottom: 1px solid #dddee1;
+        text-align: center;
+    }
+
+    #zldl .normal-font {
+        font-size: 14px;
+        color: #8c8c8c;
+    }
+
+    #zldl .ivu-form-item {
+        margin-bottom: 15px;
+    }
+
+    #zldl pre {
+        font-family: Helvetica Neue,Helvetica,Arial,Microsoft Yahei,Hiragino Sans GB,Heiti SC,WenQuanYi Micro Hei,sans-serif!important;
+        white-space: pre-wrap;
+        margin: 0;
+    }
+</style>

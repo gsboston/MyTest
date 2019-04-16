@@ -1,0 +1,16 @@
+{
+  "server": "wss://agentserver.node.aliyun.com:8080",
+  "appid": "2581",
+  "secret": "25185329d7302217dc1e1b6abf758459cddcf644",
+  "logdir": "/data/logs",
+  "error_log": [
+    "</data/logs/error.#YYYY#-#MM#-#DD#-#HH#.log>"
+  ],
+  "packages": [
+    "</opt/package.json>"
+  ],
+  "disks": [
+    "/",
+    "/data/logs"
+  ]
+}

@@ -1,0 +1,703 @@
+<style scoped>
+    #jcrcfw .ivu-input,.ivu-select-selection,.ivu-input-number-input{
+        border-radius: 0;
+    }
+    #jcrcfw .ivu-input-number{
+        width:100%;
+    }
+    #jcrcfw .currency >>>  .ivu-input {
+        padding-left: 30px;
+    }
+    #jcrcfw .currency >>>  .ivu-icon {
+        left: 0;
+        font-size: 10px;
+        color: #666;
+    }
+    #jcrcfw .again-dispatching >>> .ivu-btn.ivu-btn-ghost {
+        background: transparent;
+        color: #59b399;
+        border-color: #59b399;
+    }
+    #jcrcfw .service-state {
+        width: 0;
+        height: 0;
+        border-top: 40px solid #FFCC33;
+        border-right: 40px solid transparent;
+    }
+    #jcrcfw .service-state > span{
+        position: relative;
+        left: 5px;
+        top: -38px;
+        font-size: 14px;
+        color: white;
+    }
+
+    #jcrcfw .service-tag {
+        background: rgb(242, 131, 144);
+        color: #FFF;
+        font-size: 12px;
+        padding: 5px 16px;
+        border-radius: 5px;
+        margin-left: 30px;
+        font-weight: 600;
+    }
+    .light-bulb > .ivu-select-selection{
+        border-color: #59b399;
+        box-shadow: 0 0 0 2px rgba(89, 179, 153, .2);
+    }
+    .no-label >>> .ivu-select-dropdown{
+        max-height: 80px;
+    }
+    .no-label >>> .ivu-tooltip{
+        width: 150px;
+    }
+</style>
+<div id="jcrcfw" style="background-color: white;">
+    <Row v-if="formItem.state=='SERVER_BACK' && formItem.statusRecordList && formItem.statusRecordList.length>0">
+        <i-col style="margin-left: 45px; margin-right: 45px; padding-top: 15px;" span="24">
+            <div style="width: 740px;height: 60px;background-color: #f2f2f2">
+                <div class="service-state">
+                    <span>拒</span>
+                </div>
+                <div style="position: absolute;left: 60px;top: 25px;color: #999999">
+                    <span>{{formItem.statusRecordList[0].operatorUserName}}</span>
+                </div>
+                <div style="position: absolute;left: 60px;top: 50px;color: #999999">
+                    <span>{{formItem.statusRecordList[0].remark | wordLengthLimit}}</span>
+                </div>
+            </div>
+        </i-col>
+    </Row>
+    <Row>
+        <i-form :model="formItem" :rules="ruleForm" ref="formRef" :label-width="110" label-position="left">
+            <div style="font-size: 18px; font-weight: 700; padding: 20px 0px 20px 45px;">客户信息</div>
+            <Row style="padding-left: 60px;">
+                <i-col span="9">
+                    <Form-item label="客户名称" prop="customerName">
+                        <!--<i-input v-model="formItem.customerName" class="form-input" placeholder="请输入客户名称"></i-input>-->
+                        <auto-comp ref="autoName" class="form-input" v-model="formItem.customerName"  @on-search="searchCustomerByName" @on-select="selectCustomer">
+                            <i-option v-for="customer in customerList" :value="customer.name" :key="customer.id" :maxlength="50">{{customer.name}}</i-option>
+                        </auto-comp>
+                    </Form-item>
+                </i-col>
+                <i-col span="4" style="display: flex;" class="again-dispatching">
+                    <i-button :type="formItem.customerType=='COMPANY'?'primary':'ghost'" style="height: 33px; margin-left: 10px;" @click="changeCustomerType('COMPANY')">企业</i-button>
+                    <i-button :type="formItem.customerType=='PERSON'?'primary':'ghost'" style="height: 33px; margin-left: 10px;" @click="changeCustomerType('PERSON')">个人</i-button>
+                </i-col>
+            </Row>
+            <Row style="padding-left: 60px;">
+                <i-col span="9">
+                    <Form-item label="证件号码" prop="customerNumber">
+                        <i-input v-model="formItem.customerNumber" placeholder="请输入证件号码" :maxlength="20"></i-input>
+                    </Form-item>
+                </i-col>
+            </Row>
+            <Row style="padding-left: 60px;">
+                <i-col span="9">
+                    <Form-item label="联系人" prop="templeteDataContent.contactName">
+                        <i-input v-model="formItem.templeteDataContent.contactName" placeholder="请输入联系人" :maxlength="10"></i-input>
+                    </Form-item>
+                </i-col>
+                <i-col span="4" style="display: flex;">
+                    &nbsp;
+                </i-col>
+                <i-col span="9">
+                    <Form-item label="联系电话" prop="templeteDataContent.contactPhone">
+                        <i-input v-model="formItem.templeteDataContent.contactPhone" placeholder="请输入联系电话" :maxlength="20"></i-input>
+                    </Form-item>
+                </i-col>
+            </Row>
+            <!--<Row style="padding-left: 30p6;">-->
+                <!--<i-col span="22">-->
+                    <!--<Form-item label="地址" prop="customerAddress">-->
+                        <!--<i-input v-model="formItem.customerAddress" placeholder="请输入地址" :maxlength="200"></i-input>-->
+                    <!--</Form-item>-->
+                <!--</i-col>-->
+            <!--</Row>-->
+            <div style="font-size: 18px; font-weight: 700; padding: 20px 0px 20px 45px;">服务单信息</div>
+            <Row style="padding-left: 60px;">
+                <i-col span="9">
+                    <Form-item label="服务类型">
+                        <span class="service-tag">日常服务</span>
+                    </Form-item>
+                </i-col>
+            </Row>
+            <Row style="padding-left: 60px;">
+                <i-col span="9">
+                    <Form-item label="服务方式" prop="serveType">
+                        <i-select v-model="formItem.serveType" @on-change="changeServeType">
+                            <i-option v-for="item in serveTypeList" :value="item.name" :key="item.name">{{item.name}}</i-option>
+                        </i-select>
+                    </Form-item>
+                </i-col>
+                <i-col span="4" style="display: flex;">
+                    &nbsp;
+                </i-col>
+                <i-col span="9">
+                    <Form-item label="服务结算价" prop="settlementPrice">
+                        <i-input class="currency" v-model="formItem.settlementPrice" placeholder="0.00" icon="social-yen" :maxlength="9"></i-input>
+                    </Form-item>
+                </i-col>
+            </Row>
+            <Row style="padding-left: 60px;">
+                <i-col span="9">
+                    <Form-item label="派单人">
+                        <div>{{formItem.dispatcherName}}</div>
+                    </Form-item>
+                </i-col>
+                <i-col span="4" style="display: flex;">
+                    &nbsp;
+                </i-col>
+                <i-col span="9">
+                    <Form-item label="联系电话">
+                        <div>{{formItem.dispatcherPhone}}</div>
+                    </Form-item>
+                </i-col>
+            </Row>
+            <Row style="padding-left: 60px;">
+                <i-col span="22">
+                    <Form-item label="服务内容" prop="serviceContent">
+                        <i-input type="textarea" v-model="formItem.serviceContent" :autosize="{minRows: 2,maxRows: 5}" :maxlength="500" placeholder="请您输入具体服务指派的要求说明！"></i-input>
+                    </Form-item>
+                </i-col>
+            </Row>
+            <Row style="padding-left: 60px;">
+                <i-col span="22">
+                    <Form-item label="服务达成标准" prop="otherContent">
+                        <i-input type="textarea" v-model="formItem.otherContent" :autosize="{minRows: 2,maxRows: 5}" :maxlength="500"placeholder="请您输入具体服务达成的标准要求说明，或者给出具体结果标志物要求！"></i-input>
+                    </Form-item>
+                </i-col>
+            </Row>
+            <div style="font-size: 18px; font-weight: 700; padding: 20px 0px 20px 45px;">服务单派工信息</div>
+            <Row style="padding-left: 60px;">
+                <i-col span="22">
+                    <Form-item label="计划时间" prop="startAndEndDateTime">
+                        <date-picker type="datetimerange" :editable="false" v-model="formItem.startAndEndDateTime" format="yyyy-MM-dd HH:mm" placeholder="请选择计划开始时间和计划结束时间" style="width: 604px"></date-picker>
+                    </Form-item>
+                </i-col>
+            </Row>
+            <Row style="padding-left: 60px;">
+                <i-col span="22">
+                    <Form-item :class="formItem.serveType=='上门服务'?'ivu-form-item-required':''" label="服务地点" prop="serveAddress" :rules="{required: formItem.serveType=='上门服务', message: '服务地点不能为空！', trigger: 'blur'}">
+                        <i-input v-model="formItem.serveAddress" placeholder="请输入服务地点" :maxlength="200"></i-input>
+                    </Form-item>
+                </i-col>
+            </Row>
+            <!--<Row style="padding-left: 60px;" v-if="formItem.serveType!='外勤服务'">-->
+                <!--<i-col span="22">-->
+                    <!--<Form-item label="服务地点" prop="serveAddress">-->
+                        <!--<i-input v-model="formItem.serveAddress" placeholder="请输入服务地点" :maxlength="200"></i-input>-->
+                    <!--</Form-item>-->
+                <!--</i-col>-->
+            <!--</Row>-->
+            <Row style="padding-left: 60px;">
+                <Form-item label="服务人员">
+                    <i-col span="22">
+                        <Row v-for="(user, index) in formItem.users" :key="index">
+                            <div style="display: table-cell; width: 100px;">
+                                <form-item :label-width='1' :prop="'users.' + index + '.secPostId'"
+                                           :rules="{required: true, message: '请选服务岗位', trigger: 'change'}">
+                                    <i-select style="width: 100px;" v-model="user.secPostId" class="form-input" placeholder="服务岗位" @on-change="changeServePost(index)">
+                                        <i-option v-for="item in servePostList" :value="item.id" :key="item.id" :title="item.name" >{{ item.name | wordLengthLimitForPost }}</i-option>
+                                    </i-select>
+                                </form-item>
+                            </div>
+                            <div class="no-label" style="display: table-cell; width: 150px; padding-left: 4px;">
+                                <form-item :label-width='1' :prop="'users.' + index + '.serveUserId'"
+                                           :rules="{required: true, message: '请选服务人员', trigger: 'change'}">
+                                    <i-select @click.native="checkPostUserWorkload(user.secPostId,index)" style="width: 150px;" v-model="user.serveUserId" class="form-input" placeholder="服务人员" @on-change="selectedPostUser(index, $event)">
+                                        <i-option v-for="item in user.servicerListSelect" :value="item.id" :key="item.id" :disabled="item.disabled == true">
+                                            <Tooltip placement="right" :transfer="true">
+                                                <span>{{ item.realName | wordLengthLimitForPostUser }}</span>
+                                                <div slot="content">
+                                                    <span>
+                                                        {{item.current}}待办/{{item.histoty}}已完成
+                                                    </span>
+                                                </div>
+                                            </Tooltip>
+                                        </i-option>
+                                    </i-select>
+                                </form-item>
+                            </div>
+                            <div style="display: table-cell; width: 20px; padding-left: 4px;">
+                                <Poptip content="提示内容" placement="top">
+                                    <div @click="getPostworkTimeList(user.secPostId,index)">
+                                        <Icon type="information-circled" style="font-size: 14px;"/>
+                                    </div>
+                                    <div class="api" slot="content">
+                                        <div style="">
+                                            <div style="display: table-row;height:30px;">
+                                                <div style="display: inline-flex; width: 100px; background-color: #F9F9F9; vertical-align: middle; text-align: center;">服务人员</div>
+                                                <div style="display: inline-flex; width: 400px; background-color: #F9F9F9; vertical-align: middle;">时间周期内任务量分布</div>
+                                            </div>
+                                            <div v-if="workTimeList.length>=1" style="display: table-row; height: 20px;">
+                                                <div style="display: inline-flex; width: 500px;height:20px;">
+                                                    <div style="display: inline-flex">
+                                                        <div style="display: inline-flex; width: 100px;height:20px;">
+                                                            <span>　　　</span>
+                                                        </div>
+                                                        <div style="width: 100px; display: inline-flex; border-right: 1px #8c8c8c dashed;">
+                                                            <div style="float: left;">{{workTimeList[0].date1 | getMonthDate}}</div>
+                                                        </div>
+                                                        <div style="width: 200px; border: none;">
+                                                            <div style="float:left; display: inline-block;">{{workTimeList[0].date2 | getMonthDate}}</div>
+                                                            <div style="float:right; display: inline-block;">{{workTimeList[0].date3 | getMonthDate}}</div>
+                                                        </div>
+                                                        <div style="width: 100px; border-left: 1px #8c8c8c dashed;">
+                                                            <div style="float: right; display: inline-block;">{{workTimeList[0].date4 | getMonthDate}}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div v-else style="display:table-row;">
+                                                <div>
+                                                    暂无信息
+                                                </div>
+                                            </div>
+                                            <div v-for="workTime in workTimeList" key="index" style="display: table-row; height:30px; padding-top: 2px;">
+                                                <div style="display: block; width: 500px;height:30px; margin-bottom: 2px;">
+                                                    <div style="display: inline-flex">
+                                                        <div style="width: 100px; display: inline-flex">
+                                                            <span style="margin-top: 5px;">{{workTime.username}}</span>
+                                                        </div>
+                                                        <div style="width: 100px; display: inline-flex; border-right: 1px #8c8c8c dashed;">
+                                                            <div :style="'border:none;display:inline-block;height:30px;width: '+workTime.percent1+'%;background-color: #59b399;'"></div>
+                                                            <div :style="'border:none;display:inline-block;height:30px;width: '+(100-workTime.percent1)+'%;background-color: #e5f4f0;'"></div>
+                                                        </div>
+                                                        <div style="width: 200px; display: inline-flex; border: none;">
+                                                            <div :style="'border:none;display:inline-block;height:30px;width: '+workTime.percent2+'%;background-color: #59b399;'"></div>
+                                                            <div :style="'border:none;display:inline-block;height:30px;width: '+(100-workTime.percent2)+'%;background-color: #e5f4f0;'"></div>
+                                                        </div>
+                                                        <div style="width: 100px; display: inline-flex; border-left: 1px #8c8c8c dashed;">
+                                                            <div :style="'border:none;display:inline-block;height:30px;width: '+workTime.percent3+'%;background-color: #59b399;'"></div>
+                                                            <div :style="'border:none;display:inline-block;height:30px;width: '+(100-workTime.percent3)+'%;background-color: #e5f4f0;'"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </Poptip>
+                            </div>
+                            <div style="display: table-cell; width: 230px;">
+                                <Form-item :label-width='1':prop="'users.' + index + '.remark'"
+                                           :rules="{required: true, message: '服务说明不能为空！', trigger: 'change'}">
+                                    <i-input v-model="user.remark" class="form-input" placeholder="服务说明" :maxlength="100"></i-input>
+                                </Form-item>
+                            </div>
+                            <div style="display: table-cell; padding-left: 10px;">
+                                <i-button v-if="index!=0" small type="ghost" @click="handleRemove(user)" icon="close-round"></i-button>
+                                <i-button v-if="index==formItem.users.length-1" small type="ghost" @click="handleAdd" icon="plus-round"></i-button>
+                            </div>
+                        </Row>
+                    </i-col>
+                </Form-item>
+            </Row>
+            <Row class="clearFix" style="text-align: center;padding-top: 50px;padding-bottom: 20px;clear: both;">
+                <i-button type="ghost" size="large" class="save-button" @click="cancel">放弃派单</i-button>
+                <i-button type="primary" size="large" class="audit-button" @click="save">确认派单</i-button>
+            </Row>
+        </i-form>
+    </Row>
+</div>
+
+<script>
+    new Vue({
+        el: "#jcrcfw",
+        filters: {
+            getMonthDate : function (value) {
+                return new Date(value).format("MM/dd");
+            },
+            wordLengthLimit : function (value) {
+                if(value && value.length > 35){
+                    return value.substring(0,35) + "..." ;
+                }
+                return value;
+            },
+            wordLengthLimitForPost : function (value) {
+                if(value && value.length > 4){
+                    return value.substring(0,4) + "..." ;
+                }
+                return value;
+            },
+            wordLengthLimitForPostUser : function (value) {
+                if(value && value.length > 8){
+                    return value.substring(0,8) + "..." ;
+                }
+                return value;
+            },
+        },
+        data:function () {
+            var validatePrice = function(rule, value, callback) {
+                if(Object.isNull(value) || String.isBlank(String(value))) {
+                    callback(new Error("服务结算价不能为空"));
+                } else if (isNaN(value)) {
+                    callback(new Error('请输入数字!'));
+                } else if (value < 0) {
+                    callback(new Error('请输入大于0的金额!'));
+                } else if (!/^\d+(\.\d{1,2})?$/.test(value)) {
+                    callback(new Error('请把小数点位数限制在2位以内!'));
+                } else {
+                    callback();
+                }
+            };
+            var validateTime = function(rule, value, callback) {
+                if(value[0].format("yyyy-MM-dd hh:mm") == value[1].format("yyyy-MM-dd hh:mm")) {
+                    callback(new Error("计划开始及结束时间不可相同"));
+                } else {
+                    callback();
+                }
+            };
+            var dateTime = new Date();
+            return {
+                customerList:[],
+                customerListNo:[],
+                datumType:[
+                    {
+                        name:'复印件',
+                        type:1,
+                    },
+                    {
+                        name:'原件',
+                        type:2,
+                    },
+                    {
+                        name:'电子版',
+                        type:3,
+                    },
+                ],
+                serveTypeList:[
+                    {
+                        name:'外勤服务',
+                        type:'外勤服务',
+                    },
+                    {
+                        name:'回访服务',
+                        type:'回访服务',
+                    },
+                    {
+                        name:'上门服务',
+                        type:'上门服务',
+                    },
+                ],
+                servePostList:[],
+                selectPostServeList:[],//已选择的服务人员ID
+                workTimeList:[],
+                formItem:{
+                    billDefId:"",
+                    customerId: "",
+                    customerNumber:"",
+                    customerAddress:"",
+                    customerType: "COMPANY",
+                    serviceLifeStart:"",
+                    serviceLifeEnd:"",
+                    startAndEndDateTime:[dateTime, dateTime],
+                    serveLeaderId: "",
+                    serveType:"外勤服务",
+                    serveAddress:"",
+                    users:[
+                        {
+                            secBillId: "",
+                            secPostId: "",
+                            servicerListSelect:[],
+                            lightBulb: false
+                        },
+                    ],
+                    templeteDataContent:{
+                        contactName:"",
+                        contactPhone:"",
+                        serveUserVoList:[
+                            {
+                                postName:"",
+                                userName:"",
+                            }
+                        ],
+                    },
+                    templeteData:"",
+                },
+                ruleForm:{
+                    "customerName": [
+                        { required: true, message: '客户名称不能为空！'},
+                    ],
+                    "customerNumber": [
+                        { required: true, message: '证件号码不能为空！'},
+                    ],
+                    "templeteDataContent.contactName": [
+                        { required: true, message: '联系人不能为空！'},
+                    ],
+                    "templeteDataContent.contactPhone": [
+                        { required: true, message: '联系电话不能为空！'},
+                    ],
+                    // "customerAddress": [
+                    //     { required: true, message: '地址不能为空！'},
+                    // ],
+                    "serveType": [
+                        { required: true, message: '请选择服务方式！'},
+                    ],
+                    "serviceContent": [
+                        { required: true, message: '服务内容不能为空！'},
+                    ],
+                    "otherContent": [
+                        { required: true, message: '服务达成标准不能为空！'},
+                    ],
+                    "startAndEndDateTime": [
+                        { required: true, message: '请选择计划时间！'},
+                        { validator: validateTime, trigger: "change"}
+                    ],
+                    // "serveAddress": [
+                    //     { required: true, message: '服务地点不能为空！'},
+                    // ],
+                    "settlementPrice" : [
+                        { required: true, message: '服务结算价不能为空！'},
+                        { validator: validatePrice, trigger: "change"}
+                    ],
+                },
+            }
+        },
+        created: function () {
+            this.formItem.dispatcherName = window.Context.getCurrentUser().realName;
+            this.formItem.dispatcherPhone = window.Context.getCurrentUser().phone;
+            this.formItem.serveLeaderId = window.Context.getCurrentUser().id;
+        },
+        methods: {
+            init:function(param){
+                if(param.serviceOrderId){
+                    this.loadData(param.serviceOrderId);
+                }
+                if(param.serviceDefId){
+                    this.formItem.billDefId = param.serviceDefId;
+//                    this.formItem.users[0].secBillId = param.serviceDefId;
+                }
+                this.loadServePost();
+            },
+            loadData:function(serviceOrderId){
+                var vm = this;
+                this.request({
+                    url: "/serviceCloud/orderOrRefuse/getServiceInfoById.do",
+                    data: {
+                        serviceOrderId: serviceOrderId,
+                    }
+                },{
+                    url: '/serviceCloud/serviceDispatch/SDInfo.do',
+                    param: {
+                        id: serviceOrderId,
+                    }
+                }).then(function(data,pram){
+                    vm.formItem = pram;
+                    vm.formItem.templeteDataContent = JSON.parse(pram.templeteData);
+                    vm.$set(vm.formItem,"startAndEndDateTime",[]);
+                    vm.formItem.startAndEndDateTime.push(new Date(pram.serviceLifeStart));
+                    vm.formItem.startAndEndDateTime.push(new Date(pram.serviceLifeEnd));
+                    vm.$set(vm.formItem,"users",[]);
+                    vm.formItem.users.push({
+                        secBillId: "",
+                        secPostId: "",
+                        servicerListSelect:[],
+                        lightBulb: false
+                    });
+                    // for(var i=0;i<this.formItem.users.length;i++){
+                    //     this.changeServePost(i);
+                    // }
+                });
+            },
+            handleAdd:function() {
+                var user = {
+                    secPostId:"",
+                    servicerListSelect:[],
+                    lightBulb: false
+                }
+                this.formItem.users.push(user);
+            },
+            handleRemove:function(user){
+                if (this.formItem.users) {
+                    var serveUserId = user.serveUserId + '';
+                    if (serveUserId) {
+                        this.selectPostServeList.splice(this.selectPostServeList.findIndex(function(item){item == serveUserId}), 1);
+                        this.handleChangePostUser();
+                    }
+                    this.formItem.users.splice(this.formItem.users.indexOf(user), 1);
+                }
+            },
+
+            beforeUpload:function(file) {
+
+            },
+            onSuccess:function(id, file, attr) {
+
+            },
+            //获取服务岗位列表
+            loadServePost:function() {
+                var vm = this;
+                this.request({
+                    url: "/serviceCloud/getOrgServePostList.do",
+                    param:{
+                        billDefId: this.formItem.billDefId,
+                    }
+                }).then(function(data) {
+                    vm.servePostList = data;
+                });
+            },
+            //变更服务类型
+            changeServeType:function(){
+                this.formItem.serveAddress = "";
+                this.$set(this.formItem,"serveAddress", "");
+            },
+            //选择服务岗位
+            changeServePost:function(index){
+                var vm = this;
+                if(!this.formItem.users[index].secPostId){
+                    return;
+                }
+                this.request({
+                    url: "/serviceCloud/getPostUserWorkloadList.do",
+                    param:{
+                        secPostId: this.formItem.users[index].secPostId,
+                    }
+                }).then(function(data) {
+                    if (data && vm.formItem.users) {
+                        data.forEach(function(item, index){
+                            for(var i = 0; i < vm.formItem.users.length; i++) {
+                                if (item.id == vm.formItem.users[i].serveUserId) {
+                                    data[index].disabled = true;
+                                }
+                            }
+                        });
+                    }
+                    vm.formItem.users[index].servicerListSelect = data;
+                });
+            },
+            checkPostUserWorkload:function(secPostId,index) {
+                var vm = this;
+                if(!secPostId){
+                    for(var i=0;i<this.formItem.users.length;i++){
+                        if(index == i){
+                            this.formItem.users[i].lightBulb = true;
+                            setTimeout(function () {
+                                vm.formItem.users[index].lightBulb = false;
+                            },300);
+                            setTimeout(function () {
+                                vm.formItem.users[index].lightBulb = true;
+                            },600);
+                            setTimeout(function () {
+                                vm.formItem.users[index].lightBulb = false;
+                            },900);
+                        }
+                    }
+                }
+            },
+            save:function() {
+                var vm = this;
+                vm.$refs['formRef'].validate(function(valid){
+                    if (valid) {
+                        vm.formItem.serviceLifeStart = vm.formItem.startAndEndDateTime[0];
+                        vm.formItem.serviceLifeEnd = vm.formItem.startAndEndDateTime[1];
+                        vm.formItem.templeteDataContent.serviceLifeStart = vm.formItem.startAndEndDateTime[0].format("yyyy-MM-dd hh:mm:ss");
+                        vm.formItem.templeteDataContent.serviceLifeEnd = vm.formItem.startAndEndDateTime[1].format("yyyy-MM-dd hh:mm:ss");
+                        vm.formItem.templeteData = JSON.stringify(vm.formItem.templeteDataContent);
+                        vm.$api.saveServiceDailyFromTemplate(vm.formItem);
+                    } else {
+                        vm.$Message.error({content:"请完善服务单填写信息后方可进行下一步！",duration:3});
+                    }
+                });
+
+            },
+            //保存日常服务单后下一步
+            nextStep:function(step) {
+                this.step = step;
+            },
+            cancel:function() {
+                this.$api.showList();
+            },
+            changeCustomerType:function(type) {
+                this.formItem.customerType = type;
+            },
+
+            searchCustomerByName:function(value){
+                var vm = this;
+                if(value.indexOf(' ')==-1 && value!=''){
+                    this.request({
+                        url: "/signCloud/contractBuilder/getCustomerList.do",
+                        loading:false,
+                        data: {
+                            type: this.formItem.customerType,
+                            name: value,
+                            idno: ''
+                        }
+                    }).then(function(data) {
+                        vm.customerList = data;
+                        console.info(JSON.stringify(data));
+                        vm.$refs.autoName.toggleMenu(data&&data.length>0);
+                    });
+                }
+            },
+            selectCustomer:function(value){
+                var vm = this;
+                this.customerList.map(function(customer){
+                    if(customer.name ==value){
+                        // this.formItem.customerId=customer.id;
+                        // this.$set(this.formItem,'customerId',customer.id);
+                        vm.formItem.customerNumber=customer.IDNumber;
+                        vm.$set(vm.formItem,'customerNumber',customer.IDNumber);
+                        vm.formItem.customerAddress=customer.address;
+                        vm.$set(vm.formItem,'customerAddress',customer.address);
+                        if (vm.formItem.customerType=='COMPANY') {
+                            vm.formItem.templeteDataContent.contactName = customer.linkmanName;
+                            vm.$set(vm.formItem.templeteDataContent, 'contactName', customer.linkmanName);
+                            vm.formItem.templeteDataContent.contactPhone = customer.linkmanPhone;
+                            vm.$set(vm.formItem.templeteDataContent, 'contactPhone', customer.linkmanPhone);
+                        }
+                        if (vm.formItem.customerType=='PERSON') {
+                            vm.formItem.templeteDataContent.contactName=customer.name;
+                            vm.$set(vm.formItem.templeteDataContent,'contactName',customer.name);
+                            vm.formItem.templeteDataContent.contactPhone=customer.phone;
+                            vm.$set(vm.formItem.templeteDataContent,'contactPhone',customer.phone);
+                        }
+                    }
+                });
+            },
+            getPostworkTimeList:function(postId) {
+                var vm = this;
+                if(postId) {
+                    this.request({
+                        url: "/serviceCloud/serviceHead/postUserWorkTimeList.do",
+                        param: {
+                            secPostId: postId,
+                            startTime: this.formItem.startAndEndDateTime[0].format("MM/dd/yyyy hh:mm:ss"),
+                            endTime: this.formItem.startAndEndDateTime[1].format("MM/dd/yyyy hh:mm:ss"),
+                        }
+                    }).then(function(data) {
+                        vm.workTimeList = data;
+                    });
+                } else {
+                    this.workTimeList = [];
+                }
+            },
+
+            selectedPostUser:function(index, item) {
+                if (this.selectPostServeList[index]) {
+                    this.selectPostServeList[index] = item;
+                }else {
+                    this.selectPostServeList.push(item);
+                }
+                this.handleChangePostUser();
+            },
+
+            handleChangePostUser:function() {
+                var vm = this;
+                if (this.formItem.users) {
+                    this.formItem.users.forEach(function(item, index) {
+                        item.servicerListSelect.forEach(function(item1, index1) {
+                            vm.formItem.users[index].servicerListSelect[index1].disabled = false;
+                            for(var i = 0; i < vm.selectPostServeList.length; i++) {
+                                if (item1.id == vm.selectPostServeList[i]) {
+                                    vm.formItem.users[index].servicerListSelect[index1].disabled = true;
+                                }
+                            }
+                        });
+                    });
+                }
+            },
+        },
+    })
+</script>

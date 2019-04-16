@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--<meta name="viewport" content="width=device-width">-->
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>电子签约</title>
+</head>
+
+<style>
+    html, body {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background: #dddee1;
+        overflow: hidden;
+    }
+    canvas {
+        width: 100%;
+        height: 100%;
+        background: white;
+        margin: 0 auto;
+    }
+    #menuPanel {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 10px;
+        background: rgba(0, 0, 0, .2);
+        text-align: center;
+        z-index: 2;
+    }
+    button {
+        padding: 5px 30px;
+        font-size: 14px;
+        line-height: 1.5;
+        background: white;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        color: white;
+    }
+    button + button {
+        margin-left: 15px;
+    }
+    button:active,
+    button:focus {
+        outline: none;
+    }
+    #saveBtn {
+        background: rgb(89, 179, 153);
+    }
+    #clearBtn {
+        background: rgba(255, 0, 0, .7);
+    }
+    .dialog{
+        position:fixed;
+        left:50%;
+        top:50%;
+        background-color:rgba(0,0,0,0.7);
+        z-index:9999;
+        padding:5px 10px;
+        color:#fff;
+        border-radius:5px;
+        text-align: center;
+        transform:translate(-50%,-50%);
+        -webkit-transform:translate(-50%,-50%);
+        -moz-transform:translate(-50%,-50%);
+        -ms-transform:translate(-50%,-50%);
+        -o-transform:translate(-50%,-50%);
+    }
+    #layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: transparent;
+        z-index: 1;
+    }
+</style>
+
+<body>
+<div id="layer"></div>
+<canvas id="canvas"></canvas>
+<div id="menuPanel">
+    <button id="clearBtn">重置</button>
+    <button id="saveBtn">确认签约</button>
+</div>
+</body>
+
+<script>
+    try {
+        let canvas = document.getElementById("canvas");
+        let layer = document.getElementById("layer");
+        let width = 0;
+        let height = 0;
+        let lastX = null;
+        let lastY = null;
+        let context = canvas.getContext("2d");
+
+        let setLine = function(event) {
+            context.lineCap = "round";
+            context.lineJoin = "round";
+            context.lineWidth = 5;
+        };
+        let init = function() {
+            width = document.body.clientWidth;
+            height = document.body.clientHeight;
+            canvas.width = width;
+            canvas.height = height;
+
+            context = canvas.getContext("2d");
+            lastX = null;
+            lastY = null;
+            setLine();
+        };
+        window.onorientationchange = function() {
+            dialog("检测到屏幕旋转，重置手写板尺寸", 1500);
+            setTimeout(init, 1000);
+        };
+        init();
+    //
+    //    let mouseMoveHandler = function(event) {
+    //        let x = event.clientX;
+    //        let y = event.clientY;
+    //        context.beginPath();
+    //        setLine();
+    //        context.moveTo(lastX, lastY);
+    //        context.lineTo(x, y);
+    //        context.stroke();
+    //        lastX = x;
+    //        lastY = y;
+    //    };
+    //    layer.addEventListener("mousedown", function(event) {
+    //        lastX = event.clientX;
+    //        lastY = event.clientY;
+    //        context.beginPath();
+    //        setLine();
+    //        context.moveTo(lastX, lastY);
+    //        context.lineTo(lastX, lastY);
+    //        context.stroke();
+    //        layer.addEventListener("mousemove", mouseMoveHandler);
+    //    });
+    //    layer.addEventListener("mouseup", function() {
+    //        layer.removeEventListener("mousemove", mouseMoveHandler);
+    //    });
+    //
+        let touchMoveHandler = function(event) {
+            let touch = event.touches[0];
+            let x = touch.clientX;
+            let y = touch.clientY;
+            context.beginPath();
+            setLine(event);
+            context.moveTo(lastX, lastY);
+            context.lineTo(x, y);
+            context.stroke();
+            lastX = x;
+            lastY = y;
+        };
+        layer.addEventListener("touchstart", function(event) {
+            let touch = event.touches[0];
+            lastX = touch.clientX;
+            lastY = touch.clientY;
+            context.beginPath();
+            setLine(event);
+            context.moveTo(lastX, lastY);
+            context.lineTo(lastX + 1, lastY + 1);
+            context.stroke();
+            layer.addEventListener("touchmove", touchMoveHandler);
+            event.preventDefault();
+        });
+        layer.addEventListener("touchend", function() {
+            context.beginPath();
+            setLine(event);
+            context.moveTo(lastX, lastY);
+            context.lineTo(lastX, lastY);
+            context.stroke();
+            layer.removeEventListener("touchmove", touchMoveHandler);
+        });
+
+        clearBtn.addEventListener("click", function() {
+            context.clearRect(0, 0, width, height);
+        });
+        saveBtn.addEventListener("click", function() {
+            let returnImg = canvas.toDataURL("image/png");
+            let id = getQueryString('id');
+            let aliasType = getQueryString('aliasType');
+            ajax({
+                type: 'POST',
+                url: '/signCloud/contractDetails/saveSignature.do',
+                dataType: 'json',
+                data: {
+                    id: id,
+                    aliasType: aliasType,
+                    img: returnImg
+                },
+                beforeSend: function () {
+                    updateBtnState(false);
+                    dialog('签名中，请稍后……', null, false, false);
+                },
+                success:function(data){
+                    if (data.status == '100') {
+                        dialog(data.message);
+                    }else {
+                        if (data.data) {
+                            if (data.data.code == '200') {
+                                dialog("签名成功, 3秒后关闭窗口", 3000, true);
+                            }else if (data.data.code == '操作成功') {
+                                dialog("签名成功, 3秒后关闭窗口", 3000, true);
+                            }else {
+                                dialog(data.data.msg ? data.data.msg : data.data.code);
+                            }
+                        }else {
+                            dialog(data.message);
+                        }
+                    }
+                    updateBtnState(true);
+                },
+                error:function(data){
+                    dialog(data.message);
+                    updateBtnState(true);
+                }
+            })
+        });
+
+        function ajax(){
+            let ajaxData = {
+                type:arguments[0].type || "GET",
+                url:arguments[0].url || "",
+                async:arguments[0].async || "true",
+                data:arguments[0].data || null,
+                dataType:arguments[0].dataType || "text",
+                contentType:arguments[0].contentType || "application/x-www-form-urlencoded",
+                beforeSend:arguments[0].beforeSend || function(){},
+                success:arguments[0].success || function(){},
+                error:arguments[0].error || function(){}
+            }
+            ajaxData.beforeSend()
+            let xhr = createXmlHttpRequest();
+            xhr.responseType = ajaxData.dataType;
+            xhr.open(ajaxData.type, ajaxData.url, ajaxData.async);
+            xhr.setRequestHeader('Content-Type', ajaxData.contentType);
+            xhr.send(convertData(ajaxData.data));
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                    if(xhr.status == 200){
+                        ajaxData.success(xhr.response)
+                    }else{
+                        ajaxData.error()
+                    }
+                }
+            }
+        }
+
+        function createXmlHttpRequest() {
+            if (window.ActiveXObject) {
+                return new ActiveXObject('Microsoft.XMLHTTP');
+            } else if (window.XMLHttpRequest) {
+                return new XMLHttpRequest();
+            }
+        }
+
+        function convertData(data){
+            if( typeof data === 'object' ){
+                let convertResult = '' ;
+                for(let c in data){
+                    convertResult+= c + '=' + data[c] + '&';
+                }
+                convertResult = convertResult.substring(0, convertResult.length - 1);
+                return convertResult;
+            }else{
+                return data;
+            }
+        }
+
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        }
+
+        function dialog(d, time, isCloseWindow, isWait = true){
+            if(document.getElementById("dialog")){
+                document.getElementById("dialog").innerHTML = d;
+                document.getElementById("dialog").style.display = "block";
+            }else{
+                var dialog  = document.createElement("div");
+                dialog.id = "dialog";
+                dialog.className = "dialog";
+                dialog.innerHTML = d;
+                document.getElementsByTagName("body")[0].appendChild(dialog);
+            };
+            if (isWait) {
+                setTimeout(function(){
+                    var dialog = document.getElementById("dialog");
+                    if(dialog){
+                        document.getElementById("dialog").style.display = "none";
+                    }
+                    if (isCloseWindow) {
+                        if (isWx()) {
+                            WeixinJSBridge.call('closeWindow');
+                        }
+                    }
+                }, time || 3000);
+            }
+        }
+
+        /**
+         *  判断是否是微信浏览器
+         */
+        function isWx(){
+            var ua = navigator.userAgent.toLowerCase();
+            if(ua.match(/MicroMessenger/i)=="micromessenger") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        /**
+         * 更改按钮可点击状态
+         * @param allowClick
+         */
+        function updateBtnState(allowClick) {
+            if (allowClick) {
+                document.getElementById('clearBtn').removeAttribute('disabled');
+                document.getElementById('saveBtn').removeAttribute('disabled');
+                document.getElementById('canvas').removeAttribute('disabled');
+            }else {
+                document.getElementById('clearBtn').disabled = 'disabled';
+                document.getElementById('saveBtn').disabled = 'disabled';
+                document.getElementById('canvas').disabled = 'disabled';
+            }
+        }
+    } catch(e) {
+        alert(e);
+    }
+</script>
+</html>

@@ -1,0 +1,255 @@
+<div id="zzdl" class="root-content">
+    <Row>
+        <i-form class="" ref="form" :model="form" label-position="left" :label-width="120">
+            <i-col span="24">
+                <Form-item class="normal" label="服务期限" prop="serviceDate">
+                    <span class="normal-font">合约签约日期：{{param.signedDate | formatDate}}</span>
+                    <i-input v-if="allowEdit" v-model="form.serviceDate" :readonly="!allowEdit" placeholder="请输入服务期限" :maxlength="50"></i-input>
+                    <span v-else class="normal-font">{{form.serviceDate}}</span>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="服务内容">
+                    <Row>
+                        <div class="text-row" v-if="allowEdit">
+                            <span>甲方委托乙方为其提供</span>
+                            <Form-item class="text-item" :label-width="2" prop="consultation" style="width: 180px;">
+                                <i-input :readonly="true" style="width: 180px" class="text-input" type="text" v-model="form.consultation" :maxlength="30"></i-input>
+                            </Form-item>
+                            <span>方面的咨询服务；按要求对申请材料进行申查、筛选、组织、整理；指导、协助甲方准备相关申请资料。按甲方对进度的要求，在甲方取得</span>
+                            <Form-item class="text-item" :label-width="1" prop="acceptance">
+                                <i-input :readonly="true" style="width: 150px" class="text-input" type="text" v-model="form.acceptance" :maxlength="30"></i-input>
+                            </Form-item>
+                            <span>受理后的</span>
+                            <Form-item class="text-item" style="width: 100px;" :label-width="1" prop="workingDayOne">
+                                <i-input :readonly="!allowEdit" type="text" class="text-input" style="height: 30px;margin-top: 10px;" v-model="form.workingDayOne" :maxlength="7"></i-input>
+                            </Form-item>
+                            <span>个工作日内，完成</span>
+                            <Form-item class="text-item" :label-width="1" prop="apply" style="width: 180px;">
+                                <i-input :readonly="true" style="width: 180px;" class="text-input" type="text" v-model="form.apply" :maxlength="30"></i-input>
+                            </Form-item>
+                            <span>的申请工作。</span>
+                        </div>
+                        <span v-else class="normal-font">甲方委托乙方为其提供（{{ form.consultation }}）方面的咨询服务；按要求对申请材料进行申查、筛选、组织、整理；指导、协助甲方准备相关申请资料。按甲方对进度的要求，在甲方取得（{{ form.acceptance }}）受理后的（{{ form.workingDayOne }}）个工作日内，完成（{{ form.apply }}）的申请工作。</span>
+                    </Row>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="服务目的" prop="serviceTarget">
+                    <i-input v-if="allowEdit" v-model="form.serviceTarget" :readonly="!allowEdit" type="textarea" :rows="4" placeholder="请输入服务目的"></i-input>
+                    <pre v-else class="normal-font">{{form.serviceTarget}}</pre>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="服务方式" prop="serviceMethod">
+                    <i-input v-if="allowEdit" v-model="form.serviceMethod" :readonly="!allowEdit" type="textarea" :rows="4" placeholder="请输入服务方式"></i-input>
+                    <pre v-else class="normal-font">{{form.serviceMethod}}</pre>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="其他内容" prop="otherContent">
+                    <i-input v-if="allowEdit" v-model="form.otherContent" :readonly="!allowEdit" placeholder="请输入其他内容"></i-input>
+                    <span v-else class="normal-font">{{form.otherContent}}</span>
+                </Form-item>
+            </i-col>
+        </i-form>
+    </Row>
+</div>
+
+<script>
+    new Vue({
+        el: "#zzdl",
+        data: function() {
+            return {
+                form: {
+                    consultation: '',
+                    acceptance: '',
+                    apply: '',
+                    workingDayOne: '',
+                    serviceDate: '咨询服务期限自本合同签署之日起生效，至咨询服务完成并取得相应资质之日终止。',
+                    serviceTarget: '甲方为经营发展需要，特委托乙方为其提供专项咨询服务，以协助甲方实现专项目的。',
+                    serviceMethod: '乙方委派专业人员进行线上咨询或在乙方办公地点为甲方提供专项咨询服务。具体服务方式由甲乙双方协商一致后确定。',
+                    otherContent: '',
+                    validState: {}
+                },
+                allowEdit: true,
+                param: {}
+            }
+        },
+        filters: {
+            formatDate: function(value) {
+                if (value) {
+                    var newDate = new Date(value);
+                    if (newDate) {
+                        var y = newDate.getFullYear();
+                        var m = newDate.getMonth() + 1;
+                        m = m < 10 ? '0' + m : m;
+                        var d = newDate.getDate();
+                        d = d < 10 ? ('0' + d) : d;
+                        return y + '/' + m + '/' + d;
+                    }
+                }
+                return value;
+            }
+        },
+        watch: {
+            'form.workingDayOne': function(val) {
+                this.form.workingDayOne = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.workingDayOne = {
+                        isNull: true,
+                        content: '服务内容限制期限不能为空'
+                    };
+                }else {
+                    this.form.validState.workingDayOne = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.serviceDate': function(val) {
+                this.form.serviceDate = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.serviceDate = {
+                        isNull: true,
+                        content: '服务期限不能为空'
+                    };
+                }else {
+                    this.form.validState.serviceDate = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.serviceTarget': function(val) {
+                this.form.serviceTarget = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.serviceTarget = {
+                        isNull: true,
+                        content: '服务目的不能为空'
+                    };
+                }else {
+                    this.form.validState.serviceTarget = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.serviceMethod': function(val) {
+                this.form.serviceMethod = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.serviceMethod = {
+                        isNull: true,
+                        content: '服务方式不能为空'
+                    };
+                }else {
+                    this.form.validState.serviceMethod = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.otherContent': function(val) {
+                this.form.otherContent = val;
+                this.$api.saveServiceData(this.form);
+            }
+        },
+        methods: {
+            init: function(param) {
+                this.param = param;
+                if (param.serviceInfo) {
+                    this.allowEdit = param.isEdit;
+                    if (param.serviceInfo.templeteData) {
+                        var content = JSON.parse(param.serviceInfo.templeteData);
+                        if (content) {
+                            this.form.consultation = content.consultation;
+                            this.form.acceptance = content.acceptance;
+                            this.form.apply = content.apply;
+                            this.form.workingDayOne = content.workingDayOne;
+                            this.form.serviceDate = content.serviceDate;
+                            this.form.serviceTarget = content.serviceTarget;
+                            this.form.serviceMethod = content.serviceMethod;
+                            this.form.otherContent = content.otherContent;
+                        }else {
+                            this.getContractInfo(param);
+                        }
+                    }else {
+                        this.getContractInfo(param);
+                    }
+                }else {
+                    this.allowEdit = true;
+                    this.getContractInfo(param);
+                }
+            },
+            getContractInfo: function(param) {
+                var vm = this;
+                if (param.contractId) {
+                    vm.request({
+                        url: "/signCloud/contractBuilder/view.do?id=" + param.contractId
+                    }).then(function(data) {
+                        var content = JSON.parse(data.content);
+                        if (content) {
+                            vm.form.consultation = content.consultation;
+                            vm.form.acceptance = content.acceptance;
+                            vm.form.apply = content.apply;
+                            vm.form.workingDayOne = content.workingDayOne;
+                        }
+                    });
+                }
+            }
+        }
+    })
+</script>
+
+<style>
+    #zzdl .service-item-desc {
+        line-height: 36px;
+    }
+
+    #zzdl .text-row {
+        line-height: 36px;
+        /*font-size: 12px;*/
+        /*color: #495060;*/
+        color: #8c8c8c;
+        font-size: 14px;
+    }
+
+    #zzdl .text-item{
+        width: 150px;
+        display: inline-block;
+    }
+    #zzdl .text-input{
+        position: relative;
+        top: -10px;
+        width: 100px;
+    }
+
+    #zzdl .text-input input[readonly]{
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        text-align: center;
+        font-size: 14px;
+        height: 24px;
+        margin-top: 12px;
+    }
+
+    #zzdl .normal-font {
+        font-size: 14px;
+        color: #8c8c8c;
+    }
+
+    #zzdl .ivu-form-item {
+        margin-bottom: 15px;
+    }
+
+    #zzdl pre {
+        font-family: Helvetica Neue,Helvetica,Arial,Microsoft Yahei,Hiragino Sans GB,Heiti SC,WenQuanYi Micro Hei,sans-serif!important;
+        white-space: pre-wrap;
+        margin: 0;
+    }
+</style>

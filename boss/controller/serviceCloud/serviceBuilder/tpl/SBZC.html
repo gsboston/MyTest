@@ -1,0 +1,218 @@
+<div id="sbzcService" class="root-content">
+    <Row>
+        <i-form class="invoice-form" ref="form" :model="form" label-position="left" :label-width="120">
+            <i-col span="24">
+                <Form-item class="normal" label="合约生效时间" prop="serviceDate">
+                    <span class="normal-font">合约签约日期：{{param.signedDate | formatDate}}</span>
+                    <i-input v-if="allowEdit" v-model="form.serviceDate" :readonly="!allowEdit" placeholder="请输入合约生效时间" :maxlength="50"></i-input>
+                    <span v-else class="normal-font">{{form.serviceDate}}</span>
+                </Form-item>
+            </i-col>
+
+            <i-col span="24">
+                <Form-item label="服务内容">
+                    <i-table stripe :columns="columns" :data="form.serviceContent" class="table"></i-table>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="备注" prop="remark">
+                    <i-input v-if="allowEdit" v-model="form.remark" :disabled="!allowEdit" type="textarea" :rows="4" placeholder="请输入备注"></i-input>
+                    <pre v-else class="normal-font">{{form.remark}}</pre>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="服务方式" prop="serviceMethod">
+                    <!--<p class="service-item-desc">{{ form.serviceMethod }}</p>-->
+                    <i-input v-if="allowEdit" v-model="form.serviceMethod" :disabled="!allowEdit" type="textarea" :rows="4"  placeholder="请输入服务方式"></i-input>
+                    <pre v-else class="normal-font">{{form.serviceMethod}}</pre>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="其他内容" prop="otherContent">
+                    <i-input v-if="allowEdit" v-model="form.otherContent" :disabled="!allowEdit" placeholder="请输入其他内容"></i-input>
+                    <span v-else class="normal-font">{{form.otherContent}}</span>
+                </Form-item>
+            </i-col>
+        </i-form>
+    </Row>
+</div>
+
+<script>
+    new Vue({
+        el: "#sbzcService",
+        data: function() {
+            return {
+                form: {
+                    serviceLifeStart: null,
+                    serviceLifeEnd: null,
+                    serviceLifeNum: 1,
+                    units: 'MONTH',
+                    serviceDate: '合同生效之日起到《商标注册申请书》下发。',
+                    serviceMethod: '乙方在乙方驻地或北京等其它城市进行相应工作。关于普通申请类业务，甲方应在合同签订后3个工作日内将商标办理全部资料提交至乙方。',
+                    serviceContent: [],
+                    remark: '',
+                    otherContent: '',
+                    validState: {}
+                },
+                columns: [{
+                    title: '商标名称',
+                    align: 'center',
+                    key: 'tradeMarkName'
+                },{
+                    title: '商标类别',
+                    align: 'center',
+                    width: 120,
+                    key: 'trademarkTypeItem',
+                    render: function(h, params) {
+                        return params.row.trademarkTypeItem.trademarkTypeName;
+                    }
+                },{
+                    title: '业务类型',
+                    align: 'center',
+                    key: 'businessTypeItem',
+                    render: function(h, params) {
+                        return params.row.businessTypeItem.businessTypeName;
+                    }
+                },{
+                    title: '服务事项',
+                    align: 'center',
+                    width: 180,
+                    key: 'selectedTrademarkName',
+                }],
+                allowEdit: true,
+                param: {}
+            }
+        },
+        filters: {
+            formatDate: function(value) {
+                if (value) {
+                    var newDate = new Date(value);
+                    if (newDate) {
+                        var y = newDate.getFullYear();
+                        var m = newDate.getMonth() + 1;
+                        m = m < 10 ? '0' + m : m;
+                        var d = newDate.getDate();
+                        d = d < 10 ? ('0' + d) : d;
+                        return y + '/' + m + '/' + d;
+                    }
+                }
+                return value;
+            }
+        },
+        watch: {
+            'form.serviceDate': function(val) {
+                this.form.serviceDate = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.serviceDate = {
+                        isNull: true,
+                        content: '合约生效时间不能为空'
+                    };
+                }else {
+                    this.form.validState.serviceDate = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.serviceMethod': function(val) {
+                this.form.serviceMethod = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.serviceMethod = {
+                        isNull: true,
+                        content: '服务方式不能为空'
+                    };
+                }else {
+                    this.form.validState.serviceMethod = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.remark': function(val) {
+                this.form.remark = val;
+                this.$api.saveServiceData(this.form);
+            },
+            'form.serviceContent': function(val) {
+                this.form.serviceContent = val;
+                this.$api.saveServiceData(this.form);
+            },
+            'form.otherContent': function(val) {
+                this.form.otherContent = val;
+                this.$api.saveServiceData(this.form);
+            }
+        },
+        methods: {
+            init: function(param) {
+                this.param = param;
+                // this.form.serviceLifeStart = param.signedDate;
+                // this.form.serviceLifeEnd = param.signedDate;
+
+                if (param.serviceInfo) {
+                    this.allowEdit = param.isEdit;
+                    if (param.serviceInfo.templeteData) {
+                        var content = JSON.parse(param.serviceInfo.templeteData);
+                        if (content) {
+                            this.form.serviceContent = content.serviceContent;
+                            this.form.serviceDate = content.serviceDate;
+                            this.form.serviceMethod = content.serviceMethod;
+                            this.form.serviceContent = content.serviceContent;
+                            this.form.remark = content.remark;
+                            this.form.otherContent = content.otherContent;
+
+                            this.$api.saveServiceData(this.form);
+                        }else {
+                            this.getContractInfo(param);
+                        }
+                    }else {
+                        this.getContractInfo(param);
+                    }
+                }else {
+                    this.allowEdit = true;
+                    this.getContractInfo(param);
+                }
+            },
+            getContractInfo: function(param) {
+                var vm = this;
+                if (param.contractId) {
+                    vm.request({
+                        url: "/signCloud/contractBuilder/view.do?id=" + param.contractId
+                    }).then(function(data) {
+                        var content = JSON.parse(data.content);
+                        if (content) {
+                            vm.form.serviceContent = content.selectedTrademarks;
+
+                            vm.$api.saveServiceData(vm.form);
+                        }
+                    });
+                }
+            }
+        }
+    })
+</script>
+
+<style>
+    #sbzcService .service-item-desc {
+        line-height: 36px;
+    }
+
+    #sbzcService .normal-font {
+        font-size: 14px;
+        color: #8c8c8c;
+    }
+
+    #sbzcService .ivu-form-item {
+        margin-bottom: 15px;
+    }
+
+    #sbzcService pre {
+        font-family: Helvetica Neue,Helvetica,Arial,Microsoft Yahei,Hiragino Sans GB,Heiti SC,WenQuanYi Micro Hei,sans-serif!important;
+        white-space: pre-wrap;
+        margin: 0;
+    }
+
+    #sbzcService .ivu-table-cell {
+        padding: 0 12px;
+    }
+</style>

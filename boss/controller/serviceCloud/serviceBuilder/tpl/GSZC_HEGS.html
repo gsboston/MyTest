@@ -1,0 +1,309 @@
+<div id="gszc" class="root-content">
+    <Row>
+        <i-form class="invoice-form" ref="form" :model="form" label-position="left" :label-width="120">
+            <i-col span="24" class="date-div">
+                <Form-item class="normal" label="服务期限">
+                    <Row v-if="allowEdit">
+                        <i-col span="12">
+                            <Form-item class="entrustment-data" prop="periodStart" label="起始日期:" style="display: inline-block;">
+                                <date-picker placeholder="选择日期" v-model="form.periodStart" :disabled="!allowEdit"></date-picker>
+                            </Form-item>
+                        </i-col>
+                        <i-col span="12">
+                            <Form-item class="entrustment-data" label="结束日期:" style="display: inline-block;">
+                                <date-picker placeholder="选择日期" v-model="form.periodEnd" :disabled="!allowEdit"></date-picker>
+                            </Form-item>
+                        </i-col>
+                    </Row>
+                    <Row v-else>
+                        {{ form.periodStart | formatDate }} 至 {{ form.periodEnd | formatDate }}
+                    </Row>
+                </Form-item>
+            </i-col>
+
+            <i-col span="24">
+                <Form-item label="服务内容" prop="serviceContent">
+                    <i-input v-if="allowEdit" v-model="form.serviceContent" :disabled="!allowEdit" type="textarea" :rows="4" placeholder="请输入服务内容"></i-input>
+                    <pre v-else>{{form.serviceContent}}</pre>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="委托事项具体情况说明" prop="commitment">
+                    <i-input v-if="allowEdit" v-model="form.commitment" :disabled="!allowEdit" type="textarea" :rows="5" placeholder="请输入委托事项具体情况说明"></i-input>
+                    <pre v-else>{{form.commitment}}</pre>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="服务方式" prop="serviceMethod">
+                    <i-input v-if="allowEdit" v-model="form.serviceMethod" :disabled="!allowEdit" type="textarea" :rows="4" placeholder="请输入服务方式"></i-input>
+                    <pre v-else>{{form.serviceMethod}}</pre>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="工作成果确认" prop="workResult">
+                    <i-input v-if="allowEdit" v-model="form.workResult" :disabled="!allowEdit" type="textarea" :rows="4" placeholder="请输入工作成果确认"></i-input>
+                    <pre v-else>{{form.workResult}}</pre>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="其他内容" prop="otherContent">
+                    <i-input v-if="allowEdit" v-model="form.otherContent" :disabled="!allowEdit" placeholder="请输入其他内容"></i-input>
+                    <span v-else>{{form.otherContent}}</span>
+                </Form-item>
+            </i-col>
+        </i-form>
+    </Row>
+</div>
+
+<script>
+    new Vue({
+        el: "#gszc",
+        data: function() {
+            return {
+                form: {
+                    periodStart: '',
+                    periodEnd: '',
+                    serviceContent: '甲方委托乙方在新疆伊犁州霍尔果斯市设立丙方并提供工商类服务。',
+                    commitment: '甲方委托乙方在  新疆伊犁州霍尔果斯市  设立丙方并提供如下服务：\n1、税收筹划服务\n2、工商类服务\n3、托管类服务\n4、税收优惠服务',
+                    serviceMethod: '甲方提供委托事项所需的资料，乙方在乙方驻地或新疆伊犁州霍尔果斯市主管工商局所在地进行相应工作。',
+                    workResult: '在委托期间，乙方完成甲方（丙方）委托事宜，以相关政府机关单位受理、批准、公示或下发相应证书、文件视为委托事项完成，甲方（丙方）书面确认后乙方将相关文件材料交接给甲方（丙方）。',
+                    otherContent: '',
+                    validState: {}
+                },
+                allowEdit: true,
+                param: {},
+                isValidCommitment: true
+            }
+        },
+        watch: {
+            'form.periodStart': function(val) {
+                this.form.periodStart = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.periodStart = {
+                        isNull: true,
+                        content: '起始日期不能为空'
+                    };
+                }else {
+                    var startDate = new Date(this.form.periodStart).getTime();
+                    var endDate = new Date(this.form.periodEnd).getTime();
+                    var months = Math.round((endDate - startDate) / (1000 * 3600 * 24 * 30)) + 1;
+                    if (months <= 0) {
+                        this.form.validState.periodStart = {
+                            isNull: true,
+                            content: '服务期限结束日期必须大于起始日期'
+                        };
+                    }else {
+                        this.form.validState.periodStart = {
+                            isNull: false,
+                            content: ''
+                        };
+                    }
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.periodEnd': function(val) {
+                this.form.periodEnd = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.periodEnd = {
+                        isNull: true,
+                        content: '结束日期不能为空'
+                    };
+                }else {
+                    var startDate = new Date(this.form.periodStart).getTime();
+                    var endDate = new Date(this.form.periodEnd).getTime();
+                    var months = Math.round((endDate - startDate) / (1000 * 3600 * 24 * 30)) + 1;
+                    if (months <= 0) {
+                        this.form.validState.periodEnd = {
+                            isNull: true,
+                            content: '服务期限结束日期必须大于起始日期'
+                        };
+                    }else {
+                        this.form.validState.periodEnd = {
+                            isNull: false,
+                            content: ''
+                        };
+                    }
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.serviceContent': function(val) {
+                this.form.serviceContent = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.serviceContent = {
+                        isNull: true,
+                        content: '服务内容不能为空'
+                    };
+                }else {
+                    this.form.validState.serviceContent = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.commitment': function(val) {
+                this.form.commitment = val;
+                if (this.isValidCommitment && String.isNullOrBlank(val)) {
+                    this.form.validState.commitment = {
+                        isNull: true,
+                        content: '委托事项具体情况说明不能为空'
+                    };
+                }else {
+                    this.form.validState.commitment = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.serviceMethod': function(val) {
+                this.form.serviceMethod = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.serviceMethod = {
+                        isNull: true,
+                        content: '服务方式不能为空'
+                    };
+                }else {
+                    this.form.validState.serviceMethod = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.workResult': function(val) {
+                this.form.workResult = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.workResult = {
+                        isNull: true,
+                        content: '工作成果确认不能为空'
+                    };
+                }else {
+                    this.form.validState.workResult = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.otherContent': function(val) {
+                this.form.otherContent = val;
+                this.$api.saveServiceData(this.form);
+            }
+        },
+        filters: {
+            formatDate: function(value) {
+                if (value) {
+                    var newDate = new Date(value);
+                    if (newDate) {
+                        var y = newDate.getFullYear();
+                        var m = newDate.getMonth() + 1;
+                        m = m < 10 ? '0' + m : m;
+                        var d = newDate.getDate();
+                        d = d < 10 ? ('0' + d) : d;
+                        return y + '/' + m + '/' + d;
+                    }
+                }
+                return value;
+            }
+        },
+        methods: {
+            init: function(param) {
+                this.param = param;
+                if (param.serviceInfo) {
+                    this.allowEdit = param.isEdit;
+                    if (param.serviceInfo.templeteData) {
+                        var content = JSON.parse(param.serviceInfo.templeteData);
+                        if (content) {
+                            this.form.periodType = content.periodType;
+                            this.form.periodStart = new Date(content.periodStart);
+                            this.form.periodEnd = new Date(content.periodEnd);
+
+                            this.form.serviceContent = content.serviceContent;
+                            this.form.commitment = content.commitment;
+                            this.form.serviceMethod = content.serviceMethod;
+                            this.form.workResult = content.workResult;
+                            this.form.otherContent = content.otherContent;
+                        }else {
+                            this.getContractInfo(param);
+                        }
+                    }else {
+                        this.getContractInfo(param);
+                    }
+                }else {
+                    this.allowEdit = true;
+                    this.getContractInfo(param);
+                }
+            },
+            getContractInfo: function(param) {
+                var vm =this;
+                if (param.contractId) {
+                    vm.request({
+                        url: "/signCloud/contractBuilder/view.do?id=" + param.contractId
+                    }).then(function (data) {
+                        var content = JSON.parse(data.content);
+                        if (content) {
+                            vm.form.periodType = data.periodType;
+                            vm.form.periodStart = new Date(data.periodStart);
+                            vm.form.periodEnd = new Date(data.periodEnd);
+                            vm.form.commitment = content.specialExplan;
+                            if (String.isNullOrBlank(content.specialExplan)) {
+                                vm.isValidCommitment = false;
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    })
+</script>
+
+<style>
+    #gszc .service-item-desc {
+        line-height: 36px;
+    }
+
+    #gszc .date-div span{
+        font-size: 12px!important;
+        color: #495060!important;
+    }
+
+    #gszc .date-div input {
+        height: 30px;
+    }
+
+    #gszc .check-button {
+        background-color: #FFF;
+        border: 1px solid #54B499;
+        border-radius: 4px;
+        color: #54B499;
+        font-size: 12px;
+        line-height: initial;
+        vertical-align: initial;
+    }
+
+    #gszc .check-button.active {
+        background-color: #54B499;
+        color: #FFF;
+    }
+
+    #gszc .entrustment-data {
+        width: 100%;
+    }
+
+    #gszc .entrustment-data .ivu-form-item-label{
+        width: auto!important;
+        font-weight: normal;
+        padding-left: 0;
+    }
+
+    #gszc .ivu-form-item {
+        margin-bottom: 20px;
+    }
+
+    #gszc pre {
+        font-family: Helvetica Neue,Helvetica,Arial,Microsoft Yahei,Hiragino Sans GB,Heiti SC,WenQuanYi Micro Hei,sans-serif!important;
+        white-space: pre-wrap;
+        margin: 0;
+    }
+</style>

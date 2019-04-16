@@ -1,0 +1,1140 @@
+<style>
+    #csj_ssch.root-content{
+        background-color: #f6f6f6;
+    }
+    #csj_ssch.root-content > div{
+        position: relative;
+        width: 920px;
+        margin: 0 auto;
+        background-color: white;
+    }
+    #csj_ssch > .ssch-content {
+        padding: 30px 65px 40px 15px;
+    }
+    #csj_ssch .part-title{
+        font-size: 18px;
+        padding-left: 40px;
+        padding-bottom: 20px;
+        height: 47px;
+        color: #59b399;
+    }
+    #csj_ssch .ssch-content .ivu-form-item-error-tip{
+        padding-top: 3px;
+        font-size: 12px !important;
+    }
+    #csj_sschPlan .ivu-form-item-error-tip{
+        padding-top: 3px;
+        font-size: 12px !important;
+        margin-top: -10px;
+    }
+    #csj_sschTaxePlan .ivu-form-item-error-tip{
+        padding-top: 3px;
+        font-size: 12px !important;
+        margin-top: -10px;
+    }
+    #sschTaxePlan .ivu-form-item-error-tip{
+        top:70%;
+    }
+    #csj_ssch .part-content{
+        padding-left: 40px;
+        padding-right: 20px;
+    }
+    #csj_ssch .part-content *{
+        font-size: 14px!important;
+    }
+    #csj_ssch .text-row{
+        display: inline-flex;
+    }
+    #csj_ssch .text-item{
+        padding: 0px;
+    }
+    #csj_ssch .discount{
+        font-size: 12px!important;
+        color: #dddee1;
+    }
+    #csj_ssch .text-input{
+        position: relative;
+        top: -10px;
+        width: 100px;
+    }
+
+    #csj_ssch .text-input input{
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        text-align: center;
+        height: 30px;
+        font-size: 14px;
+    }
+    #csj_ssch .ivu-input,.ivu-select-selection{
+        border-radius: 0;
+    }
+    #csj_ssch .last-row{
+        margin-left: 40px;
+        padding-top: 20px;
+    }
+    #csj_ssch .last-row .text-item{
+        font-size: 14px;
+        font-weight: bold;
+    }
+    #csj_ssch .last-row .text-item-total-price{
+        font-size: 18px;
+        font-weight: bold;
+    }
+    #csj_ssch .last-row .text-item-symbol{
+        font-size: 14px;
+        position: relative;
+        top: 1px;
+    }
+    #csj_ssch .last-row .text-item-symbol-total-price{
+        font-size: 14px;
+        position: relative;
+        top: 5px;
+    }
+    #csj_ssch .other-row{
+        padding-top: 30px;
+        clear: both;
+    }
+    #csj_ssch .other-item{
+        margin-bottom: 10px;
+        width: 100%;
+        display: -webkit-inline-box;
+    }
+    #csj_ssch .other-item .text-row{
+        padding-left: 100px;
+    }
+    #csj_ssch .other-item .text-row .text-input{
+        top:0;
+    }
+    #csj_ssch .other-item .text-row .text-input input{
+        height: 20px;
+    }
+    #csj_ssch .last-total{
+        float: right;
+    }
+    .ssch-content .ivu-form .ivu-form-item-label {
+        text-align: justify;
+        text-align-last: justify;
+        vertical-align: middle;
+        float: left;
+        color: rgb(51,51,51);
+        line-height: 1;
+        padding: 10px 20px 10px 0;
+        box-sizing: border-box;
+    }
+    .ssch-content .ivu-form-item {
+        margin-bottom: 15px;
+        vertical-align: top;
+        zoom: 1;
+    }
+    .ssch-content .ivu-select-arrow {
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        line-height: 1;
+        margin-top: -7px;
+        font-size: 14px;
+        color: #80848f;
+        transition: all .2s ease-in-out;
+    }
+    #csj_ssch .ssch-content .ivu-checkbox {
+        display: inline-block;
+        vertical-align: middle;
+        white-space: nowrap;
+        cursor: pointer;
+        outline: 0;
+        line-height: 1;
+        position: relative;
+        padding-right: 10px;
+    }
+    #csj_ssch .ssch-content .ivu-radio {
+        display: inline-block;
+        margin-right: 12px;
+        white-space: nowrap;
+        outline: 0;
+        position: relative;
+        line-height: 1;
+        vertical-align: middle;
+        cursor: pointer;
+    }
+    #csj_ssch hr{
+        margin-top: 20px;
+        background-color: #e5e5e5;
+        height: 1px;
+        border: none;
+    }
+    #csj_ssch .form-input{
+        width: 260px;
+    }
+    #csj_ssch .form-input-name{
+        width: 110px;
+    }
+    #csj_ssch .form-input-tel{
+        width: 140px;
+    }
+    #csj_ssch .form-input-price > input{
+        position: relative;
+        top: -5px;
+        font-size: 14px;
+        color: #ff5a5a;
+    }
+    #csj_ssch .form-input-price-total-price > input{
+        position: relative;
+        top: -5px;
+        font-size: 30px;
+        color: #ff5a5a;
+    }
+    #csj_ssch .other-item .form-input-price > input{
+        font-size: 20px;
+        color: #ff5a5a;
+        height: 20px;
+        top:5px;
+    }
+    #csj_ssch .extra > div{
+        font-size: 14px !important;
+    }
+    #csj_ssch .other-item > label{
+        font-size: 14px !important;
+    }
+    #csj_ssch .other-item > input{
+        font-size: 14px !important;
+    }
+    #csj_ssch .other-item > div{
+        font-size: 14px !important;
+    }
+    #csj_ssch .sschToolTip .ivu-tooltip-inner{
+        max-width: 550px;
+    }
+    #csj_ssch .especial-entrustment > input{
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        text-align: center;
+        height: 30px;
+        font-size: 14px;
+    }
+    #csj_ssch .entrustment-data .ivu-form-item-content{
+        position: relative;
+        top: -5px;
+    }
+    #csj_ssch .entrust-content{
+        margin-top: 10px;
+        margin-bottom: 15px;
+    }
+    #csj_ssch .entrust-content-service-name{
+        margin-left: 20px;
+        margin-bottom: 10px;
+    }
+    #csj_ssch .entrust-content-service-price{
+        float: right;
+        margin-right: 100px;
+    }
+    #csj_ssch .entrust-content-total{
+        margin-left: 226px;
+        margin-bottom: 10px;
+    }
+    #csj_ssch .entrust-content-remark{
+        margin-left: 116px;
+        margin-bottom: 10px;
+    }
+    #csj_ssch .entrust-content-price{
+        width: 100px;
+        display: inline-block;
+    }
+    #csj_ssch .entrust-content-price input{
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        text-align: center;
+        height: 18px;
+        font-size: 14px;
+    }
+    #csj_ssch .ivu-tooltip-popper[x-placement=top-end] .ivu-tooltip-arrow {
+        right: 3px;
+    }
+    #csj_ssch .otherCharges .ivu-form-item-content{
+        top: -7px;
+    }
+    #csj_ssch .otherGSZCJLWYB .ivu-form-item-error-tip{
+        top: 25px;
+        left: 160px;
+    }
+    #csj_ssch .otherGJSSCHFW .ivu-form-item-error-tip{
+        top: 24px;
+        left: 20px;
+    }
+    #csj_ssch .otherGBDSJMZZJYXKZ .ivu-form-item-error-tip{
+        top: 24px;
+        left: 20px;
+    }
+    #csj_ssch .otherFPCLB .ivu-form-item-error-tip{
+        top: 24px;
+        left: 135px;
+    }
+    #csj_ssch .ivu-input[disabled], fieldset[disabled] .ivu-input {
+        background-color: #f3f3f3;
+        opacity: 1;
+        cursor: not-allowed;
+        color: #333;
+    }#csj_ssch .ivu-select-disabled .ivu-select-selection {
+         background-color: #f3f3f3;
+         opacity: 1;
+         cursor: not-allowed;
+         color: #333;
+     }
+    #csj_ssch .autoInput .ivu-auto-complete .ivu-select-dropdown{
+        max-height: 200px!important;
+    }
+    #csj_ssch .aaa .ivu-tooltip-inner {
+        max-width: 250px;
+        min-height: 34px;
+        padding: 8px 12px;
+        color: #fff;
+        text-align: left;
+        text-decoration: none;
+        background-color: rgba(70,76,91,.9);
+        border-radius: 4px;
+        box-shadow: 0 1px 6px rgba(0,0,0,.2);
+        white-space: pre-wrap;
+        word-break: break-all;
+        word-wrap: break-word;
+    }
+</style>
+<div id="csj_ssch" class="root-content">
+    <div class="ssch-content" style="position: relative;">
+        <i-form :model="mainInfo" :label-width="90" :rules="ruleForm" ref="formRef">
+            <Row class="aaa">
+                <i-col span="12" :style="{'background':1== selectedArea ?'#f6faf9' :''}">
+                    <div class="part-title">甲方基本信息</div>
+                    <div class="part-content" @mousedown ="selectArea(1)">
+                        <Form-item label="类型" prop="type">
+                            <radio-group v-model="mainInfo.cSList[0].type"  @on-change="changeCsType">
+                                <Radio label="COMPANY" :disabled="!isEditable">企业</Radio>
+                                <Radio label="PERSON" :disabled="!isEditable">自然人</Radio>
+                            </radio-group>
+                        </Form-item>
+                        <Form-item :label="mainInfo.cSList[0].type=='COMPANY'?'公司名称':'姓名'" prop="cSList[0].name" class="autoInput">
+                            <Tooltip :disabled="!mainInfo.cSList[0].name" :content="mainInfo.cSList[0].name" class="tips" placement="bottom">
+                                <auto-comp  ref="autoName"  :disabled="!isEditable" class="form-input" v-model="mainInfo.cSList[0].name"  @on-search="searchCustomerByName" @on-select="selectCustomer">
+                                    <i-option v-for="item in customerList" :value="item.name" :key="item.id">{{item.name}}</i-option>
+                                </auto-comp>
+                            </Tooltip>
+                            <!--<i-input class="form-input" v-model="mainInfo.cSList[0].name" :placeholder="mainInfo.cSList[0].type=='COMPANY'?'公司名称':'姓名'"></i-input>-->
+                        </Form-item>
+                        <Form-item label="证件号码" prop="cSList[0].idno" class="autoInput">
+                            <Tooltip :disabled="!mainInfo.cSList[0].idno" :content="mainInfo.cSList[0].idno" class="tips" placement="bottom">
+                                <auto-comp :maxlength="25"  ref="autoNO" :disabled="!isEditable" class="form-input" :placeholder="mainInfo.cSList[0].type=='COMPANY'?'税务登记证号/统一信用代码':'身份证号'"
+                                           class="form-input" v-model="mainInfo.cSList[0].idno"  @on-search="searchCustomerByNo" @on-select="selectCustomerNo">
+                                    <i-option v-for="item in customerListNo" :value="item.IDNumber" :key="item.id">{{item.IDNumber}}</i-option>
+                                </auto-comp>
+                            </Tooltip>
+                            <!--<i-input class="form-input" v-model="mainInfo.cSList[0].idno" :placeholder="mainInfo.cSList[0].type=='COMPANY'?'税务登记证号/统一信用代码':'身份证号'"></i-input>-->
+                        </Form-item>
+                        <Row>
+                            <i-col span="13">
+                                <Form-item label="联系人" prop="cSList[0].contactName">
+                                    <Tooltip :disabled="!mainInfo.cSList[0].contactName" :content="mainInfo.cSList[0].contactName" class="tips" placement="bottom">
+                                        <i-input class="form-input-name" v-model="mainInfo.cSList[0].contactName" :maxlength="20" placeholder="联系人姓名" :disabled="!isEditable"></i-input>
+                                    </Tooltip>
+                                </Form-item>
+                            </i-col>
+                            <i-col span="10" offset="1">
+                                <Form-item :label-width='1' prop="cSList[0].contactPhone">
+                                    <Tooltip :disabled="!mainInfo.cSList[0].contactPhone" :content="mainInfo.cSList[0].contactPhone" class="tips" placement="bottom">
+                                        <i-input  class="form-input-tel" v-model="mainInfo.cSList[0].contactPhone" :maxlength="17" placeholder="联系电话" style="width: 140px" :disabled="!isEditable"></i-input>
+                                    </Tooltip>
+                                </Form-item>
+                            </i-col>
+                        </Row>
+                        <!--<Form-item label="电子邮箱" prop="cSList[0].email">-->
+                        <Form-item label="电子邮箱">
+                            <Tooltip :disabled="!mainInfo.cSList[0].email" :content="mainInfo.cSList[0].email" class="tips" placement="bottom">
+                                <i-input class="form-input" v-model="mainInfo.cSList[0].email" placeholder="电子邮箱" :maxlength="50" :disabled="!isEditable"></i-input>
+                            </Tooltip>
+                        </Form-item>
+                        <Form-item label="联系地址" prop="cSList[0].address">
+                            <Tooltip :disabled="!mainInfo.cSList[0].address" :content="mainInfo.cSList[0].address" class="tips" placement="bottom">
+                                <i-input class="form-input" v-model="mainInfo.cSList[0].address" placeholder="实际通讯地址而非企业的工商注册地址" :maxlength="100" :disabled="!isEditable"></i-input>
+                            </Tooltip>
+                        </Form-item>
+                    </div>
+                </i-col>
+                <i-col span="12" :style="{'background':2== selectedArea ?'#f6faf9' :''}">
+                    <div class="part-title">乙方基本信息</div>
+                    <div class="part-content" @mousedown ="selectArea(2)">
+                        <Form-item label="企业名称" prop="cSList[1].name">
+                            <Tooltip :disabled="!mainInfo.cSList[1].name" :content="mainInfo.cSList[1].name" class="tips" placement="bottom">
+                                <i-input v-if="!isEditable" disabled class="form-input" v-model="mainInfo.cSList[1].name"></i-input>
+                                <i-select v-if="isEditable"  class="form-input" @on-change="selectInfo" v-model="mainInfo.cSList[1].name">
+                                    <i-option v-for="item in companyList" :value="item.name" :key="item.name">{{ item.name }}</i-option>
+                                </i-select>
+                            </Tooltip>
+                        </Form-item>
+                        <Form-item label="开户银行">
+                            <Tooltip :disabled="!mainInfo.cSList[1].bankName" :content="mainInfo.cSList[1].bankName" class="tips" placement="bottom">
+                                <i-input class="form-input" v-model="mainInfo.cSList[1].bankName" placeholder="开户银行" disabled></i-input>
+                            </Tooltip>
+                        </Form-item>
+                        <Form-item label="银行账号">
+                            <Tooltip :disabled="!mainInfo.cSList[1].bankAccount" :content="mainInfo.cSList[1].bankAccount" class="tips" placement="bottom">
+                                <i-input class="form-input" v-model="mainInfo.cSList[1].bankAccount" placeholder="银行账号" disabled></i-input>
+                            </Tooltip>
+                        </Form-item>
+                        <Row>
+                            <i-col span="13">
+                                <Form-item label="联系人" prop="cSList[1].contactName">
+                                    <Tooltip :disabled="!mainInfo.cSList[1].contactName" :content="mainInfo.cSList[1].contactName" class="tips" placement="bottom">
+                                        <i-input class="form-input-name" v-model="mainInfo.cSList[1].contactName" :maxlength="20" placeholder="联系人姓名" :disabled="!isEditable"></i-input>
+                                    </Tooltip>
+                                </Form-item>
+                            </i-col>
+                            <i-col span="10" offset="1">
+                                <Form-item :label-width="1" prop="cSList[1].contactPhone">
+                                    <Tooltip :disabled="!mainInfo.cSList[1].contactPhone" :content="mainInfo.cSList[1].contactPhone" class="tips" placement="bottom">
+                                        <i-input class="form-input-tel" v-model="mainInfo.cSList[1].contactPhone" :maxlength="11" placeholder="联系电话" :disabled="!isEditable"></i-input>
+                                    </Tooltip>
+                                </Form-item>
+                            </i-col>
+                        </Row>
+                        </Form-item>
+                        <Form-item label="电子邮箱">
+                            <Tooltip :disabled="!mainInfo.cSList[1].email" :content="mainInfo.cSList[1].email" class="tips" placement="bottom">
+                                <i-input class="form-input" v-model="mainInfo.cSList[1].email" placeholder="电子邮箱" :disabled="!isEditable"></i-input>
+                            </Tooltip>
+                        </Form-item>
+                        <Form-item label="联系地址">
+                            <Tooltip :disabled="!mainInfo.cSList[1].address" :content="mainInfo.cSList[1].address" class="tips" placement="bottom">
+                                <i-input class="form-input" v-model="mainInfo.cSList[1].address" placeholder="实际通讯地址而非企业的工商注册地址" disabled></i-input>
+                            </Tooltip>
+                        </Form-item>
+
+                    </div>
+                </i-col>
+            </Row>
+            <Row class="aaa">
+                <i-col span="12" :style="{'background':3== selectedArea ?'#f6faf9' :''}" style="margin-top: 20px">
+                    <div class="part-title">丙方基本信息</div>
+                    <div class="part-content" @mousedown ="selectArea(3)">
+                        <Form-item label="公司名称" prop="cSList[2].name">
+                            <Tooltip :disabled="!mainInfo.cSList[2].name" :content="mainInfo.cSList[2].name" class="tips" placement="bottom">
+                                <i-input class="form-input" v-model="mainInfo.cSList[2].name" placeholder="新设公司暂定名称" :maxlength="50" :disabled="!isEditable"></i-input>
+                            </Tooltip>
+                        </Form-item>
+                        <!--<Form-item label="证件号码" prop="cSList[2].idno">-->
+                        <Form-item label="证件号码">
+                            <Tooltip :disabled="!mainInfo.cSList[2].idno" :content="mainInfo.cSList[2].idno" class="tips" placement="bottom">
+                                <i-input class="form-input" v-model="mainInfo.cSList[2].idno" placeholder="法人身份证号" :maxlength="50" :disabled="!isEditable"></i-input>
+                            </Tooltip>
+                        </Form-item>
+                        <Row>
+                            <i-col span="13">
+                                <Form-item label="联系人" prop="cSList[2].contactName">
+                                    <Tooltip :disabled="!mainInfo.cSList[2].contactName" :content="mainInfo.cSList[2].contactName" class="tips" placement="bottom">
+                                        <i-input class="form-input-name" v-model="mainInfo.cSList[2].contactName" :maxlength="20" placeholder="联系人姓名" :disabled="!isEditable"></i-input>
+                                    </Tooltip>
+                                </Form-item>
+                            </i-col>
+                            <i-col span="10" offset="1">
+                                <Form-item :label-width='1' prop="cSList[2].contactPhone">
+                                    <Tooltip :disabled="!mainInfo.cSList[2].contactPhone" :content="mainInfo.cSList[2].contactPhone" class="tips" placement="bottom">
+                                        <i-input class="form-input-tel" v-model="mainInfo.cSList[2].contactPhone" :maxlength="11" placeholder="联系电话" style="width: 140px" :disabled="!isEditable"></i-input>
+                                    </Tooltip>
+                                </Form-item>
+                            </i-col>
+                        </Row>
+                        <!--<Form-item label="电子邮箱" prop="cSList[2].email">-->
+                        <Form-item label="电子邮箱">
+                            <Tooltip :disabled="!mainInfo.cSList[2].email" :content="mainInfo.cSList[2].email" class="tips" placement="bottom">
+                                <i-input class="form-input" v-model="mainInfo.cSList[2].email" placeholder="电子邮箱" :maxlength="50" :disabled="!isEditable"></i-input>
+                            </Tooltip>
+                        </Form-item>
+                        <Form-item label="联系地址" prop="cSList[2].address">
+                            <Tooltip :disabled="!mainInfo.cSList[2].address" :content="mainInfo.cSList[2].address" class="tips" placement="bottom">
+                                <i-input class="form-input" v-model="mainInfo.cSList[2].address" placeholder="实际通讯地址而非企业的工商注册地址" :maxlength="100" :disabled="!isEditable"></i-input>
+                            </Tooltip>
+                        </Form-item>
+                    </div>
+                </i-col>
+            </Row>
+            <hr />
+            <!--甲方所办理的业务内容-->
+            <Row style="margin-top: 40px">
+                <i-col span="24" :style="{'background':4== selectedArea ?'#f6faf9' :''}">
+                    <div class="part-title">
+                        甲方所办理的业务内容
+                    </div>
+                    <div class="part-content" @mousedown ="selectArea(4)">
+                        <div style="border: 1px solid #f1f2f7; padding-right: 20px ">
+                            <Row class="last-row">
+                                <div class="text-row">
+                                    <div>甲方因经营需要，委托乙方在</div>
+                                    <span style="text-decoration: underline;font-weight: bold">&nbsp;&nbsp;&nbsp;江苏省镇江市京口区&nbsp;&nbsp;&nbsp;</span>
+                                    <div>设立丙方并为丙方办理顾问咨询服务、工商类服务、托管类服</div>
+                                </div>
+                            </Row>
+                            <Row style="margin-bottom: 20px; margin-left: 40px;">
+                                <div>务、税收优惠服务相关事宜服务。</div>
+                            </Row>
+                        </div>
+                        <Row  style="margin-top: 10px;">
+                            <i-col span="12">
+                                服务内容
+                            </i-col>
+                        </Row>
+                        <Row style="margin-top: 10px;margin-left: 40px">
+                            <div class="text-row">
+                                <div>根据丙方未来落户</div>
+                                <span style="text-decoration: underline;font-weight: bold">&nbsp;&nbsp;&nbsp;江苏省镇江市京口区&nbsp;&nbsp;&nbsp;</span>
+                                <div>所从事的经营范围、主营项目、收入规模等基本方面进行政策评估，出具</div>
+                            </div>
+                        </Row>
+                        <Row style="margin-bottom: 20px; margin-left: 40px">
+                            <div>评估报告，判断是否符合政策性优惠条件。</div>
+                        </Row>
+                        <Row  style="margin-top: 10px;">
+                            <i-col span="12">
+                                服务期限
+                            </i-col>
+                        </Row>
+                        <Row  style="margin-top: 10px;margin-left: 40px">
+                            <div class="text-row">
+                                <div class="text-item" style="display: inline-block">经双方商定，本合同服务期限自</div>
+                                <Form-item class="entrustment-data" prop="periodStart" :label-width="1" style="display: inline-block;width: 120px">
+                                    <date-picker placeholder="选择日期" v-model="mainInfo.periodStart" @on-change="changeStartDate" :disabled="!isEditable"></date-picker>
+                                </Form-item>
+                                <div class="text-item" style="display: inline-block">日至</div>
+                                <Form-item class="entrustment-data" :label-width="1" style="display: inline-block;width: 120px">
+                                    <date-picker placeholder="选择日期" v-model="mainInfo.periodEnd" :disabled="!isEditable"></date-picker>
+                                </Form-item>
+                                <div>日。如上述期限届满后，因政府机关审批原</div>
+                            </div>
+                        </Row>
+                        <Row style="margin-left: 40px">
+                            <div class="text-item" style="display: inline-block">因导致委托事项尚未完成，则双方可视情况经协商一致后延长委托期限并重新订立书面协议。本合同期限最长为服务期</div>
+                        </Row>
+                        <Row  style="margin-left: 40px">
+                            <div class="text-item" style="display: inline-block">限届满后【壹】年。</div>
+                        </Row>
+                        <Row  style="margin-top: 10px;">
+                            <i-col span="12">
+                                委托服务事项
+                            </i-col>
+                        </Row>
+                        <Row style="margin-top: 10px;margin-left: 40px">
+                            <div class="text-row">
+                                <div>1、甲方委托乙方在</div>
+                                <span style="text-decoration: underline;font-weight: bold">&nbsp;&nbsp;&nbsp;江苏省镇江市京口区&nbsp;&nbsp;&nbsp;</span>
+                                <div>设立丙方并提供服务：详见附件一《高利润企业（工业、贸易、咨询）、</div>
+                            </div>
+                        </Row>
+                        <Row style="margin-left: 40px">
+                            <div class="text-row">
+                                <div>高净税服务及收费标准》。</div>
+                            </div>
+                        </Row>
+                        <Row style="margin-left: 40px">
+                            <div class="text-row">
+                                2、丙方委托镇江市京口区易浩企业运营中心代签《总部经济企业入驻合同》，申请并代收地方政府扶持资金，代付本协议全部服务费。
+                            </div>
+                        </Row>
+                        <Row style="margin-left: 40px">
+
+                            <div class="text-row">
+                                3、镇江市京口区易浩企业运营中心免费提供注册地址一年使用权。
+                            </div>
+                        </Row>
+                        <Row  style="margin-top: 10px;">
+                            <i-col span="12">
+                                服务方式
+                            </i-col>
+                        </Row>
+                        <Row style="margin-top: 10px;margin-left: 40px">
+                            <div class="text-row">
+                                <div>甲方提供委托事项所需的资料，乙方在乙方驻地或</div>
+                                <span style="text-decoration: underline;font-weight: bold">&nbsp;&nbsp;&nbsp;江苏省镇江市京口区&nbsp;&nbsp;&nbsp;</span>
+                                <div>主管工商局所在地进行相应工作。</div>
+                            </div>
+                        </Row>
+                        <Row style="margin-top: 20px">
+                            <i-col span="12">
+                                成果确认
+                            </i-col>
+                        </Row>
+                        <Row style="margin-top: 10px;margin-left: 40px">
+                            <div>在本合同履行期间，乙方完成甲方（丙方）委托事宜，以相关政府机关单位受理、批准、公示或下发相应证书、文件视为委托事项完成，乙方将相关文件材料交接给甲方（丙方）。</div>
+                        </Row>
+                    </div>
+                </i-col>
+            </Row>
+            <hr />
+            <!--甲方委托内容详细服务及收费标准确认-->
+            <Row style="margin-top: 40px" :style="{'background':6== selectedArea ?'#f6faf9' :''}">
+                <i-col span="24">
+                    <div class="part-title">甲方委托内容详细服务及收费标准确认</div>
+                    <!--高利润企业（工业、贸易、咨询）、高净值人群节税服务及收费标准-->
+                    <Row class="other-row">
+                        <Collapse style="width: 780px;margin-left: 40px;" value="1">
+                            <Panel name="1" class="extra">
+                                <div style="position: absolute;top: 1px;left: 50px;font-size: 18px;color: #59b399;">
+                                    高利润企业（工业、贸易、咨询）、高净值人群节税服务及收费标准
+                                </div>
+                                <div class="otherCharges" slot="content"  @mousedown ="selectArea(6)">
+                                    <div>
+                                        <div class="entrust-content">
+                                            <span>一、顾问咨询服务</span>
+                                        </div>
+                                        <div class="entrust-content-service-name">
+                                            <span>a.根据企业未来落户江苏省镇江市京口区企业所要从事的经营范围、主营项目、收入规模等基本方面进行政策评估，判断是否符合政策性优惠条件。如符合优惠政策中行业范围，根据需求出具相应工商、税务、财务方面的政策落地方案及服务方案；</span>
+                                        </div>
+                                        <div class="entrust-content-service-name">
+                                            <span>c.税收优惠返还申请、对账；</span>
+                                        </div>
+                                        <div class="entrust-content">
+                                            <span>二、工商服务</span>
+                                        </div>
+                                        <div class="entrust-content-service-name">
+                                            <span>a.工商注册标准服务一次；</span>
+                                        </div>
+                                        <div class="entrust-content-service-name">
+                                            <span>b.银行开户；</span>
+                                        </div>
+                                        <div class="entrust-content-service-name">
+                                            <span>c.刻章（公章、财务章、法人章、发票专用章）；</span>
+                                        </div>
+                                        <div class="entrust-content-service-name">
+                                            <span>d.国地税税务报到；</span>
+                                        </div>
+                                        <div class="entrust-content-service-name">
+                                            <span>e.注册地址一年使用权（注册地址挂靠3000元/年）；</span>
+                                        </div>
+                                        <div class="entrust-content">
+                                            <span>三、托管类服务</span>
+                                        </div>
+                                        <div class="entrust-content-service-name">
+                                            <span>a.公司注册地地址托管；</span>
+                                        </div>
+                                        <div class="entrust-content-service-name">
+                                            <span>b.财税外包托管；</span>
+                                        </div>
+                                        <div class="entrust-content-service-name">
+                                            <span>c.银行对账；</span>
+                                        </div>
+                                        <div class="entrust-content-service-name">
+                                            <span>d.纳税申报；</span>
+                                        </div>
+                                        <div class="entrust-content-service-name">
+                                            <span>e.税控装置托管；其中不包括：开票电脑费用、税控设备购买费用、税控装置服务费；</span>
+                                        </div>
+                                        <div class="entrust-content-service-name">
+                                            <span>f.发票领购；由于发票领购量不确定因素，故每月只免费代开发票一本；</span>
+                                        </div>
+                                        <div class="entrust-content-service-name">
+                                            <span>g.发票认证；</span>
+                                        </div>
+                                        <div class="entrust-content-service-name">
+                                            <span>h.所得税汇算清缴；</span>
+                                        </div>
+                                        <div class="entrust-content">
+                                            <span>服务费用</span>
+                                        </div>
+                                        <div class="entrust-content-service-name">
+                                            <span>甲方向乙方支付本合同项下年服务费用按中共镇江市京口区人民政府办公室京办（2014）28号文件申请并收到的全部扶持资金为标准计算。</span>
+                                        </div>
+                                        <div class="entrust-content-service-name">
+                                            <span>注：咨询服务业营业收入300万元以下另加收基本服务费12000元/年</span>
+                                        </div>
+                                        <div class="entrust-content-service-name">
+                                            <span>本项服务费，甲方在签署合同三日内预付{{mainInfo.content.SSCHPrice}}元服务费给乙方，乙方收到服务费后给甲方开具服务费发票并开始开展委托事项工作；新设企业即丙方应付服务费，由镇江市京口区易浩企业运营中心在收到当地财政企业发展扶持资金三日内足额代为支付给乙方，乙方在收到服务费后为甲方或丙方开具发票。</span>
+                                        </div>
+                                        <div class="clearFix" >
+                                            <div  class="clearFix" style="float:right;" >
+                                                <div style="float: left; font-weight: bold">收费标准：预付服务费为</div>
+                                                <Form-item :label-width="1" style="margin-bottom: 0;float: left;"  prop="content.SSCHPrice">
+                                                    <i-input class="text-input" type="text" style="width: 120px" v-model="mainInfo.content.SSCHPrice" :readonly="!isEditable"></i-input>
+                                                </Form-item>
+                                                <div style="float: left; font-weight: bold">元</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Panel>
+                        </Collapse>
+                    </Row>
+                </i-col>
+            </Row>
+            <hr />
+            <!--甲方支付方案-->
+            <Row id="sschPlan" style="margin-top: 40px">
+                <i-col span="24" :style="{'background':7== selectedArea ?'#f6faf9' :''}">
+                    <div class="part-title">甲方支付方案</div>
+                    <div class="part-content" @mousedown ="selectArea(7)">
+                        <div style="margin-top: 0px">
+                            <span style="display: inline-block;font-weight: bold">支付方式 :</span>
+                            <Checkbox-Group style="display: inline-block;margin-left: 20px" v-model="tempPayment" @on-change="changePayment">
+                                <Checkbox label="WECHAT" :disabled="!isEditable">对公转账</Checkbox>
+                                <Checkbox label="CHECK" :disabled="!isEditable">现金（支付宝、微信支付）</Checkbox>
+                                <Checkbox label="POS" :disabled="!isEditable">POS 机刷卡</Checkbox>
+                                <Checkbox label="ONLINE" :disabled="!isEditable">线上支付</Checkbox>
+                                <Checkbox label="THIRD" :disabled="!isEditable">委托第三方支付</Checkbox>
+                            </Checkbox-Group>
+                        </div>
+                    </div>
+                </i-col>
+            </Row>
+            <hr />
+            <!--甲（丙）方的义务-->
+            <Row id="sschTaxePlan" style="margin-top: 40px">
+                <i-col span="24" :style="{'background':8== selectedArea ?'#f6faf9' :''}">
+                    <div class="part-title">甲（丙）方的义务</div>
+                    <div class="part-content" @mousedown ="selectArea(8)">
+                        <div style="margin-top: 10px" class="text-row">
+                            <div class="text-item">托管类服务：</div>
+                        </div>
+                        <div class="text-row" style="height: 35px;margin-top: 10px">
+                            <div class="text-item">1、安排专人（姓名：</div>
+                            <Form-item :label-width="1" prop="content.payWayOnceDaysName">
+                                <i-input :maxlength="200" class="text-input" type="text" v-model="mainInfo.content.payWayOnceDaysName" :readonly="!isEditable"></i-input>
+                            </Form-item>
+                            <div class="text-item">联系方式：</div>
+                            <Form-item :label-width="1" prop="content.payWayOnceDaysPhone">
+                                <i-input :maxlength="200" class="text-input" type="text" v-model="mainInfo.content.payWayOnceDaysPhone" :readonly="!isEditable"></i-input>
+                            </Form-item>
+                            <div class="text-item">负责出纳工作，收集、保管、整理需要入账的原始单据，按</div>
+                        </div>
+                        <div class="text-row">
+                            <div class="text-item">双方约定的时间移交给乙方指定人员。</div>
+                        </div>
+                        <div class="text-row" style="height: 35px;margin-top: 10px">
+                            <div class="text-item">2、甲方（丙方）应于每月</div>
+                            <Form-item :label-width="1" prop="content.payWayOnceDaysCompany">
+                                <i-input :maxlength="2" class="text-input" type="text" v-model="mainInfo.content.payWayOnceDaysCompany" :readonly="!isEditable"></i-input>
+                            </Form-item>
+                            <div class="text-item">日前（一般纳税人于每月</div>
+                            <Form-item :label-width="1" prop="content.payWayOnceDaysPerson">
+                                <i-input :maxlength="2" class="text-input" type="text" v-model="mainInfo.content.payWayOnceDaysPerson" :readonly="!isEditable"></i-input>
+                            </Form-item>
+                            <div class="text-item">日前）或按乙方要求将上月会计做账</div>
+                        </div>
+                        <div class="text-row">
+                            <div class="text-item">所需完整、有效的原始票据及资料移交给乙方，移交资料清单由乙方另行提供。</div>
+                        </div>
+                    </div>
+                </i-col>
+            </Row>
+            <Row class="last-row" :style="{'background':9== selectedArea ?'#f6faf9' :''}">
+                <div class="text-row" @mousedown ="selectArea(9)">
+                    <div class="text-item-total-price">合约总额</div>
+                    <div>
+                        <span class="text-item-symbol-total-price">￥</span>
+                    </div>
+                    <Form-item style="margin-left: 35px;margin-right: 30px" :label-width="1">
+                        <i-input class="text-input form-input-price-total-price" style="top:0;width: 200px" type="text" v-model="price" readonly></i-input>
+                    </Form-item>
+                    <div class="text-item">元</div>
+                </div>
+            </Row>
+        </i-form>
+        <br>
+    </div>
+</div>
+<script>
+    new Vue({
+        el: "#csj_ssch",
+        computed: {
+            price:function(){
+                this.mainInfo.content.payWayOncePay = this.mainInfo.content.SSCHPrice;
+                return this.mainInfo.content.SSCHPrice;
+            },
+            payWayOncePayD:function(){
+                var str = String.transformPay(this.mainInfo.content.payWayOncePay);
+                this.mainInfo.content.payWayOncePayD=str;
+                return str;
+            },
+        },
+        data: {
+            op:"",
+            customerList:[],
+            customerListNo:[],
+            isEditable:true,
+            selectedArea:0,
+            defaultPrice:"400",
+            isContractPerfect: false,
+            mainInfo:{
+                contractDefId:"910039970264145922",
+                periodEnd:null,
+                cSList:[{
+                    type:'COMPANY',
+                    subjectAlias :"A",
+                    signedType :"SEAL"
+                },{
+                    type:'',
+                    subjectAlias :"B",
+                    signedType :"SEAL"
+                },{
+                    type:'COMPANY',
+                    subjectAlias :"C",
+                    signedType :"SIGNATURE"
+                }],
+                cRList:[],
+                content:{
+//                    singlePrice:'',
+                    payWayOncePay:0,
+                    accountType:"SMALL",
+                    payType:"ONCE",
+                    SSCHPrice:0,
+                    serviceType:"QYSDSMSWYB",
+                    otherGSZCJLWYB:false,
+                    incomeTaxType:2500,
+                    otherGSZCJLWYBNum1:"",
+                    otherGSZCJLWYBNum2:"",
+                    otherGJSSCHFW:false,
+                    otherGJSSCHFWPrice:"",
+                    otherGBDSJMZZJYXKZ:false,
+                    otherGBDSJMZZJYXKZPrice:"",
+                    otherFPCLB:false,
+                    payWayOnceDaysCompany:25,
+                    payWayOnceDaysPerson:25,
+                },
+                paymentType:'ONCE',
+                periodType:'START_END',
+                payment:""
+            },
+            tempPayment:[],
+            companyList:[],
+            selectedPayWay:undefined,
+            ruleForm:{
+                "cSList[0].name": [
+                    { required: true, message: '名称不能为空' }
+                ],
+                "cSList[0].idno": [
+                    { required: true, message: '该项不能为空' },
+                    { pattern:  /^[A-Za-z0-9]+$/ ,message:'只能是英文或者数字'}
+                ],
+//                "cSList[0].email": [
+//                    { required: true, message: '邮箱不能为空' },
+//                    { pattern:  /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/ ,message:'请输入正确的邮箱格式'}
+//                ],
+                "cSList[0].contactName": [
+                    { required: true, message: '联系人不能为空' }
+                ],
+                "cSList[0].contactPhone": [
+                    { required: true, message: '联系电话不能为空' }
+                ],
+                "cSList[0].address": [
+                    { required: true, message: '地址不能为空' }
+                ],
+                "cSList[1].name": [
+                    { required: true, message: '企业名不能为空' }
+                ],
+                "cSList[1].contactName": [
+                    { required: true, message: '联系人不能为空' }
+                ],
+                "cSList[1].contactPhone": [
+                    { required: true, message: '联系电话不能为空' }
+                ],
+                "cSList[2].name": [
+                    { required: true, message: '名称不能为空' }
+                ],
+//                "cSList[2].idno": [
+//                    { required: true, message: '法人身份证号不能为空' }
+//                ],
+//                "cSList[2].email": [
+//                    { required: true, message: '邮箱不能为空' },
+//                    { pattern:  /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/ ,message:'请输入正确的邮箱格式'}
+//                ],
+                "cSList[2].contactName": [
+                    { required: true, message: '联系人不能为空' }
+                ],
+                "cSList[2].contactPhone": [
+                    { required: true, message: '联系电话不能为空' }
+                ],
+                "cSList[2].address": [
+                    { required: true, message: '地址不能为空' }
+                ],
+                // periodStart: [
+                //     { required: false, type: 'date', message: '请选择日期', trigger: 'change' }
+                // ],
+                "content.payWayOncePay": [
+                    { required: true, message: '必填项' },
+                    { pattern:   /^-?\d+(\.\d+)?$/ ,message:'请输入数字'},
+                    { pattern:   /^[0-9]+([.]{1}[0-9]{1,2})?$/ ,message:'请输入合理数字'}
+                ],
+                "content.payWayOncePayD": [
+                    { required: true, message: '必填项' }
+                ],
+                "content.payWayOnceDaysCompany": [
+                    { required: true, message: '必填项' }
+                ],
+                "content.payWayOnceDaysPerson": [
+                    { required: true, message: '必填项' }
+                ],
+                "content.otherGSZCJLWYBNum1": [
+                    { pattern:  /^\d+$/ ,message:'请输入整数'}
+                ],
+                "content.otherGSZCJLWYBNum2": [
+                    { pattern:  /\d+$/ ,message:'请输入整数'}
+                ],
+                "content.otherGJSSCHFWPrice": [
+                    { pattern:  /^-?\d+(\.\d+)?$/ ,message:'请输入数字'},
+                    { pattern:  /^[0-9]+([.]{1}[0-9]{1,2})?$/ ,message:'请输入合理数字'}
+                ],
+                "content.otherGBDSJMZZJYXKZPrice": [
+                    { pattern:  /^-?\d+(\.\d+)?$/ ,message:'请输入数字'},
+                    { pattern:  /^[0-9]+([.]{1}[0-9]{1,2})?$/ ,message:'请输入合理数字'}
+                ],
+            }
+        },
+        created: function () {
+            this.$api.contractSaveApi = this.save;
+        },
+        methods: {
+            init:function(param){
+                if(param.isEditable == false){
+                    this.isEditable = false;
+                }
+                if(param.defaultInfo){
+                    this.mainInfo.cSList[0].type = param.defaultInfo.type;
+                    this.mainInfo.cSList[0].name = param.defaultInfo.name;
+                    this.mainInfo.cSList[0].idno = param.defaultInfo.idno;
+                    this.mainInfo.cSList[0].contactName = param.defaultInfo.contactName;
+                    this.mainInfo.cSList[0].contactPhone = param.defaultInfo.contactPhone;
+                    this.mainInfo.cSList[0].email = param.defaultInfo.email;
+                    this.mainInfo.cSList[0].address = param.defaultInfo.address;
+                }
+                if(param.contractId&&param.contractId>10000){
+                    this.op = "edit";
+                    this.loadData(param.contractId);
+                }
+                if(param.defId){
+                    this.mainInfo.contractDefId = param.defId;
+                }
+                if(this.mainInfo.contractDefId){
+                    this.loadCompanyList();
+                }
+                if(param.isContractPerfect){
+                    this.isContractPerfect = param.isContractPerfect;
+                }
+            },
+            changeCsType:function(value){
+                this.mainInfo.cSList[0].name='';
+                this.mainInfo.cSList[0].idno='';
+                this.mainInfo.cSList[0].email='';
+                this.mainInfo.cSList[0].contactName='';
+                this.mainInfo.cSList[0].contactPhone='';
+                this.mainInfo.cSList[0].address='';
+            },
+            searchCustomerByNo:function(value){
+                var vm = this;
+                if(value.indexOf(' ')==-1){
+                    this.request({
+                        url: "/signCloud/contractBuilder/getCustomerList.do",
+                        loading:false,
+                        data:{
+                            type:this.mainInfo.cSList[0].type,
+                            name:'',
+                            idno:value
+                        }
+                    }).then(function(data) {
+                            vm.customerListNo = data;
+                            vm.$refs.autoNO.toggleMenu(data&&data.length>0);
+                    });
+                }
+            },
+            selectCustomer:function(value){
+                var vm = this;
+                this.customerList.map(function(item){
+                    if(item.name ==value){
+                    vm.mainInfo.cSList[0].idno=item.IDNumber;
+                    vm.mainInfo.cSList[0].email=item.email;
+                    vm.mainInfo.cSList[0].address=item.address;
+                    vm.mainInfo.cSList[0].contactName=item.linkmanName;
+                    vm.mainInfo.cSList[0].contactPhone=item.linkmanPhone;
+                    vm.$set(vm.mainInfo.cSList,0,vm.mainInfo.cSList[0]);
+                }
+            });
+            },
+            selectCustomerNo:function(value){
+                var vm = this;
+                this.customerListNo.map(function (item) {
+                    if(item.IDNumber ==value){
+                    vm.mainInfo.cSList[0].name=item.name;
+                    vm.mainInfo.cSList[0].email=item.email;
+                    vm.mainInfo.cSList[0].address=item.address;
+                    vm.mainInfo.cSList[0].contactName=item.linkmanName;
+                    vm.mainInfo.cSList[0].contactPhone=item.linkmanPhone;
+                    vm.$set(vm.mainInfo.cSList,0,vm.mainInfo.cSList[0]);
+                }
+            });
+            },
+            searchCustomerByName:function(value){
+                var vm = this;
+                if(value.indexOf(' ')==-1){
+                    this.request({
+                        url: "/signCloud/contractBuilder/getCustomerList.do",
+                        loading:false,
+                        data: {
+                            type: this.mainInfo.cSList[0].type,
+                            name: value,
+                            idno: ''
+                        }
+                    }).then(function(data) {
+                        vm.customerList = data;
+                        vm.$refs.autoName.toggleMenu(data&&data.length>0);
+                    });
+                }
+            },
+            selectArea:function (value) {
+                this.selectedArea = value;
+            },
+            selectInfo:function(name) {
+                var vm = this;
+                this.companyList.map(function(item) {
+                    if(item.name ==name){
+                        vm.$set(vm.mainInfo.cSList[1],'bankName',item.bankName);
+                        vm.$set(vm.mainInfo.cSList[1],'bankAccount',item.bankAccount);
+                        vm.$set(vm.mainInfo.cSList[1],'orgId',item.orgId);
+                        vm.$set(vm.mainInfo.cSList[1],'idno',item.idno);
+                        vm.$set(vm.mainInfo.cSList[1],'email',item.email);
+                        vm.$set(vm.mainInfo.cSList[1],'address',item.address);
+                        if(vm.op!='edit'){
+                            vm.$set(vm.mainInfo.cSList[1],'contactName',item.contactName);
+                            vm.$set(vm.mainInfo.cSList[1],'contactPhone',item.contactPhone);
+                        }
+                    }
+                });
+            },
+            loadCompanyList:function(){
+                this.request({
+                    url: "/signCloud/contractBuilder/loadCompanyList.do?defId="+this.mainInfo.contractDefId
+                }).then(function(data) {
+                    this.companyList = data;
+                });
+            },
+            changePayment: function (paymentArray) {
+                this.mainInfo.payment = "";
+                if(paymentArray && paymentArray.length>0){
+                    for(var i = 0;i<paymentArray.length;i++){
+                        this.mainInfo.payment = this.mainInfo.payment + paymentArray[i] + ",";
+                    }
+                    if(this.mainInfo.payment != ""){
+                        this.mainInfo.payment = this.mainInfo.payment.substring(0,this.mainInfo.payment.length-1);
+                    }
+                }
+            },
+            loadData:function(contractId){
+                var vm = this;
+                this.$set(this.mainInfo.cSList[0],"type",null);
+                this.request({
+                    url: "/signCloud/contractBuilder/view.do?id="+contractId
+                }).then(function(data) {
+                    vm.mainInfo = data;
+                    var content = vm.mainInfo.content;
+                    vm.mainInfo.content = JSON.parse(content);
+                    if(vm.mainInfo.periodEnd){
+                        vm.mainInfo.periodEnd = new Date(vm.mainInfo.periodEnd);
+                    }
+                    if(vm.mainInfo.periodStart){
+                        vm.mainInfo.periodStart = new Date(vm.mainInfo.periodStart);
+                    }
+                    if(vm.mainInfo.payment && vm.mainInfo.payment != ""){
+                        vm.tempPayment = vm.mainInfo.payment.split(",");
+                    }
+                    vm.$api.renderInsteadFromTemplate(data);
+                });
+            },
+            changeStartDate:function(start){
+                if(this.mainInfo.content.totalMonth && start!=''){
+                    var startDate = new Date(start);
+                    this.computationEndData(startDate);
+                }
+            },
+            computationEndData:function (startDate) {
+                var totalMonth = this.mainInfo.content.totalMonth;
+                var endDate = new Date();
+                var tempYear = parseInt((startDate.getMonth()+1 + Number(totalMonth))/12);
+                var tempMonth = (startDate.getMonth()+1 + Number(totalMonth))%12;
+                var tempDay = startDate.getDate();
+                if(tempDay == 1 && tempMonth ==1){//如果是1月1号，则时间为上一年12月31号
+                    endDate.setFullYear(startDate.getFullYear()+tempYear-1);
+                    endDate.setMonth(11);
+                    endDate.setDate(31);
+                }else if(tempDay ==1){//月份不为1，但是日期是1
+                    endDate.setFullYear(startDate.getFullYear()+tempYear);
+//                    endDate.setMonth(tempMonth-1-1);
+                    if(tempMonth == 0 || tempMonth==5 || tempMonth==7 || tempMonth==10 || tempMonth==12){
+                        endDate.setMonth(tempMonth-1-1,30);
+//                        endDate.setDate(30);
+                    }else if (tempMonth==2 || tempMonth==4 || tempMonth==6 || tempMonth==8 || tempMonth==9 || tempMonth==11){
+                        endDate.setMonth(tempMonth-1-1,31);
+//                        endDate.setDate(31);
+                    }else if(tempMonth==3){
+                        var year = startDate.getFullYear()+tempYear + "";
+                        if((year.substring(2,4) == "00" && year%400 == 0) || (year.substring(2,4) != "00" && year%4==0)){
+                            endDate.setMonth(tempMonth-1-1,29);
+//                            endDate.setDate(29);
+                        }else{
+                            endDate.setMonth(tempMonth-1-1,28);
+//                            endDate.setDate(28);
+                        }
+                    }
+                }else{
+                    endDate.setFullYear(startDate.getFullYear()+tempYear);
+                    endDate.setMonth(tempMonth-1,tempDay-1);
+//                    endDate.setDate(tempDay-1);
+                }
+                this.$set(this.mainInfo,"periodStart", startDate);
+                this.$set(this.mainInfo,"periodEnd", endDate);
+            },
+            changeIncomeTaxType:function (value) {
+                if(value =='2500'){
+                    this.mainInfo.incomeTaxType = "2500";
+                    this.$set(this.mainInfo.content,"otherGSZCJLWYBNum2","");
+                }else{
+                    this.mainInfo.incomeTaxType = "300";
+                    this.$set(this.mainInfo.content,"otherGSZCJLWYBNum1","");
+                }
+            },
+            changeServiceType: function (value) {
+                if(value =='QYSDSMSWYB'){
+                    this.mainInfo.serviceType = "QYSDSMSWYB";
+                }else{
+                    this.mainInfo.serviceType = "DFCZGXZCJLWYB";
+                }
+            },
+            save:function(callBack){
+                var vm = this;
+                vm.$refs['formRef'].validate(function(valid){
+                    if (valid) {
+                        var cRList = [];
+                        if(vm.mainInfo.cSList[0].type == "COMPANY"){
+                            vm.mainInfo.cSList[0].signedType = "SEAL";
+                        }else{
+                            vm.mainInfo.cSList[0].signedType = "SIGNATURE";
+                        }
+                        var cSList = [vm.mainInfo.cSList[0],vm.mainInfo.cSList[1],vm.mainInfo.cSList[2]];
+                        //单笔
+                        cRList.push({
+                            price:vm.price,
+                            title:'一次性支付',
+                            idx:1
+                        });
+                        if(type=='submit'){
+                            vm.mainInfo.status = "COMMITTED";
+                        }
+                        var sendData =Object.assign({}, vm.mainInfo);
+                        sendData.cRList = cRList;
+                        sendData.cSList = cSList;
+                        sendData.price = vm.mainInfo.content.payWayOncePay;
+                        sendData.periodStart = sendData.periodStart?sendData.periodStart.getTime():"";
+                        sendData.periodEnd = sendData.periodEnd?sendData.periodEnd.getTime():"";
+                        sendData.payment = vm.mainInfo.payment;
+                        sendData.content = JSON.stringify(vm.mainInfo.content);
+                        callBack(sendData);
+                    } else {
+                        callBack(false);
+                    }
+                });
+            },
+        }
+    })
+</script>

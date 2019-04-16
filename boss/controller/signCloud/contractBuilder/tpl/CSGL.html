@@ -1,0 +1,1259 @@
+<style>
+    #csgl.root-content{
+        background-color: #f6f6f6;
+    }
+    #csgl.root-content > div{
+        position: relative;
+        width: 920px;
+        margin: 0 auto;
+        background-color: white;
+    }
+    #csgl > .csgl-content {
+        padding: 20px 65px 40px 15px;
+    }
+    #csgl .part-title{
+        font-size: 18px;
+        padding-left: 40px;
+        padding-bottom: 20px;
+        color: #59b399;
+    }
+    #csgl .csgl-content .ivu-form-item-error-tip{
+        padding-top: 3px;
+        font-size: 12px !important;
+    }
+    #csglPlan .ivu-form-item-error-tip{
+        padding-top: 3px;
+        font-size: 12px !important;
+        margin-top: -10px;
+    }
+    #csgl .part-content{
+        padding-left: 40px;
+        padding-right: 20px;
+    }
+    #csgl .part-content *{
+        font-size: 14px!important;
+    }
+    #csgl .text-row{
+        display: inline-flex;
+    }
+    #csgl .text-item{
+        padding: 0px;
+    }
+    #csgl .discount{
+        font-size: 12px!important;
+        color: #dddee1;
+    }
+    #csgl .text-input{
+        position: relative;
+        top: -10px;
+        width: 100px;
+    }
+    #csgl .began-date .ivu-form-item-error-tip{
+        font-size: 12px !important;
+        position: absolute;
+        top: 25px;
+    }
+
+    #csgl .text-input input{
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        text-align: center;
+        height: 30px;
+        font-size: 14px;
+    }
+    #csgl .ivu-input,.ivu-select-selection{
+        border-radius: 0;
+    }
+    #csgl .last-row{
+        margin-left: 40px;
+        padding-top: 28px;
+    }
+    #csgl .last-row .text-item{
+        font-size: 14px;
+        font-weight: bold;
+    }
+    #csgl .last-row .text-item-total-price{
+        font-size: 18px;
+        font-weight: bold;
+    }
+    #csgl .last-row .text-item-symbol{
+        font-size: 14px;
+        position: relative;
+        top: 1px;
+    }
+    #csgl .last-row .text-item-symbol-total-price{
+        font-size: 14px;
+        position: relative;
+        top: 5px;
+    }
+    #csgl .other-row{
+        padding-top: 30px;
+        clear: both;
+    }
+    #csgl .other-item{
+        padding-bottom: 5px;
+        width: 100%;
+        display: flex;
+    }
+    #csgl .other-item .text-row{
+        padding-left: 100px;
+    }
+    #csgl .other-item .text-row .text-input{
+        top:0;
+    }
+    #csgl .other-item .text-row .text-input input{
+        height: 20px;
+    }
+    #csgl .last-total{
+        float: right;
+    }
+    .csgl-content .ivu-form .ivu-form-item-label {
+        text-align: justify;
+        text-align-last: justify;
+        vertical-align: middle;
+        float: left;
+        color: rgb(51,51,51);
+        line-height: 1;
+        padding: 10px 20px 10px 0;
+        box-sizing: border-box;
+    }
+    .csgl-content .ivu-form-item {
+        margin-bottom: 15px;
+        vertical-align: top;
+        zoom: 1;
+    }
+    .csgl-content .ivu-select-arrow {
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        line-height: 1;
+        margin-top: -7px;
+        font-size: 14px;
+        color: #80848f;
+        transition: all .2s ease-in-out;
+    }
+    #csgl .csgl-content .ivu-checkbox {
+        display: inline-block;
+        vertical-align: middle;
+        white-space: nowrap;
+        cursor: pointer;
+        outline: 0;
+        line-height: 1;
+        position: relative;
+        padding-right: 10px;
+    }
+    #csgl .csgl-content .ivu-radio {
+        display: inline-block;
+        margin-right: 12px;
+        white-space: nowrap;
+        outline: 0;
+        position: relative;
+        line-height: 1;
+        vertical-align: middle;
+        cursor: pointer;
+    }
+    #csgl hr{
+        margin-top: 20px;
+        background-color: #e5e5e5;
+        height: 1px;
+        border: none;
+    }
+    #csgl .form-input{
+        width: 260px;
+    }
+    #csgl .form-input-name{
+        width: 110px;
+    }
+    #csgl .form-input-tel{
+        width: 140px;
+    }
+    #csgl .form-input-price > input{
+        position: relative;
+        top: -5px;
+        font-size: 20px;
+    }
+    #csgl .form-input-price-total-price > input{
+        position: relative;
+        top: -5px;
+        font-size: 30px;
+        color: #ff5a5a;
+    }
+    #csgl .other-item .form-input-price > input{
+        font-size: 20px;
+        height: 20px;
+        top:5px;
+    }
+    #csgl .extra > div{
+        font-size: 14px !important;
+    }
+    #csgl .other-item > label{
+        font-size: 14px !important;
+    }
+    #csgl .other-item > input{
+        font-size: 14px !important;
+    }
+    #csgl .other-item > div{
+        font-size: 14px !important;
+    }
+    #csgl .extra .ivu-input{
+        height: 20px;
+    }
+    #csgl .extra .text-input{
+        top:0;
+    }
+    #csgl .extra .ivu-form-item-content{
+        line-height: 20px;
+    }
+    #csgl .extra .ivu-row{
+    }
+    #csgl .ivu-input[disabled], fieldset[disabled] .ivu-input {
+        background-color: #f3f3f3;
+        opacity: 1;
+        cursor: not-allowed;
+        color: #333;
+    }
+    #csgl .ivu-select-disabled .ivu-select-selection {
+        background-color: #f3f3f3;
+        opacity: 1;
+        cursor: not-allowed;
+        color: #333;
+    }
+    #csgl .autoInput .ivu-auto-complete .ivu-select-dropdown{
+        max-height: 200px!important;
+    }
+    #csgl .tips .ivu-tooltip-inner{
+        white-space: inherit;
+    }
+
+    #csgl .other-content {
+        display:flex;
+        display:-ms-flex;
+    }
+</style>
+<div id="csgl" class="root-content">
+
+    <div class="csgl-content" style="position: relative;">
+        <i-form :model="mainInfo" :label-width="90" :rules="ruleForm" ref="mainInfo">
+            <Row>
+                <i-col span="12" :style="{'background':1== selectedArea ?'#f6faf9' :''}">
+                    <div class="part-title">甲方基本信息</div>
+                    <div class="part-content" @mousedown ="selectArea(1)">
+                        <Form-item label="类型" prop="type">
+                            <radio-group v-model="mainInfo.cSList[0].type" @on-change="changeCsType">
+                                <Radio label="COMPANY" :disabled="!isEditable">企业</Radio >
+                                <Radio label="PERSON" :disabled="!isEditable">自然人</Radio>
+                            </radio-group>
+                        </Form-item>
+                        <Form-item :label="mainInfo.cSList[0].type=='COMPANY'?'公司名称':'姓名'" prop="cSList[0].name" class="autoInput">
+                            <Tooltip class="tips" :disabled="!mainInfo.cSList[0].name"  :content="mainInfo.cSList[0].name" class="tips" placement="bottom">
+                                <auto-comp ref="autoName" :disabled="!isEditable" class="form-input" v-model="mainInfo.cSList[0].name"  @on-search="searchCustomerByName" @on-select="selectCustomer">
+                                    <i-option v-for="item in customerList" :value="item.name" :key="item.id">{{item.name}}</i-option>
+                                </auto-comp>
+                            </Tooltip>
+                            <!--<i-input :disabled="!isEditable" class="form-input" v-model="mainInfo.cSList[0].name" :placeholder="mainInfo.cSList[0].type=='COMPANY'?'公司名称':'姓名'"></i-input>-->
+                        </Form-item>
+                        <Form-item label="证件号码" prop="cSList[0].idno" class="autoInput">
+                            <Tooltip :disabled="!mainInfo.cSList[0].idno"  :content="mainInfo.cSList[0].idno" class="tips" placement="bottom">
+                                <auto-comp :maxlength="25" ref="autoNO" :disabled="!isEditable" class="form-input" :placeholder="mainInfo.cSList[0].type=='COMPANY'?'税务登记证号/统一信用代码':'身份证号'"
+                                           class="form-input" v-model="mainInfo.cSList[0].idno"  @on-search="searchCustomerByNo" @on-select="selectCustomerNo">
+                                    <i-option v-for="item in customerListNo" :value="item.IDNumber" :key="item.id">{{item.IDNumber}}</i-option>
+                                </auto-comp>
+                            </Tooltip>
+                            <!--<i-input :disabled="!isEditable" class="form-input" v-model="mainInfo.cSList[0].idno" :placeholder="mainInfo.cSList[0].type=='COMPANY'?'税务登记证号/统一信用代码':'身份证号'"></i-input>-->
+                        </Form-item>
+                        <Row>
+                            <i-col span="13">
+                                <Form-item label="联系人" prop="cSList[0].contactName">
+                                    <Tooltip :disabled="!mainInfo.cSList[0].contactName"  :content="mainInfo.cSList[0].contactName" class="tips" placement="bottom">
+                                        <i-input :disabled="!isEditable" class="form-input-name" :maxlength="20" v-model="mainInfo.cSList[0].contactName" placeholder="联系人姓名"></i-input>
+                                    </Tooltip>
+                                </Form-item>
+                            </i-col>
+                            <i-col span="10" offset="1">
+                                <Form-item :label-width='1' prop="cSList[0].contactPhone">
+                                    <Tooltip :disabled="!mainInfo.cSList[0].contactPhone"  :content="mainInfo.cSList[0].contactPhone" class="tips" placement="bottom">
+                                        <i-input :disabled="!isEditable" class="form-input-tel" :maxlength="17" v-model="mainInfo.cSList[0].contactPhone" placeholder="联系电话" style="width: 140px"></i-input>
+                                    </Tooltip>
+                                </Form-item>
+                            </i-col>
+                        </Row>
+                        <!--<Form-item label="电子邮箱" prop="cSList[0].email">-->
+                        <Form-item label="电子邮箱">
+                            <Tooltip :disabled="!mainInfo.cSList[0].email"  :content="mainInfo.cSList[0].email" class="tips" placement="bottom">
+                                <i-input :disabled="!isEditable" class="form-input" :maxlength="50" v-model="mainInfo.cSList[0].email" placeholder="电子邮箱"></i-input>
+                            </Tooltip>
+
+                        </Form-item>
+                        <Form-item label="联系地址" prop="cSList[0].address">
+                            <Tooltip class="tips" :disabled="!mainInfo.cSList[0].address"  :content="mainInfo.cSList[0].address" class="tips" placement="bottom">
+                                <i-input :disabled="!isEditable" class="form-input" :maxlength="100" v-model="mainInfo.cSList[0].address" placeholder="实际通讯地址而非企业的工商注册地址"></i-input>
+                            </Tooltip>
+                        </Form-item>
+                    </div>
+                </i-col>
+                <i-col span="12" :style="{'background':2== selectedArea ?'#f6faf9' :''}">
+                    <div class="part-title">乙方基本信息</div>
+                    <div class="part-content" @mousedown ="selectArea(2)">
+                        <Form-item label="企业名称" prop="cSList[1].name">
+                            <Tooltip class="tips" :disabled="!mainInfo.cSList[1].name"  :content="mainInfo.cSList[1].name" class="tips" placement="bottom">
+                                <i-input v-if="!isEditable" disabled class="form-input" v-model="mainInfo.cSList[1].name"></i-input>
+                                <i-select v-if="isEditable"  class="form-input" @on-change="selectInfo" v-model="mainInfo.cSList[1].name">
+                                    <i-option v-for="item in companyList" :value="item.name" :key="item.name">{{ item.name }}</i-option>
+                                </i-select>
+                            </Tooltip>
+                        </Form-item>
+                        <Form-item label="开户银行">
+                            <Tooltip class="tips" :disabled="!mainInfo.cSList[1].bankName"  :content="mainInfo.cSList[1].bankName" class="tips" placement="bottom">
+                                <i-input class="form-input" v-model="mainInfo.cSList[1].bankName" placeholder="开户银行" disabled></i-input>
+                            </Tooltip>
+                        </Form-item>
+                        <Form-item label="银行账号">
+                            <Tooltip :disabled="!mainInfo.cSList[1].bankAccount"  :content="mainInfo.cSList[1].bankAccount" class="tips" placement="bottom">
+                                <i-input class="form-input" v-model="mainInfo.cSList[1].bankAccount" placeholder="银行账号" disabled></i-input>
+                            </Tooltip>
+                        </Form-item>
+                        <Row>
+                            <i-col span="13">
+                                <Form-item label="联系人" prop="cSList[1].contactName">
+                                    <Tooltip :disabled="!mainInfo.cSList[1].contactName"  :content="mainInfo.cSList[1].contactName" class="tips" placement="bottom">
+                                        <i-input :disabled="!isEditable"  class="form-input-name" :maxlength="20" v-model="mainInfo.cSList[1].contactName" placeholder="联系人姓名"></i-input>
+                                    </Tooltip>
+                                </Form-item>
+                            </i-col>
+                            <i-col span="10" offset="1">
+                                <Form-item :label-width="1" prop="cSList[1].contactPhone">
+                                    <Tooltip :disabled="!mainInfo.cSList[1].contactPhone"  :content="mainInfo.cSList[1].contactPhone" class="tips" placement="bottom">
+                                        <i-input :disabled="!isEditable"  class="form-input-tel" :maxlength="11" v-model="mainInfo.cSList[1].contactPhone" placeholder="联系电话"></i-input>
+                                    </Tooltip>
+                                </Form-item>
+                            </i-col>
+                        </Row>
+                        </Form-item>
+                        <Form-item label="电子邮箱">
+                            <Tooltip :disabled="!mainInfo.cSList[1].email"  :content="mainInfo.cSList[1].email" class="tips" placement="bottom">
+                                <i-input  class="form-input" v-model="mainInfo.cSList[1].email" placeholder="电子邮箱" :disabled="!isEditable"></i-input>
+                            </Tooltip>
+                        </Form-item>
+                        <Form-item label="联系地址">
+                            <Tooltip class="tips" :disabled="!mainInfo.cSList[1].address"  :content="mainInfo.cSList[1].address" class="tips" placement="bottom">
+                                <i-input  class="form-input" v-model="mainInfo.cSList[1].address" placeholder="实际通讯地址而非企业的工商注册地址" disabled></i-input>
+                            </Tooltip>
+                        </Form-item>
+                    </div>
+                </i-col>
+            </Row>
+            <hr />
+            <Row style="margin-top: 40px">
+                <i-col span="24" :style="{'background':3== selectedArea ?'#f6faf9' :''}">
+                    <div class="part-title">甲方所办理的业务内容</div>
+                    <div class="part-content" @mousedown ="selectArea(3)">
+                        <Row>
+                            <i-col span="12">
+                                <Form-item label="代账类型">
+                                    <radio-group :disabled="!isEditable" v-model="mainInfo.content.accountType">
+                                        <Radio label="SMALL" :disabled="!isEditable">小规模纳税人</Radio>
+                                        <Radio label="NORMAL" :disabled="!isEditable">一般纳税人</Radio>
+                                    </radio-group>
+                                </Form-item>
+                            </i-col>
+                        </Row>
+                        <Form-item label="记账收费明细" :label-width="120">
+                            <Row>
+                                <div class="text-row">
+                                    <div class="text-item">记账单价</div>
+                                    <Form-item :label-width="1" prop="content.singlePrice">
+                                        <i-input :readonly="!isEditable" class="text-input" style="top: 0" :maxlength="6" type="text" v-model="mainInfo.content.singlePrice" @on-change="changeSinglePrice"></i-input>
+                                    </Form-item>
+                                    <div class="text-item">元/月</div>
+                                </div>
+                                <div class="text-row">
+                                    <div class="text-item discount">优惠：￥{{discount}}</div>
+                                </div>
+                            </Row>
+                        </Form-item>
+                    </div>
+                </i-col>
+            </Row>
+            <hr />
+            <Row style="margin-top: 40px">
+                <i-col span="24" :style="{'background':4== selectedArea ?'#f6faf9' :''}">
+                    <div class="part-title">服务期限约定</div>
+                    <div class="part-content" @mousedown ="selectArea(4)">
+                        <Radio-Group :disabled="!isEditable" v-model="mainInfo.periodType">
+                            <Row>
+                                <Radio label="START_END" :disabled="!isEditable">明确的服务起始周期</Radio>
+                                <Radio style="margin-left: 42px" label="NONE" :disabled="!isEditable">无明确服务起始周期</Radio>
+                            </Row>
+                            <br>
+                            <div style="display: inline-block;width: 600px" v-if="mainInfo.periodType=='START_END'">
+                                <Row>
+                                    <i-col span="8" style="width: 285px">
+                                        <Form-item label="起始日期" prop="periodStart">
+                                            <date-picker :disabled="!isEditable" type="month" placeholder="选择日期" v-model="mainInfo.periodStart" @on-change="changeStartDate"></date-picker>
+                                        </Form-item>
+                                    </i-col>
+                                    <i-col span="8" style="width: 285px;margin-left: 30px">
+                                        <Form-item label="结束日期" prop="periodEnd">
+                                            <date-picker :disabled="!isEditable" type="month" placeholder="选择日期" v-model="mainInfo.periodEnd" @on-change="changeEndDate"></date-picker>
+                                        </Form-item>
+                                    </i-col>
+                                </Row>
+                                <br>
+                                <Row>
+                                    <div class="text-row">
+                                        <div class="text-item">共计 </div>
+                                        <Form-item :label-width="1" prop="content.totalMonth">
+                                            <i-input :readonly="!isEditable" class="text-input" readonly type="text" v-model="mainInfo.content.totalMonth"></i-input>
+                                        </Form-item>
+                                        <div class="text-item">个月，含赠送</div>
+                                        <Form-item :label-width="1" prop="content.freeMonth">
+                                            <i-input :readonly="!isEditable" :maxlength="2" class="text-input" type="text" v-model="mainInfo.content.freeMonth" @on-change="changeNoneMonth"></i-input>
+                                        </Form-item>
+                                        <div class="text-item">个月</div>
+                                    </div>
+                                </Row>
+                            </div>
+                            <div class="began-date" v-if="mainInfo.periodType=='NONE'">
+                                <Row>
+                                    <div class="text-row">
+                                        <div class="text-item">双方同意服务期限以 </div>
+                                        <Form-item :label-width="1" prop="content.noneTypeStart">
+                                            <i-input :readonly="!isEditable" class="text-input" style="width:200px" type="text" v-model="mainInfo.content.noneTypeStart"></i-input>
+                                        </Form-item>
+                                        <div class="text-item">开始计算，委托期限自即日起开始共计</div>
+                                        <Form-item :label-width="1" prop="content.noneTypeMonth">
+                                            <i-input :readonly="!isEditable" :maxlength="3" class="text-input" type="text" v-model="mainInfo.content.noneTypeMonth" @on-change="changeNoneMonth"></i-input>
+                                        </Form-item>
+                                        <div class="text-item">个月</div>
+                                    </div>
+                                </Row>
+                                <Row>
+                                    <div class="text-row">
+                                        <div class="text-item">含赠送</div>
+                                        <Form-item :label-width="1" prop="content.noneTypeFreeMonth">
+                                            <i-input :readonly="!isEditable"  class="text-input" type="text" v-model="mainInfo.content.noneTypeFreeMonth" @on-change="changeNoneMonth"></i-input>
+                                        </Form-item>
+                                        <div class="text-item">个月</div>
+                                    </div>
+                                </Row>
+                            </div>
+                        </Radio-Group>
+                    </div>
+                </i-col>
+            </Row>
+            <hr />
+            <Row id="csglPlan" style="margin-top: 40px">
+                <i-col span="24" :style="{'background':5== selectedArea ?'#f6faf9' :''}">
+                    <div class="part-title">甲方支付方案</div>
+                    <div class="part-content" @mousedown ="selectArea(5)">
+                        <Radio-Group :disabled="!isEditable"  v-model="mainInfo.content.payType" @on-change="changePayType">
+                            <Row>
+                                <Radio label="ONCE" :disabled="!isEditable">一次性支付</Radio>
+                                <Radio style="margin-left: 42px" label="QUARTERLY" :disabled="!isEditable">周期性支付</Radio>
+                            </Row>
+                            <br>
+                            <Row v-if="mainInfo.content.payType=='ONCE'">
+                                <div class="text-row">
+                                    <div class="text-item">甲方于本合同生效后</div>
+                                    <Form-item :label-width="1" prop="content.payWayOnceDaysItem">
+                                        <i-input :readonly="!isEditable"  class="text-input" type="text" v-model="mainInfo.content.payWayOnceDaysItem" :maxlength="2"></i-input>
+                                    </Form-item>
+                                    <div class="text-item">日内将上述服务费用一次性支付给乙方，乙方在收到全部服务费用后开展委托事项工作。</div>
+                                </div>
+                            </Row>
+                            <Row v-if="mainInfo.content.payType=='QUARTERLY'">
+                                <Radio-Group v-model="mainInfo.paymentType" @on-change="changePaymentType">
+                                    <!--<Radio label="MONTHLY" :disabled="!isEditable">月</Radio>-->
+                                    <Radio label="QUARTERLY" :disabled="!isEditable">季度</Radio>
+                                    <Radio label="HALF_YEAR" :disabled="!isEditable">半年</Radio>
+                                    <Radio label="PER_YEAR" :disabled="!isEditable">一年</Radio>
+                                </Radio-Group>
+                                <div class="text-row">
+                                    <i-input  :readonly="!isEditable" class="text-input" type="text" v-model="mainInfo.content.payWayRoundDaysItem"></i-input>
+                                    <div class="text-item">元/期</div>
+                                </div>
+                            </Row>
+                        </Radio-Group>
+                        <div>
+                            <span style="display: inline-block;font-weight: bold">支付方式 :</span>
+                            <Checkbox-Group style="display: inline-block;margin-left: 20px" v-model="tempPayment" @on-change="changePayment">
+                                <Checkbox label="WECHAT" :disabled="!isEditable">对公转账</Checkbox>
+                                <Checkbox label="CHECK" :disabled="!isEditable">现金（支付宝、微信支付）</Checkbox>
+                                <Checkbox label="POS" :disabled="!isEditable">POS 机刷卡</Checkbox>
+                                <Checkbox label="ONLINE" :disabled="!isEditable">线上支付</Checkbox>
+                            </Checkbox-Group>
+                        </div>
+                    </div>
+                </i-col>
+            </Row>
+            <br>
+            <Row class="last-row" :style="{'background':6== selectedArea ?'#f6faf9' :''}">
+                <div class="text-row" @mousedown ="selectArea(6)">
+                    <div class="text-item">小计&nbsp</div>
+                    <div>
+                        <span class="text-item-symbol">￥</span>
+                    </div>
+                    <Form-item :label-width="1" prop="price">
+                        <i-input class="text-input form-input-price" type="text" v-model="price" readOnly></i-input>
+                    </Form-item>
+                    <div class="text-item">元</div>
+                </div>
+            </Row>
+            <Row class="other-row" style="margin-left: 40px;margin-right: 20px">
+                <Collapse value="1">
+                    <Panel name="1" class="extra">
+                        <div style="position: absolute;top: 1px;left: 50px;font-size: 18px;color: #59b399;">
+                            额外服务事项
+                        </div>
+                        <div slot="content" @mousedown ="selectArea(7)" :style="{'background':7== selectedArea ?'#f6faf9' :''}">
+                            <div>额外服务明细</div>
+                            <!--<Row>-->
+                                <!--<i-col span="8">-->
+                                    <!--<Checkbox :disabled="!isEditable"  v-model="mainInfo.content.otherZBCK">账本装订费（即账簿）</Checkbox>-->
+                                <!--</i-col>-->
+                                <!--<i-col span="10" v-if="mainInfo.content.otherZBCK" style="display:inline-flex">-->
+                                    <!--<Form-item :label-width="1"  prop="content.otherZB">-->
+                                        <!--<i-input  :disabled="!isEditable" class="text-input" type="text" v-model="mainInfo.content.otherZB"></i-input>-->
+                                        <!--<label class="text-item">元/本</label>-->
+                                    <!--</Form-item>-->
+                                    <!--<Form-item :label-width="1"  prop="content.otherZBNum">-->
+                                        <!--<i-input  :disabled="!isEditable" class="text-input" type="text" v-model="mainInfo.content.otherZBNum"></i-input>-->
+                                        <!--<label class="text-item">本</label>-->
+                                    <!--</Form-item>-->
+                                <!--</i-col>-->
+                                <!--<i-col span="6" v-if="mainInfo.content.otherZBCK" style="text-align: right">-->
+                                    <!--<Form-item :label-width="1">-->
+                                        <!--<label class="text-item">小计</label>-->
+                                        <!--<i-input  :disabled="!isEditable" class="text-input" type="text" v-model="otherZBTotal" readonly></i-input>-->
+                                        <!--<label class="text-item">元</label>-->
+                                    <!--</Form-item>-->
+                                <!--</i-col>-->
+                            <!--</Row>-->
+                            <Row>
+                                <i-col span="8">
+                                    <Checkbox :disabled="!isEditable"  v-model="mainInfo.content.otherBBCK">所得税年报网上申报并提交报表</Checkbox>
+                                </i-col>
+                                <i-col span="10" v-if="mainInfo.content.otherBBCK" class="other-content">
+                                    <Form-item :label-width="1"  prop="content.otherBB">
+                                        <i-input :maxlength="6" :readonly="!isEditable"  class="text-input" type="text" v-model="mainInfo.content.otherBB"></i-input>
+                                        <label class="text-item">元起</label>
+                                    </Form-item>
+                                </i-col>
+                                <i-col span="6" v-if="mainInfo.content.otherBBCK" style="text-align: right">
+                                    <Form-item :label-width="1">
+                                        <label class="text-item">小计</label>
+                                        <i-input :maxlength="10" class="text-input" type="text" v-model="otherBBTotal" readOnly></i-input>
+                                        <label class="text-item">元</label>
+                                    </Form-item>
+                                </i-col>
+                            </Row>
+                            <Row>
+                                <i-col span="8">
+                                    <Checkbox  :disabled="!isEditable" @on-change="changeOther1" v-model="mainInfo.content.otherPersonCK">财务人员培训</Checkbox>
+                                </i-col>
+                                <i-col span="10" v-if="mainInfo.content.otherPersonCK" class="other-content">
+                                    <Form-item :label-width="1"  prop="content.otherPerson">
+                                        <i-input :readonly="!isEditable" :maxlength="6" class="text-input" type="text" v-model="mainInfo.content.otherPerson"></i-input>
+                                        <label class="text-item">元/人</label>
+                                    </Form-item>
+                                    <Form-item :label-width="1"  prop="content.otherPersonNum">
+                                        <i-input :readonly="!isEditable" :maxlength="6" class="text-input" type="text" v-model="mainInfo.content.otherPersonNum"></i-input>
+                                        <label class="text-item">人</label>
+                                    </Form-item>
+                                </i-col>
+                                <i-col span="6" v-if="mainInfo.content.otherPersonCK" style="text-align: right">
+                                    <Form-item :label-width="1">
+                                        <label class="text-item">小计</label>
+                                        <i-input class="text-input" type="text" v-model="otherPersonTotal" readOnly></i-input>
+                                        <label class="text-item">元</label>
+                                    </Form-item>
+                                </i-col>
+                            </Row>
+                            <Row>
+                                <i-col span="8">
+                                    <Checkbox :disabled="!isEditable" @on-change="changeOther2" v-model="mainInfo.content.otherDocCK">账册等会计档案保管</Checkbox>
+                                </i-col>
+                                <i-col span="10" v-if="mainInfo.content.otherDocCK" class="other-content">
+                                    <Form-item :label-width="1"  prop="content.otherDoc">
+                                        <i-input  :readonly="!isEditable" :maxlength="6" class="text-input" type="text" v-model="mainInfo.content.otherDoc"></i-input>
+                                        <label class="text-item">元/年</label>
+                                    </Form-item>
+                                    <Form-item :label-width="1"  prop="content.otherDocNum">
+                                        <i-input  :readonly="!isEditable" :maxlength="3" class="text-input" type="text" v-model="mainInfo.content.otherDocNum"></i-input>
+                                        <label class="text-item">年</label>
+                                    </Form-item>
+                                </i-col>
+                                <i-col span="6" v-if="mainInfo.content.otherDocCK" style="text-align: right">
+                                    <Form-item :label-width="1">
+                                        <label class="text-item">小计</label>
+                                        <i-input class="text-input" type="text" v-model="otherDocTotal" readOnly></i-input>
+                                        <label class="text-item">元</label>
+                                    </Form-item>
+                                </i-col>
+                            </Row>
+                            <Row>
+                                <i-col span="8">
+                                    <Checkbox :disabled="!isEditable" v-model="mainInfo.content.servicePayCK" @on-change="changeOther3">其他双方商定好需要单独收费的服务费</Checkbox>
+                                </i-col>
+                                <i-col span="10" v-if="mainInfo.content.servicePayCK" style="display:inline-flex">
+                                    <Form-item class="text-row" :label-width="1"  prop="content.servicePay">
+                                        <i-input  :readonly="!isEditable" class="text-input" type="text" v-model="mainInfo.content.servicePay" :maxlength="6"></i-input>
+                                        <label class="text-item">元</label>
+                                    </Form-item>
+                                </i-col>
+                                <i-col span="6" v-if="mainInfo.content.servicePayCK" style="text-align: right">
+                                    <Form-item class="text-row" :label-width="1">
+                                        <label class="text-item">小计</label>
+                                        <i-input class="text-input" type="text" v-model="servicePayTotal" readOnly></i-input>
+                                        <label class="text-item">元</label>
+                                    </Form-item>
+                                </i-col>
+                            </Row>
+                            <div class="other-item" style="margin-top: 20px">
+                                <div class="text-item" style="font-weight: bold;">小计&nbsp</div>
+                                <div>
+                                    <span class="text-item-symbol">￥</span>
+                                </div>
+                                <Form-item :label-width="1">
+                                    <i-input class="text-input form-input-price" style="line-height:20px;" type="text" v-model="otherPrice" readOnly></i-input>
+                                </Form-item>
+                                <div class="text-item">元</div>
+                            </div>
+                            <Row>
+                                <label>额外服务期限约定</label>
+                            </Row>
+                            <br>
+                            <Row>
+                                <Radio-Group :disabled="!isEditable" v-model="mainInfo.content.otherPayType">
+                                    <Radio label="NONE" :disabled="!isEditable">无明确服务起始周期</Radio>
+                                </Radio-Group>
+                            </Row>
+                            <br>
+                            <Row>
+                                <label>额外费用支付方案</label>
+                            </Row>
+                            <br>
+                            <Row>
+                                <div class="text-row">
+                                    <div class="text-item">本合同生效后甲方需在 </div>
+                                    <Form-item :label-width="1" prop="content.otherFee">
+                                        <i-input :readonly="!isEditable"  class="text-input" type="text" v-model="mainInfo.content.otherFee" :maxlength="2"></i-input>
+                                    </Form-item>
+                                    <div class="text-item">日内支付全部额外费用</div>
+                                </div>
+                            </Row>
+                        </div>
+
+                    </Panel>
+                </Collapse>
+            </Row>
+            <br>
+            <Row class="last-row" :style="{'background':8== selectedArea ?'#f6faf9' :''}">
+                <div class="text-row" @mousedown ="selectArea(8)">
+                    <div class="text-item-total-price">合约总额&nbsp</div>
+                    <div>
+                        <span class="text-item-symbol-total-price">￥</span>
+                    </div>
+                    <Form-item style="margin-left: 30px;margin-right: 30px" :label-width="1">
+                        <i-input class="text-input form-input-price-total-price" style="top:0;width: 200px" type="text" v-model="totalPrice" readOnly></i-input>
+                    </Form-item>
+                    <div class="text-item">元</div>
+                </div>
+            </Row>
+
+        </i-form>
+        <br>
+    </div>
+</div>
+<script>
+    new Vue({
+        el: "#csgl",
+        computed: {
+            discount:function(){
+                return Math.format(Number(this.defaultPrice)-Number(this.mainInfo.content.singlePrice==''?'0':this.mainInfo.content.singlePrice),2);
+            },
+            // 仅读取，值只须为函数
+            price:function(){
+                var months = this.getPayMonths();
+                return Math.format(months*this.mainInfo.content.singlePrice,2);
+            },
+            otherPrice:function(){
+                var otherZBTotal = (this.otherZBTotal==''||!this.mainInfo.content.otherZBCK)?0:this.otherZBTotal;
+                var otherBBTotal = (this.otherBBTotal==''||!this.mainInfo.content.otherBBCK)?0:this.otherBBTotal;
+                var otherPersonTotal =(this.otherPersonTotal==''||!this.mainInfo.content.otherPersonCK)?0:this.otherPersonTotal;
+                var otherDocTotal = (this.otherDocTotal==''||!this.mainInfo.content.otherDocCK)?0:this.otherDocTotal;
+                var servicePayTotal = (this.servicePayTotal==''||!this.mainInfo.content.servicePayCK)?0:this.servicePayTotal;
+                return Math.format(Number(otherZBTotal)+Number(otherBBTotal)+Number(otherPersonTotal)+Number(otherDocTotal)+Number(servicePayTotal),2);
+            },
+            totalPrice:function(){
+                var p = Number(this.price)+Number(this.otherPrice==''?0:this.otherPrice);
+                return p===''?'':Math.format(p,2);
+            },
+            otherZBTotal:function(){
+                var number = this.mainInfo.content.otherZBNum;
+                var singlePrice = this.mainInfo.content.otherZB;
+                var result = "";
+                if(!isNaN(number)&&!isNaN(singlePrice)){
+                    result = Number(singlePrice)*Number(number);
+                    this.mainInfo.content.otherZBTotal=result;
+                }
+                return result==''?'':Math.format(result,2);
+            },
+            otherBBTotal:function(){
+                var singlePrice = this.mainInfo.content.otherBB;
+                var result = "";
+                if(!isNaN(singlePrice)){
+                    result = Number(singlePrice);
+                    this.mainInfo.content.otherBBTotal=result;
+                }
+                return result==''?'':Math.format(result,2);
+            },
+            otherPersonTotal:function(){
+                var number = this.mainInfo.content.otherPersonNum;
+                var singlePrice = this.mainInfo.content.otherPerson;
+                var result = "";
+                if(!isNaN(number)&&!isNaN(singlePrice)){
+                    result = Number(singlePrice)*Number(number);
+                    this.mainInfo.content.otherPersonTotal=result;
+                }
+                return result==''?'':Math.format(result,2);
+            },
+            otherDocTotal:function(){
+                var number = this.mainInfo.content.otherDocNum;
+                var singlePrice = this.mainInfo.content.otherDoc;
+                var result = "";
+                if(!isNaN(number)&&!isNaN(singlePrice)){
+                    result = Number(singlePrice)*Number(number);
+                    this.mainInfo.content.otherDocTotal=result;
+                }
+                return result==''?'':Math.format(result,2);
+            },
+            servicePayTotal:function(){
+                var singlePrice = this.mainInfo.content.servicePay;
+                var result = "";
+                if(!isNaN(singlePrice)){
+                    result = Number(singlePrice);
+                    this.mainInfo.content.servicePayTotal=result;
+                }
+                return result==''?'':Math.format(result,2);
+            }
+        },
+        data: function(){
+            var vm = this;
+            var validateStart = function(rule, value, callback)  {
+                if (value === '') {
+                    callback(new Error('请选择开始日期'));
+                } else {
+                    if (vm.mainInfo.periodEnd!=''&&value > vm.mainInfo.periodEnd) {
+                        // 对第二个密码框单独验证
+                        callback(new Error('开始时间不能大于结束时间'));
+                    }else{
+                        vm.$refs['mainInfo'].validateField('content.freeMonth');
+                        callback();
+                    }
+                }
+            };
+            var validateEnd = function(rule, value, callback){
+                if (value === '') {
+                    callback(new Error('请选择结束日期'));
+                } else {
+                    if (vm.mainInfo.periodStart!=''&&value < vm.mainInfo.periodStart) {
+                        // 对第二个密码框单独验证
+                        callback(new Error('结束时间不能小于开始时间'));
+                    }else{
+                        vm.$refs['mainInfo'].validateField('content.freeMonth');
+                    }
+                    callback();
+                }
+            };
+            var validateFree = function(rule, value, callback){
+                if(value!=''&&vm.getPayMonths()<0){
+                    callback(new Error('赠送服务期数不能大于总服务期数'));
+                }else {
+                    callback();
+                }
+            };
+            return {
+                op:"",
+                customerList:[],
+                customerListNo:[],
+                isEditable:true,
+                selectedArea:0,
+                defaultPrice:"400",
+                isContractPerfect: false,
+                mainInfo:{
+                    contractDefId:"910039970264145922",
+                    cSList:[{
+                        type:'COMPANY',
+                        subjectAlias :"A",
+                        signedType :"SEAL"
+                    },{
+                        type:'',
+                        subjectAlias :"B",
+                        signedType :"SEAL"
+                    }],
+                    cRList:[],
+                    content:{
+                        singlePrice:'',
+                        payWayMonthlyFirstPay:0,
+                        payWayMonthlyOtherPay:0,
+                        accountType:"SMALL",
+                        payType:"ONCE",
+                        otherZB:50,
+                        otherZBNum:'',
+                        otherZBCK:false,
+                        otherBB:500,
+                        otherBBCK:false,
+                        otherPerson:1000,
+                        otherPersonNum:'',
+                        otherPersonCK:false,
+                        otherDoc:100,
+                        otherDocNum:'',
+                        otherDocCK:false,
+                        servicePayCK:false,
+                        servicePay:'',
+                        otherPayType:'NONE'
+                    },
+                    paymentType:'ONCE',
+                    periodType:'START_END',
+                    payment:""
+                },
+                tempPayment:[],
+                companyList:[],
+                selectedPayWay:undefined,
+                ruleForm:{
+                    "cSList[0].name": [
+                        { required: true, message: '名称不能为空'}
+                    ],
+                    "cSList[0].idno": [
+                        { required: true, message: '该项不能为空'},
+                        { pattern:  /^[A-Za-z0-9]+$/ ,message:'只能是英文或者数字'}
+
+                    ],
+//                    "cSList[0].email": [
+//                        { required: true, message: '邮箱不能为空' },
+//                        { pattern:  /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/ ,message:'请输入正确的邮箱格式'}
+//                    ],
+                    "cSList[0].contactName": [
+                        { required: true, message: '联系人不能为空'}
+                    ],
+                    "cSList[0].contactPhone": [
+                        { required: true, message: '联系电话不能为空'}
+                    ],
+                    "cSList[0].address": [
+                        { required: true, message: '地址不能为空'}
+                    ],
+                    "cSList[1].name": [
+                        { required: true, message: '企业名不能为空' }
+                    ],
+                    "cSList[1].contactName": [
+                        { required: true, message: '联系人不能为空' }
+                    ],
+                    "cSList[1].contactPhone": [
+                        { required: true, message: '联系电话不能为空' }
+
+                    ],
+                    periodStart: [
+                        { required: true, type: 'date', message: '请选择日期', trigger: 'change' },
+                        { validator: validateStart, trigger: 'change' }
+                    ],
+                    periodEnd: [
+                        { required: true, type: 'date', message: '请选择日期', trigger: 'change' },
+                        { validator: validateEnd, trigger: 'change' }
+                    ],
+                    "content.singlePrice": [
+                        { required: true, message: '必填项'},
+                        { pattern:  /^-?\d+(\.\d+)?$/ ,message:'请输入数字'},
+                        { pattern:   /^[0-9]+([.]{1}[0-9]{1,2})?$/ ,message:'请输入合理数字'}
+                    ],
+                    "content.totalMonth": [
+                        { required: true, message: '必填项'},
+                        { pattern: /^[1-9]\d*$/,message:'请输入正整数'}
+                    ],
+                    "content.freeMonth": [
+                        { validator: validateFree, trigger: 'change' }
+                    ],
+                    "content.noneTypeFreeMonth": [
+                        { validator: validateFree, trigger: 'change' }
+                    ],
+                    "content.noneTypeStart": [
+                        { required: true, message: '必填项'}
+                    ],
+                    "content.noneTypeMonth": [
+                        { required: true, message: '必填项'},
+                        { pattern: /^[1-9]\d*$/,message:'请输入正整数'}
+                    ],
+                    "content.payWayOnceDaysItem": [
+                        { required: true, message: '必填项'},
+                        { pattern: /^[1-9]\d*$/,message:'请输入正整数'}
+                    ],
+                    "content.otherZB": [
+                        { pattern:  /^-?\d+(\.\d+)?$/ ,message:'请输入数字'},
+                        { pattern:   /^[0-9]+([.]{1}[0-9]{1,2})?$/ ,message:'请输入合理数字'}
+                    ],
+                    "content.otherZBNum": [
+                        { pattern: /^[1-9]\d*$/,message:'请输入正整数', trigger: 'change'}
+                    ],
+                    "content.otherBB": [
+                        { pattern:  /^-?\d+(\.\d+)?$/ ,message:'请输入数字'},
+                        { pattern:   /^[0-9]+([.]{1}[0-9]{1,2})?$/ ,message:'请输入合理数字'}
+                    ],
+                    "content.otherPerson": [
+                        { pattern:  /^-?\d+(\.\d+)?$/ ,message:'请输入数字'},
+                        { pattern:   /^[0-9]+([.]{1}[0-9]{1,2})?$/ ,message:'请输入合理数字'}
+                    ],
+                    "content.otherPersonNum": [
+                        { pattern: /^[1-9]\d*$/,message:'请输入正整数', trigger: 'change'}
+                    ],
+                    "content.otherDoc": [
+                        { pattern:  /^-?\d+(\.\d+)?$/ ,message:'请输入数字'},
+                        { pattern:   /^[0-9]+([.]{1}[0-9]{1,2})?$/ ,message:'请输入合理数字'}
+                    ],
+                    "content.otherDocNum": [
+                        { pattern: /^[1-9]\d*$/,message:'请输入正整数', trigger: 'change'}
+                    ],
+                    "content.servicePay": [
+                        { pattern:  /^-?\d+(\.\d+)?$/ ,message:'请输入数字'},
+                        { pattern:   /^[0-9]+([.]{1}[0-9]{1,2})?$/ ,message:'请输入合理数字'}
+                    ],
+                    "content.otherFee": [
+                        { pattern: /^[1-9]\d*$/,message:'请输入正整数'}
+                    ]
+                }
+            }
+        },
+        created: function() {
+            this.$api.contractSaveApi = this.save;
+        },
+        methods: {
+            init:function(param){
+                if(param.isEditable == false){
+                    this.isEditable = false;
+                }
+                if(param.defaultInfo){
+                    this.mainInfo.cSList[0].type = param.defaultInfo.type;
+                    this.mainInfo.cSList[0].name = param.defaultInfo.name;
+                    this.mainInfo.cSList[0].idno = param.defaultInfo.idno;
+                    this.mainInfo.cSList[0].contactName = param.defaultInfo.contactName;
+                    this.mainInfo.cSList[0].contactPhone = param.defaultInfo.contactPhone;
+                    this.mainInfo.cSList[0].email = param.defaultInfo.email;
+                    this.mainInfo.cSList[0].address = param.defaultInfo.address;
+                }
+                if(param.contractId&&param.contractId>10000){
+                    this.op = "edit";
+                    this.loadData(param.contractId);
+                }else{
+                    this.$set(this.mainInfo.content,"singlePrice",this.defaultPrice);
+                }
+                if(param.defId){
+                    this.mainInfo.contractDefId = param.defId;
+                }
+                if(this.mainInfo.contractDefId){
+                    this.loadCompanyList();
+                }
+                if(param.isContractPerfect){
+                    this.isContractPerfect = param.isContractPerfect;
+                }
+            },
+            changeCsType:function(value){
+                this.mainInfo.cSList[0].name='';
+                this.mainInfo.cSList[0].idno='';
+                this.mainInfo.cSList[0].email='';
+                this.mainInfo.cSList[0].contactName='';
+                this.mainInfo.cSList[0].contactPhone='';
+                this.mainInfo.cSList[0].address='';
+            },
+            changeOther1:function(){
+                this.mainInfo.content.otherPersonNum='';
+            },
+            changeOther2:function(){
+                this.mainInfo.content.otherDocNum='';
+            },
+            changeOther3:function(){
+                this.mainInfo.content.servicePay='';
+            },
+            searchCustomerByNo:function(value){
+                var vm = this;
+                if(value.indexOf(' ')==-1){
+                    this.request({
+                        url: "/signCloud/contractBuilder/getCustomerList.do",
+                        loading:false,
+                        data:{
+                            type:this.mainInfo.cSList[0].type,
+                            name:'',
+                            idno:value
+                        }
+                    }).then(function(data) {
+                            vm.customerListNo = data;
+                        vm.$refs.autoNO.toggleMenu(data&&data.length>0);
+                    });
+                }
+            },
+            selectCustomer:function(value){
+                var vm = this;
+                this.customerList.map(function(item) {
+                    if(item.name ==value){
+                        vm.mainInfo.cSList[0].idno=item.IDNumber;
+                        vm.mainInfo.cSList[0].email=item.email;
+                        vm.mainInfo.cSList[0].address=item.address;
+                        vm.mainInfo.cSList[0].contactName=item.linkmanName;
+                        vm.mainInfo.cSList[0].contactPhone=item.linkmanPhone;
+                        vm.$set(vm.mainInfo.cSList,0,vm.mainInfo.cSList[0]);
+                    }
+                });
+            },
+            selectCustomerNo:function(value){
+                var vm = this;
+                this.customerListNo.map(function(item) {
+                    if(item.IDNumber ==value){
+                        vm.mainInfo.cSList[0].name=item.name;
+                        vm.mainInfo.cSList[0].email=item.email;
+                        vm.mainInfo.cSList[0].address=item.address;
+                        vm.mainInfo.cSList[0].contactName=item.linkmanName;
+                        vm.mainInfo.cSList[0].contactPhone=item.linkmanPhone;
+                        vm.$set(vm.mainInfo.cSList,0,vm.mainInfo.cSList[0]);
+                    }
+                });
+            },
+            searchCustomerByName:function(value){
+                var vm = this;
+                if(value.indexOf(' ')==-1){
+                    this.request({
+                        url: "/signCloud/contractBuilder/getCustomerList.do",
+                        loading:false,
+                        data: {
+                            type: this.mainInfo.cSList[0].type,
+                            name: value,
+                            idno: ''
+                        }
+                    }).then(function(data) {
+                        vm.customerList = data;
+                        vm.$refs.autoName.toggleMenu(data&&data.length>0);
+                    });
+                }
+            },
+            changeSinglePrice:function(){
+                this.changePaymentType(this.mainInfo.paymentType);
+            },
+            selectArea:function (value) {
+                this.selectedArea = value;
+            },
+            selectInfo:function(name) {
+                var selectRow = {};
+                var vm = this;
+                this.companyList.map(function(item) {
+                    if(item.name ==name){
+                        vm.$set(vm.mainInfo.cSList[1],'bankName',item.bankName);
+                        vm.$set(vm.mainInfo.cSList[1],'bankAccount',item.bankAccount);
+                        vm.$set(vm.mainInfo.cSList[1],'orgId',item.orgId);
+                        vm.$set(vm.mainInfo.cSList[1],'idno',item.idno);
+                        vm.$set(vm.mainInfo.cSList[1],'email',item.email);
+                        vm.$set(vm.mainInfo.cSList[1],'address',item.address);
+                        if(vm.op!='edit'){
+                            vm.$set(vm.mainInfo.cSList[1],'contactName',item.contactName);
+                            vm.$set(vm.mainInfo.cSList[1],'contactPhone',item.contactPhone);
+                        }
+                    }
+                });
+            },
+            loadCompanyList:function(){
+                var vm = this;
+                this.request({
+                    url: "/signCloud/contractBuilder/loadCompanyList.do?defId="+this.mainInfo.contractDefId
+                }).then(function(data) {
+                    vm.companyList = data;
+                });
+            },
+            changePayment: function(paymentArray) {
+                this.mainInfo.payment = "";
+                if(paymentArray && paymentArray.length>0){
+                    for(var i = 0;i<paymentArray.length;i++){
+                        this.mainInfo.payment = this.mainInfo.payment + paymentArray[i] + ",";
+                    }
+                    if(this.mainInfo.payment != ""){
+                        this.mainInfo.payment = this.mainInfo.payment.substring(0,this.mainInfo.payment.length-1);
+                    }
+                }
+            },
+            loadData:function(contractId){
+                var vm = this;
+                this.$set(this.mainInfo.cSList[0],"type",null);
+                this.request({
+                    url: "/signCloud/contractBuilder/view.do?id="+contractId
+                }).then(function(data) {
+                    vm.mainInfo = data;
+                    var content = vm.mainInfo.content;
+                    vm.mainInfo.content = JSON.parse(content);
+                    if(vm.mainInfo.periodEnd){
+                        vm.mainInfo.periodEnd = new Date(vm.mainInfo.periodEnd);
+                    }
+                    if(vm.mainInfo.periodStart){
+                        vm.mainInfo.periodStart = new Date(vm.mainInfo.periodStart);
+                    }
+                    if(vm.mainInfo.payment && vm.mainInfo.payment != ""){
+                        vm.tempPayment = vm.mainInfo.payment.split(",");
+                    }
+                    vm.$api.renderInsteadFromTemplate(data);
+                });
+            },
+            getPayMonths:function(){
+                var months= 0 ;
+                if(this.mainInfo.periodType =='START_END'){
+                    months = Number(this.mainInfo.content.totalMonth) - Number(this.mainInfo.content.freeMonth?this.mainInfo.content.freeMonth:0);
+                }else{
+                    months = Number(this.mainInfo.content.noneTypeMonth) - Number(this.mainInfo.content.noneTypeFreeMonth?this.mainInfo.content.noneTypeFreeMonth:0);
+                }
+                if(isNaN(months))
+                    months = 0;
+                return months;
+            },
+            changeNoneMonth:function(event){
+                var price = this.mainInfo.content.singlePrice;
+                this.$set(this.mainInfo.content,"singlePrice","0");
+                this.$set(this.mainInfo.content,"singlePrice",price);
+                if(this.mainInfo.paymentType!='ONCE'){
+                    this.changePaymentType(this.mainInfo.paymentType);
+                }
+            },
+            changeStartDate:function(start){
+                if(start!=''){
+                    var startDate = new Date(start);
+                    var endDate = this.mainInfo.periodEnd;
+                    if(endDate!=""){
+                        var months = Math.round((endDate - startDate)/(1000*3600*24*30))+1;
+                        this.mainInfo.periodStart = startDate;
+                        this.$set(this.mainInfo.content,"totalMonth",months+"");
+                    }
+                }else{
+                    this.$set(this.mainInfo.content,"totalMonth","");
+                }
+                if(this.mainInfo.paymentType!='ONCE'){
+                    this.changePaymentType(this.mainInfo.paymentType);
+                }
+            },
+            changeEndDate:function(end){
+                if(end!='') {
+                    var startDate = this.mainInfo.periodStart;
+                    var endDate = new Date(end);
+                    if (startDate != "") {
+                        var months = Math.round((endDate - startDate) / (1000 * 3600 * 24 * 30)) + 1;
+                        this.mainInfo.periodEnd = endDate;
+                        this.$set(this.mainInfo.content, "totalMonth", months + "");
+                    }
+                }else{
+                    this.$set(this.mainInfo.content,"totalMonth","");
+                }
+                if(this.mainInfo.paymentType!='ONCE'){
+                    this.changePaymentType(this.mainInfo.paymentType);
+                }
+            },
+            changePayType:function(value){
+                if(value =='ONCE'){
+                    this.mainInfo.paymentType = "ONCE";
+                }else{
+                    this.mainInfo.paymentType = "QUARTERLY";
+                    this.changePaymentType("QUARTERLY");
+                }
+            },
+            changePaymentType:function(data){
+                if(data!=''){
+                    var ref = {
+                        MONTHLY:1,
+                        QUARTERLY:3,
+                        HALF_YEAR:6,
+                        PER_YEAR:12
+                    };
+                    var perPrice = this.mainInfo.content.singlePrice*ref[data];
+                    if(perPrice>this.price){
+                        perPrice = this.price;
+                    }
+                    this.mainInfo.content.payWayRoundDaysItem=perPrice;
+                }
+            },
+            save:function(callBack){
+                var vm = this;
+                vm.$refs['mainInfo'].validate(function(valid){
+                    if (valid) {
+                        if(vm.mainInfo.periodType=='START_END'&&vm.mainInfo.periodStart>vm.mainInfo.periodEnd){
+                            vm.$Message.error({content:"开始时间不能大于结束时间!",duration:3});
+                            return;
+                        }
+                        if(vm.mainInfo.content.otherDocNum==''){
+                            vm.$set(vm.mainInfo.content,'otherDocCK',false);
+                        }
+                        if(vm.mainInfo.content.otherPersonNum==''){
+                            vm.$set(vm.mainInfo.content,'otherPersonCK',false);
+                        }
+                        if(vm.mainInfo.content.servicePay==''){
+                            vm.$set(vm.mainInfo.content,'servicePayCK',false);
+                        }
+                        var cRList = [];
+                        if(vm.mainInfo.cSList[0].type == "COMPANY"){
+                            vm.mainInfo.cSList[0].signedType = "SEAL";
+                        }else{
+                            vm.mainInfo.cSList[0].signedType = "SIGNATURE";
+                        }
+                        var cSList = [vm.mainInfo.cSList[0],vm.mainInfo.cSList[1]];
+                        //单笔
+                        if(vm.mainInfo.paymentType=='ONCE'){
+                            cRList.push({
+                                price:vm.price,
+                                title:'一次性支付',
+                                idx:1
+                            });
+                        }else{
+                            var paymentType = vm.mainInfo.paymentType;
+                            var ref = {
+                                MONTHLY:1,
+                                QUARTERLY:3,
+                                HALF_YEAR:6,
+                                PER_YEAR:12
+                            };
+                            var payMonths = vm.getPayMonths();
+                                //季度付
+                            var total = vm.price;
+                            for(var i=0;i<Math.ceil(payMonths/ref[paymentType]);i++){
+                                if((i+1) == Math.ceil(payMonths/ref[paymentType])){
+                                    cRList.push({
+                                        price:total,
+                                        title:'第'+(i+1)+"笔支付",
+                                        idx:(i+1)
+                                    });
+                                }else{
+                                    cRList.push({
+                                        price:vm.mainInfo.content.payWayRoundDaysItem,
+                                        title:'第'+(i+1)+"笔支付",
+                                        idx:(i+1)
+                                    });
+                                    total-=vm.mainInfo.content.payWayRoundDaysItem;
+                                }
+                            }
+                        }
+                        //额外信息支付
+                        if(!isNaN(vm.otherPrice)&&vm.otherPrice>0){
+                            cRList.push({
+                                price:vm.otherPrice,
+                                title:'额外服务事项',
+                                idx:cRList.length+1
+                            });
+                        }
+                        var sendData =Object.assign({}, vm.mainInfo);
+                        sendData.cRList = cRList;
+                        sendData.cSList = cSList;
+                        sendData.price = vm.totalPrice;
+                        sendData.payment = vm.mainInfo.payment;
+                        sendData.content = JSON.stringify(vm.mainInfo.content);
+                        if(vm.mainInfo.periodType=='START_END'){
+                            sendData.periodStart = sendData.periodStart.getTime();
+                            sendData.periodEnd = sendData.periodEnd.getTime();
+                        }
+                        callBack(sendData);
+                    } else {
+                        callBack(false);
+                    }
+                });
+            },
+        }
+    })
+</script>

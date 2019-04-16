@@ -1,0 +1,336 @@
+<div id="gszcService" class="root-content">
+    <Row>
+        <i-form class="invoice-form" ref="form" :model="form" label-position="left" :label-width="120">
+            <i-col span="17">
+                <Form-item class="normal" label="服务期限" prop="serviceDate">
+                    <date-picker v-if="allowEdit" v-model="form.serviceDate" type="daterange" format="yyyy/MM/dd" placement="top-start" placeholder="请选择服务期限" class="date" style="width: 100%;" :editable="false" :disabled="!allowEdit"></date-picker>
+                    <div v-else>
+                        <span v-for="(item, index) in form.serviceDate" :key="index">
+                            {{item | formatDate}} {{ index == 0 ? ' 至 ' : '' }}
+                        </span>
+                    </div>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <!--<Form-item class="normal" label="服务内容" style="margin-bottom: 0;"></Form-item>-->
+                <Form-item class="normal parent-content" label="服务内容">
+                    <Form-item label="业务类型:" prop="businessType">
+                        <!--<i-select style="width: 320px" v-model="form.businessType" placeholder="业务类型" :disabled="true">-->
+                            <!--<i-option style="text-align: left" value="1">企业注册</i-option>-->
+                            <!--<i-option value="2">企业信息变更</i-option>-->
+                            <!--<i-option value="3">企业注销</i-option>-->
+                            <!--<i-option value="4">企业改制</i-option>-->
+                        <!--</i-select>-->
+                        <span class="org-name" v-if="form.businessType == '1'">企业注册</span>
+                        <span class="org-name" v-else-if="form.businessType == '2'">企业信息变更</span>
+                        <span class="org-name" v-else-if="form.businessType == '3'">企业注销</span>
+                        <span class="org-name" v-else="form.businessType == '4'">企业改制</span>
+                    </Form-item>
+                    <Form-item label="服务事项:" prop="serviceItem">
+                        <div>
+                            <div v-if="form.businessType=='1'">
+                                <Checkbox-Group v-model="form.serviceItem" class="serviceList">
+                                    <Checkbox class="serviceListItem" :disabled="true" label="checkName">企业名称核准</Checkbox>
+                                    <Checkbox class="serviceListItem" :disabled="true" label="companyRegister">企业设立登记</Checkbox>
+                                    <Checkbox class="serviceListItem" :disabled="true" label="codeCertificate">代码证书</Checkbox>
+                                    <Checkbox class="serviceListItem" :disabled="true" label="taxRegistration">税务登记</Checkbox>
+                                    <Checkbox class="serviceListItem" :disabled="true" label="serviceAddress">咨询服务地址</Checkbox>
+                                </Checkbox-Group>
+                            </div>
+                            <div v-if="form.businessType=='2'">
+                                <Checkbox-Group v-model="form.serviceItem" class="serviceList">
+                                    <Checkbox class="serviceListItem" :disabled="true" label="changeName">名称变更</Checkbox>
+                                    <Checkbox class="serviceListItem" :disabled="true" label="changePerson">法定代表人变更</Checkbox>
+                                    <Checkbox class="serviceListItem" :disabled="true" label="changeAssets">注册资本（资金）变更</Checkbox>
+                                    <Checkbox class="serviceListItem" :disabled="true" label="changeShareholder">股东或股权变更</Checkbox>
+                                    <Checkbox class="serviceListItem" :disabled="true" label="changeAddress">住所变更</Checkbox>
+                                    <Checkbox class="serviceListItem" :disabled="true" label="changeRange">经营范围变更</Checkbox>
+                                    <br>
+                                    <Checkbox class="serviceListItem otherChange" :disabled="true" label="otherRange">
+                                        <span style="width: 70px;color: inherit;margin: 0 4px;line-height: 16px;">其他变更</span>
+                                        <i-input type="textarea" v-if="form.serviceItem.indexOf('otherRange')>-1" :rows="4" v-model="form.otherChangeDetail" style="width: 100%;padding-bottom: 5px" placeholder="请输入..." :disabled="true"></i-input>
+                                    </Checkbox>
+                                </Checkbox-Group>
+                            </div>
+                            <div v-if="form.businessType=='3'">
+                                <Checkbox-Group v-model="form.serviceItem" class="serviceList">
+                                    <Checkbox class="serviceListItem" label="registration" :disabled="true">企业注销登记</Checkbox>
+                                </Checkbox-Group>
+                            </div>
+                            <div v-if="form.businessType=='4'">
+                                <Checkbox-Group v-model="form.serviceItem" class="serviceList">
+                                    <Checkbox class="serviceListItem" label="companyChange" :disabled="true">企业改制</Checkbox>
+                                </Checkbox-Group>
+                            </div>
+                            <div v-else></div>
+                        </div>
+                    </Form-item>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="委托事项具体情况说明" prop="serviceContent">
+                    <i-input v-if="allowEdit" v-model="form.otherItem" :disabled="!allowEdit" type="textarea" :rows="4" placeholder="请输入委托事项具体情况说明"></i-input>
+                    <pre v-else>{{form.otherItem}}</pre>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="服务方式" prop="serviceContent">
+                    <i-input v-if="allowEdit" v-model="form.serviceMethod" :disabled="!allowEdit" type="textarea" :rows="4" placeholder="请输入服务方式"></i-input>
+                    <pre v-else>{{form.serviceMethod}}</pre>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="工作成果确认" prop="workResult">
+                    <i-input v-if="allowEdit" v-model="form.workResult" :disabled="!allowEdit" type="textarea" :rows="4" placeholder="请输入工作成果确认"></i-input>
+                    <pre v-else>{{form.workResult}}</pre>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="其他内容" prop="otherContent">
+                    <i-input v-if="allowEdit" v-model="form.otherContent" :disabled="!allowEdit" placeholder="请输入其他内容"></i-input>
+                    <span v-else>{{form.otherContent}}</span>
+                </Form-item>
+            </i-col>
+        </i-form>
+    </Row>
+</div>
+
+<script>
+    new Vue({
+        el: "#gszcService",
+        data: function() {
+            return {
+                form: {
+                    serviceLifeStart: null,
+                    serviceLifeEnd: null,
+                    serviceLifeNum: 1,
+                    units: 'MONTH',
+                    businessType: '1',
+                    serviceItem: [],
+                    otherItem: '',
+                    periodType: null,
+                    serviceDate: [],
+                    otherContent: '',
+                    serviceMethod: '甲方提供委托事项所需的资料，乙方在乙方驻地或主管工商局所在地进行相应工作。',
+                    workResult: '在委托期间，乙方完成甲方委托事宜，以相关机关受理、批准、公示或下发相应证书、文件视为委托事项完成，甲方书面确认后乙方将相关文件材料交接给甲方。',
+                    validState: {}
+                },
+                allowEdit: true,
+                param: {}
+            }
+        },
+        watch: {
+            'form.serviceDate': function(val) {
+                this.form.serviceDate = val;
+                if (Array.isEmpty(val)) {
+                    this.form.validState.serviceDate = {
+                        isNull: true,
+                        content: '服务期限不能为空'
+                    };
+                }else {
+                    if (String.isNullOrBlank(val[0]) || String.isNullOrBlank(val[1])) {
+                        this.form.validState.serviceDate = {
+                            isNull: true,
+                            content: '服务期限不能为空'
+                        };
+                    }else {
+                        this.form.serviceLifeStart = this.form.serviceDate[0];
+                        this.form.serviceLifeEnd = this.form.serviceDate[1];
+                        this.form.validState.serviceDate = {
+                            isNull: false,
+                            content: ''
+                        };
+                    }
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.otherItem': function(val) {
+                this.form.otherItem = val;
+                this.$api.saveServiceData(this.form);
+            },
+            'form.serviceMethod': function(val) {
+                this.form.serviceMethod = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.serviceMethod = {
+                        isNull: true,
+                        content: '服务方式不能为空'
+                    };
+                }else {
+                    this.form.validState.serviceMethod = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.workResult': function(val) {
+                this.form.workResult = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.workResult = {
+                        isNull: true,
+                        content: '工作成果确认不能为空'
+                    };
+                }else {
+                    this.form.validState.workResult = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.otherContent': function(val) {
+                this.form.otherContent = val;
+                this.$api.saveServiceData(this.form);
+            },
+        },
+        filters: {
+            formatDate: function(value) {
+                if (value) {
+                    var newDate = new Date(value);
+                    if (newDate) {
+                        var y = newDate.getFullYear();
+                        var m = newDate.getMonth() + 1;
+                        m = m < 10 ? '0' + m : m;
+                        var d = newDate.getDate();
+                        d = d < 10 ? ('0' + d) : d;
+                        return y + '/' + m + '/' + d;
+                    }
+                }
+                return value;
+            }
+        },
+        methods: {
+            init: function(param) {
+                this.param = param;
+                if (param.serviceInfo) {
+                    this.allowEdit = param.isEdit;
+                    if (param.serviceInfo.templeteData) {
+                        var content = JSON.parse(param.serviceInfo.templeteData);
+                        if (content) {
+                            this.form.businessType = content.businessType;
+                            this.form.serviceItem = content.serviceItem;
+                            this.form.otherItem = content.otherItem;
+                            this.form.otherChangeDetail = content.otherChangeDetail;
+                            this.form.periodType = content.periodType;
+                            this.form.serviceDate = [
+                                this.convertUTCTimeToLocalTime(new Date(content.serviceDate[0])),
+                                this.convertUTCTimeToLocalTime(new Date(content.serviceDate[1]))
+                            ];
+                            this.form.serviceLifeStart = this.form.serviceDate[0];
+                            this.form.serviceLifeEnd = this.form.serviceDate[1];
+                            this.form.otherContent = content.otherContent;
+                            this.form.serviceMethod = content.serviceMethod;
+                            this.form.workResult = content.workResult;
+                        }else {
+                            this.getContractInfo(param);
+                        }
+                    }else {
+                        this.getContractInfo(param);
+                    }
+                }else {
+                    this.allowEdit = true;
+                    this.getContractInfo(param);
+                }
+            },
+            getContractInfo: function(param) {
+                var vm = this;
+                if (param.contractId) {
+                    vm.request({
+                        url: "/signCloud/contractBuilder/view.do?id=" + param.contractId
+                    }).then(function(data) {
+                        var content = JSON.parse(data.content);
+                        if (content) {
+                            vm.form.businessType = content.businessType;
+                            vm.form.serviceItem = content.serviceItem;
+                            vm.form.otherItem = content.otherItem;
+                            vm.form.periodType = data.periodType;
+                            vm.form.serviceDate = [
+                                vm.convertUTCTimeToLocalTime(new Date(data.periodStart)),
+                                vm.convertUTCTimeToLocalTime(new Date(data.periodEnd))
+                            ];
+                            vm.form.serviceLifeStart = vm.form.serviceDate[0];
+                            vm.form.serviceLifeEnd = vm.form.serviceDate[1];
+                            vm.form.otherChangeDetail = content.otherChangeDetail;
+                        }
+                    });
+                }
+            },
+            convertUTCTimeToLocalTime: function(UTCDateString) {
+                if(!UTCDateString){
+                    return '-';
+                }
+                function formatFunc(str) {    //格式化显示
+                    return str > 9 ? str : '0' + str
+                }
+                var date2 = new Date(UTCDateString);     //这步是关键
+                var year = date2.getFullYear();
+                var mon = formatFunc(date2.getMonth() + 1);
+                var day = formatFunc(date2.getDate());
+                var dateStr = year + '-' + mon + '-' + day;
+                return dateStr;
+            },
+        }
+    })
+</script>
+
+<style>
+    #gszcService .service-item-desc {
+        line-height: 36px;
+    }
+
+    #gszcService .parent-content .ivu-form-item-content .ivu-form-item-label {
+        text-align: left;
+        width: auto!important;
+        padding-left: 0;
+        font-weight: normal;
+        color: #8c8c8c;
+    }
+
+    #gszcService .check-button {
+        background-color: #FFF;
+        border: 1px solid #54B499;
+        border-radius: 4px;
+        color: #54B499;
+        font-size: 12px;
+        line-height: initial;
+        vertical-align: initial;
+    }
+
+    #gszcService .check-button.active {
+        background-color: #54B499;
+        color: #FFF;
+    }
+
+    #gszcService .serviceList .serviceListItem {
+        display: none!important;
+    }
+
+    #gszcService .serviceList .serviceListItem.ivu-checkbox-wrapper-checked {
+        display: inline-block!important;
+    }
+    #gszcService .serviceList .serviceListItem.otherChange.ivu-checkbox-wrapper-checked {
+        display: flex!important;
+        align-items: center;
+    }
+
+    #gszcService .org-name {
+        line-height: 36px;
+        font-size: 14px;
+        color: #8c8c8c;
+        font-weight: normal;
+    }
+
+    #gszcService .ivu-form-item {
+        margin-bottom: 15px;
+    }
+
+    #gszcService pre {
+        font-family: Helvetica Neue,Helvetica,Arial,Microsoft Yahei,Hiragino Sans GB,Heiti SC,WenQuanYi Micro Hei,sans-serif!important;
+        white-space: pre-wrap;
+        margin: 0;
+    }
+
+    #gszcService .ivu-input-wrapper {
+        flex: 1;
+    }
+</style>

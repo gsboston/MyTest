@@ -1,0 +1,543 @@
+<div id="dljz" class="root-content">
+    <Row>
+        <i-form class="invoice-form" ref="form" :model="form" label-position="left" :label-width="120">
+            <i-col span="24">
+                <Form-item class="normal" label="服务期限" style="margin-bottom: 0px;" v-if="form.totalMonth || form.noneTypeMonth">
+                    <p style="line-height: 36px;font-size: 14px;color: #8c8c8c;">{{ form.periodType=='START_END' ? form.totalMonth : form.noneTypeMonth}}期</p>
+                </Form-item>
+                <Form-item class="normal" label="">
+                    <div style="width: 100%" class="date-div" v-if="form.periodType=='START_END'">
+                        <Row :style="!allowEdit ? '' : 'margin-bottom: 10px;'">
+                            <i-col span="12">
+                                <Form-item v-if="allowEdit" label="起始日期" prop="periodStart">
+                                    <date-picker :disabled="!allowEdit" type="month" placeholder="选择日期" v-model="form.periodStart" @on-change="changeStartDate"></date-picker>
+                                </Form-item>
+                                <span v-else class="normal-font">起始日期：{{form.periodStart | formatDate}}</span>
+                            </i-col>
+                            <i-col span="12">
+                                <Form-item v-if="allowEdit" label="结束日期" prop="periodEnd">
+                                    <date-picker :disabled="!allowEdit" type="month" placeholder="选择日期" v-model="form.periodEnd" @on-change="changeEndDate"></date-picker>
+                                </Form-item>
+                                <span v-else class="normal-font">结束日期：{{form.periodEnd | formatDate}}</span>
+                            </i-col>
+                        </Row>
+                        <Row>
+                            <div class="text-row" v-if="allowEdit">
+                                <span>共计 </span>
+                                <Form-item class="text-item" :label-width="1" prop="totalMonth">
+                                    <i-input :readonly="!allowEdit" :maxlength="3" class="text-input" readonly type="text" v-model="form.totalMonth"></i-input>
+                                </Form-item>
+                                <span>个月，含赠送</span>
+                                <Form-item class="text-item" :label-width="1" prop="freeMonth">
+                                    <i-input :readonly="!allowEdit" :maxlength="3" class="text-input" type="text" v-model="form.freeMonth" @on-change="changeNoneMonth"></i-input>
+                                </Form-item>
+                                <span>个月</span>
+                            </div>
+                            <div class="text-row" v-else style="word-wrap: break-word;">
+                                <span>共计 （{{form.totalMonth}}）个月，含赠送（{{form.freeMonth ? form.freeMonth : '0'}}）个月</span>
+                            </div>
+                        </Row>
+                    </div>
+                    <div class="began-date" v-if="form.periodType=='NONE'">
+                        <Row>
+                            <div class="text-row" v-if="allowEdit">
+                                <span>双方同意服务期限以 </span>
+                                <Form-item class="text-item" style="width: 150px;" :label-width="1" prop="noneTypeStart">
+                                    <i-input :readonly="!allowEdit" type="text" v-model="form.noneTypeStart"></i-input>
+                                </Form-item>
+                                <span>开始计算，委托期限自即日起开始共计</span>
+                                <Form-item class="text-item" :label-width="1" prop="noneTypeMonth">
+                                    <i-input :readonly="!allowEdit" :maxlength="3" type="text" v-model="form.noneTypeMonth" @on-change="changeNoneMonth"></i-input>
+                                </Form-item>
+                                <span>个月，含赠送</span>
+                                <Form-item class="text-item" :label-width="1" prop="noneTypeFreeMonth">
+                                    <i-input :readonly="!allowEdit" :maxlength="3" type="text" v-model="form.noneTypeFreeMonth" @on-change="changeNoneMonth"></i-input>
+                                </Form-item>
+                                <span>个月</span>
+                            </div>
+                            <div class="text-row" v-else style="word-wrap: break-word;">
+                                <span>双方同意服务期限以 （{{form.noneTypeStart}}）开始计算，委托期限自即日起开始共计（{{form.noneTypeMonth}}）个月，含赠送（{{form.noneTypeFreeMonth ? form.noneTypeFreeMonth : '0'}}）个月</span>
+                            </div>
+                        </Row>
+                    </div>
+                </Form-item>
+            </i-col>
+
+            <i-col span="24">
+                <Form-item label="服务内容" prop="serviceContent">
+                    <i-input v-if="allowEdit" v-model="form.serviceContent" :disabled="!allowEdit" type="textarea" :rows="6" placeholder="请输入服务内容"></i-input>
+                    <pre v-else class="normal-font">{{form.serviceContent}}</pre>
+                </Form-item>
+                <Form-item label="">
+                    <i-col span="24" v-if="form.otherBBCKOld">
+                        <Checkbox :disabled="!allowEdit" v-model="form.otherBBCK">所得税年报网上申报并提交报表</Checkbox>
+                    </i-col>
+                    <i-col span="24" v-if="form.otherPersonCKOld">
+                        <Checkbox :disabled="!allowEdit" v-model="form.otherPersonCK">财务人员培训</Checkbox>
+                    </i-col>
+                    <i-col span="24" v-if="form.otherDocCKOld">
+                        <Checkbox :disabled="!allowEdit" v-model="form.otherDocCK">账册等会计档案保管</Checkbox>
+                    </i-col>
+                    <i-col span="24" v-if="form.servicePayCKOld">
+                        <Checkbox :disabled="!allowEdit" v-model="form.servicePayCK">其他双方商定好需要单独收费的服务费</Checkbox>
+                    </i-col>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="服务方式" prop="serviceMethod">
+                    <i-input v-if="allowEdit" v-model="form.serviceMethod" :disabled="!allowEdit" type="textarea" :rows="4" placeholder="请输入服务方式"></i-input>
+                    <pre v-else class="normal-font">{{form.serviceMethod}}</pre>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="工作成果确认" prop="workResult">
+                    <i-input v-if="allowEdit" v-model="form.workResult" :disabled="!allowEdit" type="textarea" :rows="4" placeholder="请输入工作成果确认"></i-input>
+                    <pre v-else class="normal-font">{{form.workResult}}</pre>
+                </Form-item>
+            </i-col>
+            <i-col span="24">
+                <Form-item label="其他内容" prop="otherContent">
+                    <i-input v-if="allowEdit" v-model="form.otherContent" :disabled="!allowEdit" placeholder="请输入其他内容"></i-input>
+                    <span v-else class="normal-font">{{form.otherContent}}</span>
+                </Form-item>
+            </i-col>
+        </i-form>
+    </Row>
+</div>
+
+<script>
+    new Vue({
+        el: "#dljz",
+        data: function() {
+            return {
+                form: {
+                    serviceLifeStart: null,
+                    serviceLifeEnd: null,
+                    serviceLifeNum: 1,
+                    units: 'MONTH',
+                    periodType: null,
+                    periodStart: null,
+                    periodEnd: null,
+                    totalMonth: null,
+                    freeMonth: null,
+                    noneTypeStart: null,
+                    noneTypeMonth: null,
+                    noneTypeFreeMonth: null,
+                    serviceContent: '每月标准服务项目： \n' +
+                    '初始建账\\代理记账（整理原始凭证；填制记账凭证、账薄、报表；）\\国、地税税务报到\\国、地税纳税申报；合理税收筹划建议\\日常财务解疑、咨询\\协助甲方接受税务机构账务检查工作\\工商年报\\打印装订记账凭证、财务报表、账簿、申报表等\\其他双方商谈好的服务项目。\n' +
+                    '其他服务项目，在选择的事项前“□”划“√”：',
+                    otherBBCK: null,
+                    otherPersonCK: null,
+                    otherDocCK: null,
+                    servicePayCK: null,
+                    serviceMethod: '客户提供记账用的原始票据及相关资料，服务方在服务方驻地运用财务软件做账。',
+                    workResult: '在约定服务期限期间，服务方每月完成纳税申报（记账、申报等代记账工作）即视为服务方当月代记账工作已全部完成。',
+                    otherContent: '',
+                    validState: {}
+                },
+                allowEdit: true,
+                param: {}
+            }
+        },
+        filters: {
+            formatDate: function(value) {
+                if (value) {
+                    var newDate = new Date(value);
+                    if (newDate) {
+                        var y = newDate.getFullYear();
+                        var m = newDate.getMonth() + 1;
+                        m = m < 10 ? '0' + m : m;
+                        var d = newDate.getDate();
+                        d = d < 10 ? ('0' + d) : d;
+                        return y + '/' + m + '/' + d;
+                    }
+                }
+                return value;
+            }
+        },
+        watch: {
+            'form.periodStart': function(val) {
+                this.form.periodStart = val;
+                if (this.form.periodType=='START_END') {
+                    this.form.serviceLifeStart = val;
+                }
+                if (this.form.periodType=='START_END' && String.isNullOrBlank(val)) {
+                    this.form.validState.periodStart = {
+                        isNull: true,
+                        content: '服务期限不能为空'
+                    };
+                }else {
+                    var startDate = this.form.periodStart;
+                    var endDate = this.form.periodEnd;
+                    var months = Math.round((endDate - startDate) / (1000 * 3600 * 24 * 30)) + 1;
+                    if (months <= 0) {
+                        this.form.validState.periodStart = {
+                            isNull: true,
+                            content: '服务期限结束日期必须大于起始日期'
+                        };
+                    }else {
+                        this.form.validState.periodStart = {
+                            isNull: false,
+                            content: ''
+                        };
+                    }
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.periodEnd': function(val) {
+                this.form.periodEnd = val;
+                if (this.form.periodType=='START_END') {
+                    this.form.serviceLifeEnd = val;
+                }
+                if (this.form.periodType=='START_END' && String.isNullOrBlank(val)) {
+                    this.form.validState.periodEnd = {
+                        isNull: true,
+                        content: '服务期限不能为空'
+                    };
+                }else {
+                    var startDate = this.form.periodStart;
+                    var endDate = this.form.periodEnd;
+                    var months = Math.round((endDate - startDate) / (1000 * 3600 * 24 * 30)) + 1;
+                    if (months <= 0) {
+                        this.form.validState.periodStart = {
+                            isNull: true,
+                            content: '服务期限结束日期必须大于起始日期'
+                        };
+                    }else {
+                        this.form.validState.periodStart = {
+                            isNull: false,
+                            content: ''
+                        };
+                    }
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.totalMonth': function(val) {
+                this.form.totalMonth = val;
+                if (this.form.periodType=='START_END') {
+                    this.form.serviceLifeNum = val;
+                }
+                if (this.form.periodType=='START_END' && String.isNullOrBlank(val)) {
+                    this.form.validState.totalMonth = {
+                        isNull: true,
+                        content: '服务期限不能为空'
+                    };
+                }else {
+                    this.form.validState.totalMonth = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.freeMonth': function(val) {
+                this.form.freeMonth = val;
+                this.$api.saveServiceData(this.form);
+            },
+            'form.noneTypeStart': function(val) {
+                this.form.noneTypeStart = val;
+                // if (this.form.periodType=='NONE') {
+                //     this.form.serviceLifeStart = val;
+                // }
+                if (this.form.periodType=='NONE' && String.isNullOrBlank(val)) {
+                    this.form.validState.noneTypeStart = {
+                        isNull: true,
+                        content: '服务期限不能为空'
+                    };
+                }else {
+                    this.form.validState.noneTypeStart = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.noneTypeMonth': function(val) {
+                this.form.noneTypeMonth = val;
+                if (this.form.periodType=='NONE') {
+                    this.form.serviceLifeNum = val;
+                }
+                if (this.form.periodType=='NONE' && String.isNullOrBlank(val)) {
+                    this.form.validState.noneTypeMonth = {
+                        isNull: true,
+                        content: '服务期限不能为空'
+                    };
+                }else {
+                    this.form.validState.noneTypeMonth = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.noneTypeFreeMonth': function(val) {
+                this.form.noneTypeFreeMonth = val;
+                this.$api.saveServiceData(this.form);
+            },
+            'form.serviceContent': function(val) {
+                this.form.serviceContent = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.serviceContent = {
+                        isNull: true,
+                        content: '服务内容不能为空'
+                    };
+                }else {
+                    this.form.validState.serviceContent = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.otherBBCK': function(val) {
+                this.form.otherBBCK = val;
+                this.$api.saveServiceData(this.form);
+            },
+            'form.otherPersonCK': function(val) {
+                this.form.otherPersonCK = val;
+                this.$api.saveServiceData(this.form);
+            },
+            'form.otherDocCK': function(val) {
+                this.form.otherDocCK = val;
+                this.$api.saveServiceData(this.form);
+            },
+            'form.servicePayCK': function(val) {
+                this.form.servicePayCK = val;
+                this.$api.saveServiceData(this.form);
+            },
+            'form.serviceMethod': function(val) {
+                this.form.serviceMethod = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.serviceMethod = {
+                        isNull: true,
+                        content: '服务方式不能为空'
+                    };
+                }else {
+                    this.form.validState.serviceMethod = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.workResult': function(val) {
+                this.form.workResult = val;
+                if (String.isNullOrBlank(val)) {
+                    this.form.validState.workResult = {
+                        isNull: true,
+                        content: '工作成果不能为空'
+                    };
+                }else {
+                    this.form.validState.workResult = {
+                        isNull: false,
+                        content: ''
+                    };
+                }
+                this.$api.saveServiceData(this.form);
+            },
+            'form.otherContent': function(val) {
+                this.form.otherContent = val;
+                this.$api.saveServiceData(this.form);
+            }
+        },
+        methods: {
+            init: function(param) {
+                this.param = param;
+                if (param.serviceInfo) {
+                    this.allowEdit = param.isEdit;
+                    if (param.serviceInfo.templeteData) {
+                        var content = JSON.parse(param.serviceInfo.templeteData);
+                        if (content) {
+                            this.form.periodType = content.periodType;
+                            this.form.periodStart = content.periodStart;
+                            this.form.periodEnd = content.periodEnd;
+                            this.form.totalMonth = content.totalMonth;
+                            this.form.freeMonth = content.freeMonth;
+                            this.form.noneTypeStart = content.noneTypeStart;
+                            this.form.noneTypeMonth = content.noneTypeMonth;
+                            this.form.noneTypeFreeMonth = content.noneTypeFreeMonth;
+
+                            this.form.otherBBCKOld = content.otherBBCK;
+                            this.form.otherPersonCKOld = content.otherPersonCK;
+                            this.form.otherDocCKOld = content.otherDocCK;
+                            this.form.servicePayCKOld = content.servicePayCK;
+
+                            this.form.otherBBCK = content.otherBBCK;
+                            this.form.otherPersonCK = content.otherPersonCK;
+                            this.form.otherDocCK = content.otherDocCK;
+                            this.form.servicePayCK = content.servicePayCK;
+
+                            this.form.serviceContent = content.serviceContent;
+                            this.form.serviceMethod = content.serviceMethod;
+                            this.form.workResult = content.workResult;
+                            this.form.otherContent = content.otherContent;
+                        }else {
+                            this.getContractInfo(param);
+                        }
+                    }else {
+                        this.getContractInfo(param);
+                    }
+                }else {
+                    this.allowEdit = true;
+                    this.getContractInfo(param);
+                }
+            },
+            getContractInfo: function(param) {
+                var vm = this;
+                if (param.contractId) {
+                    vm.request({
+                        url: "/signCloud/contractBuilder/view.do?id=" + param.contractId
+                    }).then(function(data) {
+                        var content = JSON.parse(data.content);
+                        if (content) {
+                            vm.form.periodType = data.periodType;
+                            vm.form.periodStart = data.periodStart;
+                            vm.form.periodEnd = data.periodEnd;
+                            vm.form.totalMonth = content.totalMonth;
+                            vm.form.freeMonth = content.freeMonth;
+                            vm.form.noneTypeStart = content.noneTypeStart;
+                            vm.form.noneTypeMonth = content.noneTypeMonth;
+                            vm.form.noneTypeFreeMonth = content.noneTypeFreeMonth;
+
+                            vm.form.otherBBCKOld = content.otherBBCK;
+                            vm.form.otherPersonCKOld = content.otherPersonCK;
+                            vm.form.otherDocCKOld = content.otherDocCK;
+                            vm.form.servicePayCKOld = content.servicePayCK;
+
+                            vm.form.otherBBCK = content.otherBBCK;
+                            vm.form.otherPersonCK = content.otherPersonCK;
+                            vm.form.otherDocCK = content.otherDocCK;
+                            vm.form.servicePayCK = content.servicePayCK;
+                        }
+                    });
+                }
+            },
+            changeStartDate:function(start){
+                if(start!=''){
+                    var startDate = new Date(start);
+                    var endDate = this.form.periodEnd;
+                    if(endDate!=""){
+                        var months = Math.round((endDate - startDate)/(1000*3600*24*30))+1;
+                        if (months < 0) {
+                            months = 0;
+                        }
+                        this.form.periodStart = startDate;
+                        this.$set(this.form,"totalMonth",months+"");
+                    }
+                }else{
+                    this.$set(this.form,"totalMonth","");
+                }
+            },
+            changeEndDate:function(end){
+                if(end!='') {
+                    var startDate = this.form.periodStart;
+                    var endDate = new Date(end);
+                    if (startDate != "") {
+                        var months = Math.round((endDate - startDate) / (1000 * 3600 * 24 * 30)) + 1;
+                        if (months < 0) {
+                            months = 0;
+                        }
+                        this.form.periodEnd = endDate;
+                        this.$set(this.form, "totalMonth", months + "");
+                    }
+                }else{
+                    this.$set(this.form,"totalMonth","");
+                }
+            },
+            changeNoneMonth:function(event){
+                var price = this.form.singlePrice;
+                this.$set(this.form,"singlePrice","0");
+                this.$set(this.form,"singlePrice",price);
+            },
+        }
+    })
+</script>
+
+<style>
+    #dljz .service-item-desc {
+        line-height: 36px;
+    }
+
+    #dljz .text-row {
+        line-height: 36px;
+        font-size: 14px;
+        color: #8c8c8c;
+    }
+
+    #dljz .text-item{
+        width: 100px;
+        display: inline-block;
+    }
+    #dljz .text-input{
+        position: relative;
+        top: -10px;
+        width: 100px;
+    }
+
+    #dljz .text-input input[readonly]{
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        text-align: center;
+        height: 36px;
+        font-size: 14px;
+    }
+
+    #dljz .date-div .ivu-form-item-label{
+        width: auto!important;
+        font-size: 14px;
+        font-weight: normal;
+        padding-left: 0;
+        color: #8c8c8c;
+    }
+
+    #dljz .check-button {
+        background-color: #FFF;
+        border: 1px solid #54B499;
+        border-radius: 4px;
+        color: #54B499;
+        font-size: 12px;
+        line-height: initial;
+        vertical-align: initial;
+    }
+
+    #dljz .check-button.active {
+        background-color: #54B499;
+        color: #FFF;
+    }
+
+    #dljz .date-div .text-input input {
+        height: 30px!important;
+        margin-top: 12px;
+    }
+
+    #dljz .ivu-checkbox-wrapper {
+        font-size: 14px;
+        color: #8c8c8c;
+    }
+
+    #dljz .text-item{
+        width: 100px;
+        display: inline-block;
+        margin: 0 10px;
+    }
+
+    #dljz .began-date input {
+        height: 30px!important;
+    }
+
+    #dljz .normal-font {
+        font-size: 14px;
+        color: #8c8c8c;
+    }
+
+    #dljz .ivu-form-item {
+        margin-bottom: 15px;
+    }
+
+    #dljz pre {
+        font-family: Helvetica Neue,Helvetica,Arial,Microsoft Yahei,Hiragino Sans GB,Heiti SC,WenQuanYi Micro Hei,sans-serif!important;
+        white-space: pre-wrap;
+        margin: 0;
+    }
+</style>
