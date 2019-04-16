@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>样式绑定</title>
+    <style>
+    .activated{
+        color:red;
+    }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- <div @click="handleDivClick"
+        :class="{activated:isActivated}">hello world</div> -->
+        <!-- <div @click="handleDivClick"
+        :class="[activated,activatedOne]">hello world</div> -->
+        <div :style="[styleObj,styleObj2]" @click="handleDivClick">hello world</div>
+    </div>
+
+    <script src='./vue.js'></script>
+    <script>
+        var vm=new Vue({
+            el:'#app',
+            data:{
+                // activated:'',//class绑定
+                // activatedOne:'activated-one'//class绑定
+                //isActivated:false//class对象绑定
+                styleObj:{//内联
+                    color:"black"
+                },
+                styleObj2:{
+                    fontSize:'20px'
+                }
+            },
+            methods:{
+                //class的对象绑定
+                // handleDivClick:function(){
+                //     this.isActivated=!this.isActivated;
+                // },
+                //class绑定
+                // handleDivClick:function(){
+                //     this.activated==="activated"?this.activated='':this.activated='activated';
+                // }
+                //内联
+                handleDivClick:function(){
+                    this.styleObj.color=this.styleObj.color==='black'?'red':'black';
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>计算属性 getter setter</title>
+</head>
+<body>
+    <div id="app">
+       {{fullName}}
+    </div>
+
+
+    <script src='./vue.js'></script>
+    <script>
+        //生命周期函数就是vue实例在某一个时间点自动执行的函数
+        var vm=new Vue({
+            el:'#app',
+            data:{
+                firstName:'Dell',
+                lastName:'Lee'
+            },
+            computed:{
+                fullName:{
+                    get:function(){
+                        return this.firstName+this.lastName;
+                    },
+                    set:function(value){
+                        var arr=value.split(" ");
+                        this.firstName=arr[0];
+                        this.lastName=arr[1];
+                    }
+                }
+            }
+          
+        })
+    </script>
+</body>
+</html>

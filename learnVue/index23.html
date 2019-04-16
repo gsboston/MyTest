@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>动画复用</title>
+    <!-- <style>
+        .v-enter,.v-leave-to{
+            opacity:0;
+        }
+        .v-enter-active,.v-leave-active{
+            transition:opacity 3s;
+        }
+        
+    </style> -->
+</head>
+<body>
+    <div id="app">
+    <transition>
+        <fade :show="show">
+      <div>hello world</div>
+    </fade>
+    </transition>
+      <button @click="handleClick">qiehuan</button>
+    </div>
+
+    
+    <script src='./vue.js'></script>
+    <script>
+        Vue.component('fade',{
+            props:['show'],
+            template:`
+            <transition @befor-enter="handleBeforEnter"
+            @enter="handleEnter">
+                <slot v-if="show"></slot>
+                </transition>
+            `
+        })
+
+       //动画没执行的时候会加入.fade-enter .fade-enter-active
+       //执行第一帧的时候去掉 .fade-enter 加入 fade-enter-to
+       //最后一帧 去掉fade-enter-to  .fade-enter-active
+    var vm=new Vue({
+        el:'#app',
+        components:{
+            
+        },
+        data:{
+            show:true
+        },
+        methods:{
+            handleClick:function(){
+                this.show=!this.show
+            }
+        }
+    })
+    </script>
+</body>
+</html>

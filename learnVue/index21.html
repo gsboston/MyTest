@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>js动画</title>
+    <link rel="stylesheet" type="text/css" href="./animate.css">
+    <style>
+        .fade-enter,.fade-leave-to{
+            opacity:0;
+        }
+        .fade-enter-active,.fade-leave-active{
+            transition: opacity 1s;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+    <transition name="fade" mode="out-in">
+        <child v-if="show"></child>
+        <child-one v-else></child-one>
+        <div></div>
+      <div v-if="show" key="1">hello world</div>
+      <div v-else key="2">Bye world</div>
+    </transition>
+      <button @click="handleClick">qiehuan</button>
+    </div>
+
+    
+    <script src='./vue.js'></script>
+    <script src='./velocity.js'></script>
+    <script>
+        Vue.component('child',{
+            template:'<div>child</div>'
+        })
+        Vue.component('child-one',{
+            template:'<div>child-one</div>'
+        })
+
+    var vm=new Vue({
+        el:'#app',
+        components:{
+            
+        },
+        data:{
+            show:true
+        },
+        methods:{
+            handleClick:function(){
+                this.show=!this.show
+            }
+           
+        }
+    })
+    </script>
+</body>
+</html>

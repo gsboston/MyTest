@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>父子组件传值</title>
+    <style>
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <counter :count="0" @change="handleAdd"></counter>
+        <counter :count="1" @change="handleAdd"></counter>
+        <div>{{total}}</div>
+    </div>
+
+
+    <script src='./vue.js'></script>
+    <script>
+        var counter = {
+            //对于count 子组件只能用 不能改，警告
+            props: ['count'],
+            data: function () {
+                return {
+                    number: this.count
+                }
+            },
+            template: '<div @click="handleClick">{{number}}</div>',
+            methods: {
+                handleClick: function () {
+                    this.number++
+                    this.$emit('change', 1)
+                }
+            }
+        }
+
+        var vm = new Vue({
+            el: '#app',
+            components: {
+                counter: counter
+            },
+            data: {
+                total: 5
+            },
+            methods: {
+                handleAdd: function (num) {
+                    this.total += num
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

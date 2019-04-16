@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>作用域插槽</title>
+    <style>
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <child>
+            <!-- slot-scope声明从子组件获取的数据放在props中 -->
+            <template slot-scope="props">
+                <li>{{props.item}}--h</li>
+            </template>
+        </child>
+    </div>
+
+
+    <script src='./vue.js'></script>
+    <script>
+        // 使用场景，就是子组件某一部分的dom结构应该由外部传递时，子组件可以像父组件插槽传数据
+
+        // 父组件调用子组件时，使用插槽，作用域插槽必须以template包裹
+        Vue.component('child', {
+            data: function () {
+                return {
+                    list: [1, 2, 3, 4]
+                }
+            },
+            template: `<div>
+                <ul>
+                <slot v-for="item of list" :item=item></slot>
+                </ul>
+            </div>`
+        })
+
+        var vm = new Vue({
+            el: '#app',
+            components: {
+
+            },
+            data: {
+
+            },
+            methods: {
+
+            }
+        })
+    </script>
+</body>
+
+</html>
