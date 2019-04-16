@@ -5,9 +5,9 @@
     </div>
     <div class="header-input">
       <span class="iconfont">&#xe632;</span>
-      输入城市景点主题
+      输入城市/景点/游玩主题
     </div>
-    <router-link to="/city">
+    <router-link to='/city'>
       <div class="header-right">
         {{this.city}}
         <span class="iconfont arrow-icon">&#xe64a;</span>
@@ -17,21 +17,20 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'HomeHeader',
-  props: {
-    city: String
+  computed: {
+    ...mapState(['city'])
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-  // 正常@直接定位到src目录，但是css中要加~@
-  // 可以再bulid/webpack.base.conf.js 中修改别名
   @import '~styles/varibles.styl'
   .header
     display: flex
-    line-height: .86rem
+    line-height: $headerHeight
     background: $bgColor
     color: #fff
     .header-left
@@ -46,13 +45,14 @@ export default {
       line-height: .64rem
       margin-top: .12rem
       margin-left: .2rem
-      background: #fff
       padding-left: .2rem
+      background: #fff
       border-radius: .1rem
       color: #ccc
     .header-right
-      width: 1.24rem
-      floadt: right
+      min-width: 1.04rem
+      padding: 0 .1rem
+      float: right
       text-align: center
       color: #fff
       .arrow-icon

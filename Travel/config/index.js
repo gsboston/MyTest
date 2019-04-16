@@ -6,10 +6,10 @@ const path = require('path')
 
 module.exports = {
   dev: {
-    // Paths webpack-dev-server
+
+    // Paths fiddler charles
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
-    //api开发环境替换
+    assetsPublicPath: '/project',
     proxyTable: {
       '/api': {
         target: 'http://localhost:8080',
