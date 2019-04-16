@@ -55,12 +55,17 @@ export default {
     letter: String
   },
   computed: {
+    // mapState将vuex中的city映射到当前组件计算属性中，名字为currentCity
     ...mapState({
       currentCity: 'city'
     })
   },
   methods: {
     handleCityClick (city) {
+      // this.$store.dispatch('changeCity',city)
+      // this.$store.commit('changeCity',city) // 如果不涉及异步及批量操作可以直接通过commit调用mutations
+      
+      // 通过mapMutations将mutations中的方法映射到当前组件
       this.changeCity(city)
       this.$router.push('/')
     },

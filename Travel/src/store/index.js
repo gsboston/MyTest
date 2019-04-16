@@ -5,7 +5,15 @@ import mutations from './mutations'
 
 Vue.use(Vuex)
 
+// module拆分代码，
+
 export default new Vuex.Store({
   state,
-  mutations
+  mutations,
+  // 使用场景，类似计算属性
+  getters: {
+    doubleCity(state) {
+      return state.city + 'hot'
+    }
+  }
 })
