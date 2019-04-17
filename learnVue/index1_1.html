@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Page Title</title>
+</head>
+<body>
+    <div id="app">{{content}}</div>
+
+
+    <script src='./vue.js'></script>
+    <script>
+        
+        // 事件
+        // v-on
+        // v-on:click  ===  @click
+
+        // v-show v-if
+
+        // v-for json v-for="val,key in users"
+        // 也可以循环字符串 s in str
+        // 也可以循环数字，相当于for
+        // :key 不能重复，不能变
+
+        // v-pre 预编译 <div v-pre></div> 不需要编译div内的内容，提升性能，安全
+
+        // v-clock 当js代码阻塞时，页面会显示vue代码，
+        // <div v-clock>{{a}}</div>
+        // 加载完成前div会有一个v-clock属性，通过样式控制隐藏
+        // *[v-clock]{display:none;}
+
+        var app=new Vue({
+            el:'#app',
+            data:{
+                content:'hello world1'
+            }
+        })
+     
+    </script>
+</body>
+</html>
