@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>事件修饰符</title>
+</head>
+<body>
+    <div id="app">{{content}}</div>
+
+
+    <script src='./vue.js'></script>
+    <script>
+        //@click.stop="fn()" 阻止冒泡
+        //@click.once="fn()" 单次执行
+        //@submit.prevent="sub(this)" 阻止默认事件,表单提交
+        // 这个this是window，因为不是原生事件
+
+        // @click.native="fn()"  native，原生事件,配合组件使用，并是不调用原生的函数
+        // @keydown.enter="fn()" @keydown.13="fn()"  .keycode|name 筛选按键 可以组合
+        // self 处理自己的事件，冒泡
+        // capture 捕获事件
+
+        var app=new Vue({
+            el:'#app',//负责管理区域
+            data:{
+                content:'hello world1'
+            }
+        })
+      
+    </script>
+</body>
+</html>

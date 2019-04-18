@@ -1,54 +1,23 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8" />
-    <title>transition-group</title>
-    <link rel="stylesheet" type="text/css" href="./animate.css">
-    <style>
-        .v-enter,
-        .v-leave-to {
-            opacity: 0;
-        }
-
-        .v-enter-active,
-        .v-leave-active {
-            transition: opacity 1s;
-        }
-    </style>
+    <title>Page Title</title>
 </head>
-
 <body>
-    <div id="app">
-        <!-- 相当于为每个元素外层包裹transition -->
-        <transition-group>
-            <div v-for="(item,index) of list" :key="item.id">{{item.text}}--{{item.id}}</div>
-        </transition-group>
-        <button @click="handleBtn">dddd</button>
-    </div>
+    <div id="app">{{content}}</div>
 
 
     <script src='./vue.js'></script>
     <script>
-        var count = 0;
-        var vm = new Vue({
-            el: '#app',
-            components: {
-
-            },
-            data: {
-                list: []
-            },
-            methods: {
-                handleBtn: function () {
-                    this.list.push({
-                        id: count++,
-                        text: 'hello'
-                    })
-                }
+     
+        var app=new Vue({
+            el:'#app',//负责管理区域
+            data:{
+                content:'hello world1'
             }
         })
+       
     </script>
 </body>
-
 </html>
