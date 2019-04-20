@@ -1,49 +1,93 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>路由</title>
-    <script src="vue.js" charset="utf-8"></script>
-    <script src="vue-router.js" charset="utf-8"></script>
-  </head>
-  <body>
-    <div id="div1">
-      <!-- <a href="#/a">页面1</a>
+
+<head>
+  <meta charset="utf-8">
+  <title>路由</title>
+  <script src="vue.js" charset="utf-8"></script>
+  <script src="vue-router.js" charset="utf-8"></script>
+</head>
+
+<body>
+  <div id="div1">
+    <!-- <a href="#/a">页面1</a>
       <a href="#/b">页面2</a>
       <a href="#/c">页面3</a> -->
-      <router-link to="/a">页面1</router-link>
-      <router-link to="/b">页面2</router-link>
-      <router-link to="/c">页面3</router-link>
-      <br>
-      文字
-      <!--1.路由容器-->
-      <router-view></router-view>
-    </div>
-  </body>
+    <router-link :to="{name:'news',params:{id:9}}">页面1</router-link>
+    <router-link to="/b/5">页面2</router-link>
+    <router-link to="/c">页面3</router-link>
+    <br> 文字
+    <!--1.路由容器-->
+    <router-view></router-view>
+  </div>
+</body>
 
-  <script>
-  //2.路由表
-  let router=new VueRouter({
+<script>
+  //2.路由表  
+  // 路由先匹配到谁就走谁，可以重复
+  let router = new VueRouter({
     routes: [
       {
-        path: '/a',
-        component: {template: '<div>aaaaa</div>'}
+        name: 'news',
+        path: '/a/:id/',
+        component: { template: '<div>aaaaa</div>' }
       },
       {
-        path: '/b',
-        component: {template: '<div>bbbbb</div>'}
+        path: '/b/:id/',
+        component: {
+          template: '<div>bbbbb</div>'
+        },
+        // 路由守卫，能看能控制
+        beforeUpdate(value, old_value, next) {
+          if (confirm('xxx?') == true) {
+            next();
+          }
+        }
       },
       {
         path: '/c',
-        component: {template: '<div>cccccc</div>'}
+        component: {
+          template: '<div>cccccc</div>',
+          updated() {
+
+          },
+        }
       }
     ]
   });
 
-  let vm=new Vue({
+  let vm = new Vue({
     el: '#div1',
-    data: {},
-    router
+    data: {
+
+    },
+    router,
+    mounted() {
+      // 获取页面参数 /b/:id/
+      // this.$route  当前路由的信息  
+      this.$route.params.id;
+
+      // JS控制路由 this.$router  用于操作路由
+      this.$router.push('/b/1');
+      this.$router.push({ name: 'news', params: { id: 22 } });
+
+      // 为何用push
+      // history是一个栈，push在最后添加一条，入栈
+
+      // push(string|object)
+      // replace(string|object) 替换最后一个历史记录（当前），希望用户不能回到某一步操作
+      // go(int)
+
+
+
+    },
+    watch: {
+      // 监视路由,此种方法不推荐，只能看不能干预
+      $route(value, old_value) {
+
+      }
+    },
   });
-  </script>
+</script>
+
 </html>

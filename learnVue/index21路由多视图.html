@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="vue.js" charset="utf-8"></script>
+    <script src="vue-router.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <div id="div1">
+      <router-link to="/">首页</router-link>
+      <router-link to="/news">新闻</router-link>
+      <!--1.路由容器-->
+      <router-view name="header"></router-view>
+      <router-view></router-view>
+      <router-view name="footer"></router-view>
+    </div>
+  </body>
+
+  <script>
+  const headerCmp={
+    template: '<div>头部</div>'
+  };
+  const footerCmp={
+    template: '<div>底部</div>'
+  };
+
+  const newsCmp={
+    template: '<div>新闻</div>'
+  };
+
+  const userCmp={
+    template: '<div>用户</div>'
+  };
+
+  const indexCmp={
+    template: '<div>首页</div>'
+  };
+
+  //2.路由表
+  let router=new VueRouter({
+    routes: [
+      {
+        path: '/',
+        name: 'index',
+        components: {
+          default: indexCmp,
+          header: headerCmp,
+          footer: footerCmp
+        }
+      },
+      {
+        path: '/news',
+        name: 'news',
+        components: {
+          default: newsCmp,
+          header: headerCmp,
+          footer: footerCmp
+        }
+      }
+    ]
+  });
+
+  let vm=new Vue({
+    el: '#div1',
+    data: {},
+    router
+  });
+  </script>
+</html>
