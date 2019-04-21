@@ -1,7 +1,7 @@
 import VueRouter from 'vue-router';
 import Header from './components/header';
 import Home from './components/home';
-import News from './components/news1';
+import News, {router as news_router} from './components/news';
 
 export default new VueRouter({
   routes: [
@@ -19,7 +19,8 @@ export default new VueRouter({
       components: {
         header: Header,
         default: News
-      }
+      },
+      children: news_router
     }
   ]
 })
