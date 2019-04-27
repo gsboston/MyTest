@@ -1,44 +1,62 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    <div id="div1">
-      姓名：{{name}}<br>
-      年龄：{{age}}
-    </div>
-  </body>
-  <script>
-  let el=document.getElementById('div1');
 
-  let template=el.innerHTML;
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
 
-  let _data={
-    name: 'blue',
-    age: 18
+<body>
+  <div id="app">
+    姓名：{{name}}
+    <br> 年龄：{{age}}
+  </div>
+</body>
+<script>
+  // 创建根元素
+  let el = document.getElementById('app');
+
+  // 数据变化要重新编译标签，既然要重新编译，就要保留最初状态，否则编译一次后，第二次无法正常编译了
+  // 保留原始的innerHTML
+  let template = el.innerHTML;
+
+  // 真正的数据，对内的data
+  let _data = {
+    name: '_BuzzLy',
+    age: 25
   };
 
-  let data=new Proxy(_data, {
-    set(obj, name, value){
-      //alert(`有人视图设置 ${name}=>${value}`);
-      obj[name]=value;
+  // Proxy是原生的对象，可以将真正的数据对象隐藏，我们修改的是代理对象
+  // 对外的data，是一个Proxy对象，传入真正的数据，第二个参数就是一个json
+  let data = new Proxy(_data, {
+    // 试图设置数据时调用
+    // 参数：_data，属性名，值
+    set(obj, name, value) {
+      obj[name] = value;
 
-      //数据变了
-      //console.log('数据变了');
+      // 数据变了
+      console.log(`数据变了,设置 ${name}=>${value}`);
+      // 数据改变后重新渲染
       render();
-    }
+    },
+    // 试图获取数据的时调用，默认要什么就返回什么
+    // get() {}
   });
 
+  // data.name="张三";
+
+  // 初始化渲染
   render();
 
-  function render(){
-    el.innerHTML=template.replace(/\{\{\w+\}\}/g, str=>{
-      str=str.substring(2, str.length-2);
-
+  function render() {
+    el.innerHTML = template.replace(/\{\{\w+\}\}/g, str => {
+      console.log(str); // 匹配出来的 {{name}}  {{age}} 
+      // 截取字符串，得到属性key值
+      str = str.substring(2, str.length - 2);
+      // 从真实数据中拿到对应属性的值返回，替换{{key}}
       return _data[str];
     });
   }
-  </script>
+</script>
+
 </html>

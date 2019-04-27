@@ -1,30 +1,32 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    <div id="div1">
-      <input type="text" v-model="name"><br>
-      姓名：{{name}}<br>
-      年龄：{{age}}
-    </div>
-  </body>
-  <script>
-  let el=document.getElementById('div1');
 
-  let template=el.innerHTML;
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
 
-  let _data={
+<body>
+  <div id="div1">
+    <input type="text" v-model="name">
+    <br> 姓名：{{name}}
+    <br> 年龄：{{age}}
+  </div>
+</body>
+<script>
+  let el = document.getElementById('div1');
+
+  let template = el.innerHTML;
+
+  let _data = {
     name: 'blue',
     age: 18
   };
 
-  let data=new Proxy(_data, {
-    set(obj, name, value){
+  let data = new Proxy(_data, {
+    set(obj, name, value) {
       //alert(`有人视图设置 ${name}=>${value}`);
-      obj[name]=value;
+      obj[name] = value;
 
       //数据变了
       //console.log('数据变了');
@@ -34,25 +36,26 @@
 
   render();
 
-  function render(){
+  function render() {
     //渲染
-    el.innerHTML=template.replace(/\{\{\w+\}\}/g, str=>{
-      str=str.substring(2, str.length-2);
+    el.innerHTML = template.replace(/\{\{\w+\}\}/g, str => {
+      str = str.substring(2, str.length - 2);
 
       return _data[str];
     });
 
     //找所有的v-model
     Array.from(el.getElementsByTagName('input'))
-      .filter(ele=>ele.getAttribute('v-model'))
-      .forEach(input=>{
-        let name=input.getAttribute('v-model');
-        input.value=_data[name];
+      .filter(ele => ele.getAttribute('v-model'))
+      .forEach(input => {
+        let name = input.getAttribute('v-model');
+        input.value = _data[name];
 
-        input.oninput=function (){
-          data[name]=this.value;
+        input.oninput = function () {
+          data[name] = this.value;
         };
       });
   }
-  </script>
+</script>
+
 </html>
