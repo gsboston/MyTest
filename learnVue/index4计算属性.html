@@ -24,7 +24,10 @@
                 name:'<p>Dell</p>',
                 firstName:'Dell',
                 lastName:'Lee',
-                fullName:'DellLee'
+                fullName:'DellLee',
+                stu:{
+                    name:'zhangsan'
+                }
             },
             //监听器 也有缓存，不过不如computed简洁
             watch:{
@@ -33,6 +36,13 @@
                 },
                 lastName:function(){
                     this.fullName=this.firstName+this.lastName
+                },
+                // 深度监视
+                stu:{
+                    deep:true,
+                    handler(newV,oldV){
+                        console.log(newV[0].name);
+                    }
                 }
             }
             //计算属性  值不变就会读缓存 不会重新计算

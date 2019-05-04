@@ -25,6 +25,7 @@
             </tbody>
         </table>
         <!-- 操作dom要设置ref属性 -->
+        <!-- 给标签绑定ref，获取的是原生js对象。给组件绑定ref，获取的是组件对象 -->
         <div ref='hello' @click="handleClick">hello world</div>
         <counter ref="one" @change="handleChange"></counter>
         <counter ref="two" @change="handleChange"></counter>

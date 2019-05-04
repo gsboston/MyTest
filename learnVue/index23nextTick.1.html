@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>过滤器</title>
+</head>
+<body>
+    <div id="app">{{price | myFilter}}
+
+        {{msg | myGlobalFilter('hehe')}}
+    </div>
+
+
+    <script src='./vue.js'></script>
+    <script>
+     
+        var app=new Vue({
+            el:'#app',//负责管理区域
+            data:{
+                price: 0,
+                msg: 'halo'
+            },
+            // 局部过滤器
+            filters:{
+                myFilter(value){
+                    return `$-${value}`
+                }
+            }
+        })
+
+        // 全局过滤器
+        Vue.filter('myGlobalFilter',function(value,arg1){
+            return value;
+        })
+       
+    </script>
+</body>
+</html>

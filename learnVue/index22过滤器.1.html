@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>nextTick</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-show="isShow" ref="input" >
+        <div style="width:100px;border: 5px solid red;padding:10px;"></div>
+    </div>
+
+
+    <script src='./vue.js'></script>
+    <script>
+     
+        var app=new Vue({
+            el:'#app',
+            data:{
+                isShow : false
+            },
+            mounted () {
+                this.isShow = true;
+
+                // 在这里直接获取dom元素是无法正常设置的
+                this.$refs.input.foucs();
+
+                // 需要nextTick，是在dom更新循环结束之后执行延迟回调，在修改数据之后使用$nextTick，可以在回调中获取到更新后的dom
+                this.$nextTick(function(){
+                    this.$refs.input.foucs();
+                })
+            },
+            
+        })
+
+    </script>
+</body>
+</html>
