@@ -1,0 +1,3 @@
+npx webpack index.js
+
+只认识import，只是一个模块打包工具

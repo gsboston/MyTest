@@ -1,0 +1,26 @@
+新版本的nodejs会提高webpack的打包速度
+webpack版本新也会提高打包速度
+
+npm init (-y)// 使项目符合node规范
+一直回车即可，生成package.json
+
+在文件中加入
+"private":true // 声明项目为私有，不会发不到npm线上仓库
+
+安装webpack
+
+1.全局安装 不推荐，多项目不同版本无法兼容
+npm install webpack webpack-cli -g
+webpack -v
+npm uninstall webpack webpack-cli -g // 卸载全局webpack
+
+2.项目内安装webpack
+命令行进入项目目录，
+npm install webpack webpack-cli -D
+webpack -v // 无法输入版本信息，因为node会查找全局的webpack。这里要用npx命令
+npx webpack -v // npx命令会在当前项目中node_modules中找到webpack
+安装具体版本 npm install webpack@4.16.0 
+可以通过webpack info 查看版本
+
+npx webpack xxx.js 就会打包某一个js文件。
+使用的是webpack默认的配置
