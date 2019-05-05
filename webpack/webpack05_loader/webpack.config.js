@@ -16,7 +16,6 @@ module.exports = {
 					outputPath: 'images/'
 				}
 			}
-
 		}, 
 		//{
 			// test: /\.(jpg|png|gif)$/,
@@ -47,6 +46,7 @@ module.exports = {
 					loader: 'css-loader',
 					options: {
 						importLoaders: 2,
+						// 启用后一定要用 import xx from xx的形式么？？？？？？ 
 						modules: true // 默认false，引入的css属于全局的样式，开启true后，css变为模块化，引入css时可以通过style.xxx
 					}
 				},
