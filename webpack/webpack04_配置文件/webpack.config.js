@@ -3,9 +3,15 @@ const path = require('path');
 
 module.exports = {
 	mode: 'production', // 打包模式，默认，设置development js不会被压缩
-	entry: './src/index.js', // 入口文件
+	// entry: './src/index.js', // 入口文件,
+	entry: {// 打包输出两个文件，对应的output中的filename也要修改，打包后的两个文件都会放到html中
+		main: './src/index.js',
+		sub: './src/index.js'
+	},
 	output: { // 输入配置
-		filename: 'bundle.js', // 打包好文件
+		publicPath:'http://cdn.com.cn',// 指定打包的文件前缀地址
+		// filename: 'bundle.js', // 打包好文件,默认是main.js
+		filename:'[name].js',
 		path: path.resolve(__dirname, 'dist') // 打包好的文件夹，默认就是dist
 	}
 }
