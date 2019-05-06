@@ -13,8 +13,8 @@ module.exports = {
 		contentBase: './dist',
 		open: true,
 		port: 8080,
-		hot: true,
-		hotOnly: true
+		hot: true, // 开启hmr
+		hotOnly: true // 阻止浏览器自动刷新
 	},
 	module: {
 		rules: [{
@@ -66,3 +66,9 @@ module.exports = {
 		path: path.resolve(__dirname, 'dist')
 	}
 }
+
+// Hot Module Replacement 
+// hmr 热模块替换
+// webpack-dev-server 打包后不会生成dist目录，而是在内存中。提升打包速度
+// hmr 可以热更css js等代码
+// 引入HotModuleReplacementPlugin插件，可开启hmr功能
