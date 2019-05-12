@@ -1,0 +1,8 @@
+body {background:green;}
+
+#div1 {
+  width:200px; height:200px; border:1px solid black; background:white;
+  transform: rotate(0deg); transition:1s all ease;
+}
+
+#div1:hover {transform: rotate(90deg);}
