@@ -26,7 +26,7 @@ module.exports = {
 					outputPath: 'images/',
 					limit: 10240
 				}
-			} 
+			}
 		}, {
 			test: /\.(eot|ttf|svg)$/,
 			use: {

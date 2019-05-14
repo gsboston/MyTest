@@ -18,9 +18,9 @@ module.exports = {
 			}
 		}, 
 		//{
+			// 对于特别小的图片，可以使用url-loader打包成base64格式放到js文件中
 			// test: /\.(jpg|png|gif)$/,
 			// use: {
-			// 	// url-loader 会将图片打包成base64放到bundle.js中，小的图片适用
 			// 	loader: 'url-loader',
 			// 	options: {
 			// 		name: '[name]_[hash].[ext]',

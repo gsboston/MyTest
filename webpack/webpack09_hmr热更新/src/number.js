@@ -1,7 +1,7 @@
 function number() {
 	var div = document.createElement('div');
 	div.setAttribute('id', 'number');
-	div.innerHTML = 3000;
+	div.innerHTML = 5000;
 	document.body.appendChild(div);
 }
 
