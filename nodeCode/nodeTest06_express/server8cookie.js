@@ -6,15 +6,15 @@ server.listen(8080);
 
 server.use(cookieParser());
 
-server.get('/a', (req, res) => {
+server.get('/index', (req, res) => {
   // 添加中间件后可以使用req上的cookies
   console.log(req.cookies);
 
   // 写cookie
-  // res.cookie('amount', 99.8, {
+  // res.cookie('num', 10, {
   //   // domain: 'aaa.com',//存储域名
-  //   path: '/', //存储路径
-  //   maxAge: 14 * 86400 * 1000
+  //   // path: '/', //存储路径
+  //   maxAge: 24 * 3600 * 1000
   // });
 
   res.send('ok');

@@ -11,17 +11,18 @@ server.use(cookieSession({
 }));
 
 //
-server.get('/a', (req, res) => {
+server.get('/index', (req, res) => {
   console.log(req.session);
-  if (!req.session['view']) {
-    req.session['view'] = 1;
-  } else {
-    req.session['view']++;
-  }
+  // if (!req.session['view']) {
+  //   req.session['view'] = 1;
+  // } else {
+  //   req.session['view']++;
+  // }
 
-  req.session['amount'] = 99.8;
+  req.session['num'] = 10;
   //
-  res.send(`欢迎你第${req.session['view']}到访本站，你的余额是：${req.session['amount']}`);
+  // res.send(`欢迎你第${req.session['view']}到访本站，你的余额是：${req.session['num']}`);
+  res.send('ok');
 });
 
 // cnpm i cookie-session -D

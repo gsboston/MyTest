@@ -10,14 +10,14 @@ server.use(cookieParser(
 ));
 
 
-server.get('/a', (req, res) => {
-  console.log('cookie:', req.cookies);         //未签名的cookie
+server.get('/index', (req, res) => {
+  // console.log('cookie:', req.cookies);         //未签名的cookie
   console.log('signed:', req.signedCookies);   //签名的cookie
 
   // 设置cookie
-  // res.cookie('amount', 99.8, {
+  // res.cookie('num', 10, {
   //   //httpOnly: true,   // 只能由服务器操作，前台看不到
-  //   maxAge: 14*86400*1000,
+  //   maxAge: 24*3600*1000,
   //   //secure: true,         // 只有https情况下才能使用cookie
   //   signed: true            // 是否签名
   // });
