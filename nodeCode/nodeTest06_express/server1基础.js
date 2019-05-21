@@ -7,10 +7,8 @@ server.listen(8080);
 server.get('/a', (req, res, next) => {
   console.log('a');
 
-  // 通过next传参
+  // next无法直接传参，将需要传递的值放在req上
   req.usertype = 5;
-
-  // throw new Error('aaaa');
 
   // next可以将一个请求分几步完成，多级处理
   // 有利于中间件的使用

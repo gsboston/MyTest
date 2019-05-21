@@ -9,11 +9,10 @@ server.listen(8080);
 let obj = multer({ dest: './static/upload' });
 server.use(obj.any());
 
-//
-server.post('/reg', (req, res) => {
+server.post('/upload', (req, res) => {
   // 通过req.files 拿到上传的文件具体信息
   console.log(req.files);
-
+  
   res.send('upload successed');
 });
 
