@@ -2,6 +2,7 @@ const http = require('http');
 const multiparty = require('multiparty');
 
 http.createServer((req, res) => {
+    // 设置跨域
     res.setHeader('access-control-allow-origin', '*');
     let form = new multiparty.Form({ uploadDir: './upload/' });
 

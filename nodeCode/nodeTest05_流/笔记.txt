@@ -21,7 +21,7 @@ fs.readFile('www/1.html', (err, buffer)=>{
 
 --------------------------------------------------------------------------------
 
-启动器
+启动器 不好用
 forever
 
 npm i forever -g
@@ -50,7 +50,7 @@ db.query('start transaction(); ')
 db.query('SELECT (); UPDATE();')
 db.query('commit();')
 
-
+q
 杀进程
 1、进入cmd命令窗口，输入:netstat -ano|findstr “3010”
 2、 找到对应的PID值‘ 4488 ’，输入：taskkill -pid 4488 -f
