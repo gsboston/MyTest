@@ -8,10 +8,10 @@ server.listen(8080);
 
 ejs(server, {
   root: path.resolve(__dirname, 'template'),
-  layout: false,
-  viewExt: 'ejs',
-  cache: false,
-  debug: false
+  layout: false, // 多一层文件夹
+  viewExt: 'ejs', // 视图文件扩展名
+  cache: false, // 是否缓存，开发不需要
+  debug: false // debug
 });
 
 let router = new Router();
@@ -35,3 +35,6 @@ router.get('*', async ctx => {
 
 server.use(router.routes());
 server.use(router.allowedMethods());
+
+// cnpm i koa-ejs -D
+// cnpm i koa koa-router koa-static -D

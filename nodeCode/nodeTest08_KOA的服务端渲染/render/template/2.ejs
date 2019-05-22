@@ -4,14 +4,20 @@
 <head>
   <meta charset="utf-8">
   <title></title>
+  <script>
+    //  <!-- 在js中定义的变量 被当做字符串丢给前台，模板不会解析 -->
+    let a = 12;
+  </script>
 </head>
 
 <body>
+  <!-- - 去掉渲染后的空格 -->
   <% include header.ejs -%>
     <%
     let a=12;
     let b=6;
     -%>
+
       <%=a+b -%>
         <ul>
           <%arr.forEach(item=>{%>
