@@ -20,7 +20,7 @@ router.get('/a', async (ctx, next) => {
 
 // 3.到这router和服务器是没有关联的。
 // use 添加中间件，原来的use在koa中是all
-server.use(router.routes());
+// server.use(router.routes());
 
 // koa独立路由的好处就是嵌套路由，庞大的应用拆分
 

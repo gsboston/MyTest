@@ -1,6 +1,6 @@
-const path=require('path');
+const path = require('path');
 
-module.exports={
+module.exports = {
   //database
   DB_HOST: 'localhost',
   DB_PORT: 3306,
@@ -13,3 +13,5 @@ module.exports={
   HTTP_ROOT: path.resolve(__dirname, '../static/'),
   HTTP_UPLOAD: path.resolve(__dirname, '../static/upload/')
 };
+
+

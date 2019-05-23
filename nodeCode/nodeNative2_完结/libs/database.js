@@ -1,8 +1,8 @@
-const mysql=require('mysql');
-const co=require('co-mysql');
-const {DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_NAME}=require('../config');
+const mysql = require('mysql');
+const co = require('co-mysql');
+const { DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_NAME } = require('../config');
 
-let conn=mysql.createPool({
+let conn = mysql.createPool({
   host: DB_HOST,
   port: DB_PORT,
   user: DB_USER,
@@ -10,4 +10,4 @@ let conn=mysql.createPool({
   database: DB_NAME
 });
 
-module.exports=co(conn);
+module.exports = co(conn);
