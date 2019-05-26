@@ -1,7 +1,18 @@
 数组骚操作
-
+connect 源码
+code https://github.com/senchalabs/connect/blob/master/index.js
+https://www.cnblogs.com/htoooth/p/7116480.html  3
+https://www.cnblogs.com/aicanxxx/p/7132427.html  5
+https://segmentfault.com/a/1190000002706491?_ea=185205#articleHeader1  5
 
 异步（大牛）
 无形装逼
 js忽略的小技巧
 vue-router keep-alive
+
+
+koa 中间件
+http://www.php.cn/js-tutorial-376509.html
+https://www.jianshu.com/p/70fb2405b281
+https://www.jb51.net/article/120563.htm
+https://blog.csdn.net/k616358281/article/details/71602055
