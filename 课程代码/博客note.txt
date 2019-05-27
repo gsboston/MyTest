@@ -12,7 +12,6 @@ vue-router keep-alive
 
 
 koa 中间件
-http://www.php.cn/js-tutorial-376509.html
-https://www.jianshu.com/p/70fb2405b281
-https://www.jb51.net/article/120563.htm
+源码https://github.com/koajs/koa/blob/master/lib/application.js
 https://blog.csdn.net/k616358281/article/details/71602055
+https://www.jb51.net/article/120563.htm
