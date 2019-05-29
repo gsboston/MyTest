@@ -1,0 +1,28 @@
+https://www.runoob.com/
+
+mac 推荐使用brew安装
+
+验证是否安装成功
+$which mongod 
+
+mac启动
+$mongod
+输出waiting for connections on port 27017
+
+windows启动
+https://www.runoob.com/mongodb/mongodb-window-install.html
+net start MongoDB
+new stop MongoDB
+
+可视化工具
+RoBo 3T
+http://robomongo.org/download
+下载安装，
+启动软件需要先启动mongo服务
+
+mongoose用来操作mongodb数据库非常简单
+http://mongoose.shujuwajue.com
+模式：描述数据表
+模型：增删改查是通过模型操作
+实例：与实际的“表”关联
+cnpm i mongoose
