@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+// 类似数据库中的表
 let personSchema = new mongoose.Schema({
     name: String,
     age: Number

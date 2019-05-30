@@ -1,12 +1,19 @@
 https://www.runoob.com/
 
 mac 推荐使用brew安装
+安装brew
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+sudo chown -R 用户名 /usr/local
 
+brew install mongodb
 验证是否安装成功
 $which mongod 
+手动创建文件夹
+cd /usr/local/mongodb/bin
+sudo mkdir -p /data/db
 
 mac启动
-$mongod
+$sudo ./mongod
 输出waiting for connections on port 27017
 
 windows启动
