@@ -10,6 +10,8 @@ https://segmentfault.com/a/1190000002706491?_ea=185205#articleHeader1  5
 js忽略的小技巧
 vue-router keep-alive
 
+判断类型
+
 
 koa 中间件
 源码https://github.com/koajs/koa/blob/master/lib/application.js
