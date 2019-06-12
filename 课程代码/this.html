@@ -247,7 +247,7 @@
         var baz = new bar(3)
         console.log(baz.a)
 
-        // new 绑定的优先级比显式 bind 绑定更高，通过 new 调用时，返回的实例已经与 obj1 解绑。
+        // new 绑定的优先级比显式 bind 绑定更高，通过 new 调用时，返回的实例已经与 obj1 解绑。this指向实例
 
         // 3
 
@@ -317,8 +317,9 @@
 
         // ================================
 
-        Function.prototype.bind = Function.prototype.bind || function (context) {
+        Function.prototype.bind = function (context) {
             var me = this;
+            // 获取返回函数参数
             var args = Array.prototype.slice.call(arguments, 1);
             return function bound() {
                 var innerArgs = Array.prototype.slice.call(arguments);
