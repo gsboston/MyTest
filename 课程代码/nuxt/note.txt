@@ -1,0 +1,4 @@
+nuxt.js
+
+安装
+vue init nuxt-community/koa-template <project-name>
