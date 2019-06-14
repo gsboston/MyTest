@@ -12,6 +12,8 @@
 
     <script>
 
+        // this 的指向，是在调用函数时根据执行上下文所动态确定的。
+
         function f1() {
             console.log(this)
         }
@@ -24,8 +26,9 @@
 
         // window
         // undefined
+        // 严格模式下 在全局环境调用函数，函数this指向undefined
 
-        // ================================
+        // ===============例题1=================
 
         const foo = {
             bar: 10,
@@ -40,7 +43,7 @@
         // window
         // undefined
 
-        // ================================
+        // ===============例题2=================
 
         const foo = {
             bar: 10,
@@ -54,7 +57,7 @@
         // {bar: 10, fn: ƒ}
         // 10
 
-        // ================================
+        // ===============例题3=================
 
         const student = {
             name: 'Lucas',
@@ -66,7 +69,7 @@
 
         // true
 
-        // ================================
+        // ===============例题4=================
 
         const person = {
             name: 'Lucas',
@@ -81,7 +84,8 @@
 
         // mike
 
-        // ================================
+        // 深入
+        // ===============例题5-1=================
 
         const o1 = {
             text: 'o1',
@@ -111,7 +115,7 @@
         // o1
         // undefined
 
-        // ================================
+        // ==============例题5-2==================
 
         // 让console.log(o2.fn())输出o2
         const o1 = {
@@ -129,7 +133,9 @@
 
         // o2
 
-        // ================================
+        // 优先级
+
+        // =================例题6=================
 
         const foo = {
             name: 'lucas',
@@ -143,15 +149,17 @@
         console.log(foo.logName.call(bar))
 
         // mike
+        // 显式的绑定call、apply优先级高于通过调用关系的指向绑定。
 
-
-        // ================================
+        // ================例题7================
 
         function Foo() {
             this.bar = "Lucas"
         }
         const instance = new Foo()
         console.log(instance.bar)
+        
+        // Lucas
 
         // new运算符相当于
 
@@ -159,7 +167,7 @@
         obj.__proto__ = Foo.prototype
         Foo.call(obj)
 
-        // ================================
+        // ================例题8=================
 
         function Foo() {
             this.user = "Lucas"
@@ -170,8 +178,10 @@
         console.log(instance.user)
 
         // undefined
+        // 当一个函数作为构造函数，显式的返回一个对象时，那么this指向这个对象。
+        // o中并没有定义user，所以输出undefined
 
-        // ================================
+        // ================例题9================
 
         function Foo() {
             this.user = "Lucas"
@@ -181,8 +191,9 @@
         console.log(instance.user)
 
         // lucas
+        // 当一个函数作为构造函数，有显示的return时，返回的不是一个对象，那么this仍然指向实例。
 
-        // ================================
+        // ================例题10===============
 
         const foo = {
             fn: function () {
@@ -194,8 +205,11 @@
         foo.fn()
 
         // window
+        // this 出现在 setTimeout() 中的匿名函数里，因此 this 指向 window 对象
+        // 不光是setTimeout的回调，包括ajax等其他普通函数的回调都会有这个问题。
+        // 解决办法就是利用es6箭头函数
 
-        // ================================
+        // =================例题11===============
 
         const foo = {
             fn: function () {
@@ -207,8 +221,11 @@
         foo.fn()
 
         // {fn: ƒ}
+        // 箭头函数的this指向不能通过上述方法判断，而是根据外层（函数或者全局）上下文来决定。
+        
+        // 综合情况下this优先级判断
 
-        // ================================
+        // =================例题12===============
 
         function foo(a) {
             console.log(this.a)
@@ -229,8 +246,11 @@
 
         // 2
         // 1
+        // 我们常常把通过 call、apply、bind、new 对 this 绑定的情况称为 显式绑定；
+        // 根据调用关系确定的 this 指向称为 隐式绑定。
+        // 显式的绑定中call、apply优先级高于通过调用关系的指向绑定。
 
-        // ================================
+        // ================例题13==============
 
         function foo(a) {
             this.a = a
@@ -243,15 +263,19 @@
         console.log(obj1.a)
 
         // 2
+        // foo调用bind，将this指向obj1
+        // 执行 bar(2) 后，obj1.a 值为 2。即经过 bar(2) 执行后，obj1 对象为：{a: 2}
 
+        // 实例化bar
         var baz = new bar(3)
-        console.log(baz.a)
-
-        // new 绑定的优先级比显式 bind 绑定更高，通过 new 调用时，返回的实例已经与 obj1 解绑。this指向实例
+        console.log(baz.a)        
 
         // 3
+        // 通过输出3可知，new 绑定的优先级比显式 bind 绑定更高，通过 new 调用时，返回的实例已经与 obj1 解绑。this指向实例
 
-        // ================================
+        // 含有箭头函数的优先级
+
+        // =================例题14============
 
         function foo() {
             return a => {
@@ -271,10 +295,11 @@
         console.log(bar.call(obj2))
 
         // 2
-        // 由于 foo() 的 this 绑定到 obj1，bar（引用箭头函数）的 this 也会绑定到 obj1，箭头函数的绑定无法被修改。
+        // 由于 foo() 的 this 绑定到 obj1，bar（引用箭头函数）的 this 也会绑定到 obj1，
+        // 重要的是，箭头函数的绑定无法被修改。所以尽管调用call，但是this仍然指向obj1
         // 如果不使用箭头函数就会输出3。
 
-        // ================================
+        // ==================例题15=============
 
         var a = 123
         const foo = () => a => {
@@ -293,8 +318,9 @@
         console.log(bar.call(obj2))
 
         // 123
+        // foo函数也使用箭头函数的方式，导致this指向window，输出window.a
 
-        // ================================
+        // ==================例题16=============
 
         const a = 123
         const foo = () => a => {
@@ -313,16 +339,23 @@
         console.log(bar.call(obj2))
 
         // undefined
-        // 使用 const 声明的变量不会挂载到 window 全局对象当中
+        // 除了a的声明方式外，与上一题一致，但是结果输出undefined
+        // 因为使用const和let声明的变量不会挂载到window全局对象当上
 
-        // ================================
+        // ==================例题17============
 
+        // bind的简单实现
+
+        // context是要绑定的对象
         Function.prototype.bind = function (context) {
             var me = this;
-            // 获取返回函数参数
+            // 获取调用bind时的参数，除第一个外
             var args = Array.prototype.slice.call(arguments, 1);
+            // 返回一个新的函数
             return function bound() {
+                // 获取调用bind返回函数时传递的参数。
                 var innerArgs = Array.prototype.slice.call(arguments);
+                // 将两次参数合并
                 var finalArgs = args.concat(innerArgs);
                 return me.apply(context, finalArgs);
             }

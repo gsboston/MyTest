@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+</head>
+
+<body>
+
+    <script>
+
+
+        // 作用域
+        // es5 函数作用域  全局作用域
+
+        // es6 块级作用域  暂时性死区
+        // let和const声明变量的块级作用域
+
+        // var 生命的变量有变量提升特性，const let 没有
+        // let const声明的变量在声明前访问会报错
+        // 在声明前的区域就叫做暂时性死区
+
+        // 执行上下文
+
+        // JavaScript 执行主要分为两个阶段：
+
+        // 代码预编译阶段-简单的准备工作
+        // 代码执行阶段-执行代码
+
+        // 在通过语法分析，确认语法无误之后，JavaScript 代码在预编译阶段对变量的内存空间进行分配，我们熟悉的变量提升过程便是在此阶段完成的
+
+        // 预编译过程重要的三步操作
+        // 进行变量声明
+        // 变量声明进行提升，值为undefined
+        // 非表达式的函数声明进行提升
+
+        function bar() {
+            console.log('bar1')
+        }
+
+        var bar = function () {
+            console.log('bar2')
+        }
+
+        bar()
+        // ======================
+        var bar = function () {
+            console.log('bar2')
+        }
+
+        function bar() {
+            console.log('bar1')
+        }
+
+        bar()
+        // ======================
+        // 全部输出bar2，在预编译阶段，变量bar进行声明，但不赋值。函数bar进行创建并提升。运行阶段bar被赋值。
+
+        foo(10)
+        function foo(num) {
+            console.log(foo)
+            foo = num;
+            console.log(foo)
+            var foo
+        }
+        console.log(foo)
+        foo = 1
+        console.log(foo)
+
+        // 输出
+
+        // undefined
+        // 10
+        // ƒ foo(num) {
+        //     console.log(foo)
+        //     foo = num
+        //     console.log(foo)
+        //     var foo
+        // }
+        // 1
+
+        // 结论　作用域在预编译阶段确定，但是作用域链是在执行上下文的创建阶段完全生成的。
+        // 因为函数在调用时，才会开始创建对应的执行上下文。执行上下文包括了：变量对象、作用域链以及 this 的指向
+
+        // 代码执行的整个过程说起来就像一条生产流水线。第一道工序是在预编译阶段创建变量对象（Variable Object），
+        // 此时只是创建，而未赋值。到了下一道工序代码执行阶段，变量对象转为激活对象（Active Object），
+        // 即完成 VO → AO。此时，作用域链也将被确定，它由当前执行环境的变量对象和所有外层已经完成的激活对象组成。
+        // 这道工序保证了变量和函数的有序访问，即如果当前作用域中未找到变量，则继续向上查找直到全局作用域。
+
+        // 这样的工序在流水线上串成一个整体，这便是 JavaScript 引擎执行机制的最基本道理。
+
+        // 调用栈
+        // 我们在执行一个函数时，如果这个函数又调用了另外一个函数，而这个“另外一个函数”也调用了“另外一个函数”，便形成了一系列的调用栈
+        function foo1() {
+            foo2()
+        }
+        function foo2() {
+            foo3()
+        }
+        function foo3() {
+            foo4()
+        }
+        function foo4() {
+            console.log('foo4')
+        }
+        foo1()
+        // 先进后出/后进先出，foo1先入栈，foo1调用foo2，foo2入栈，……，直到foo4执行完成，foo4先出栈，foo3，foo2，foo1分别出栈
+
+        // 注意：
+        // 正常来讲，函数执行完毕出栈时，函数内局部变量会在下一个垃圾回收节点被回收，该函数对应的执行上下文会被销毁，
+        // 这也就是我们在外界无法访问函数内部定义的变量的原因。
+        // 也就是说，只有在函数执行时，相关函数可以访问该变量，该变量在预编译阶段进行创建，在执行阶段进行激活，在函数执行完毕后，相关上下文被销毁
+
+        // 闭包
+
+        // 函数嵌套函数时，内层函数引用了外层函数作用域下的变量，并且内层函数在全局环境下可访问，就形成了闭包。
+
+        function numGenerator() {
+            let num = 1
+            num++
+            return () => {
+                console.log(num)
+            }
+        }
+
+        var getNum = numGenerator()
+        getNum()
+        // 在 numGenerator 执行完毕后，即相关调用栈出栈后，变量 num 不会消失，仍然有机会被外界访问
+        // 在浏览器调试中可以看到，num变量被标记为Closure，即闭包变量。
+
+        // 闭包基本原理
+        // 正常情况下，外界是无法访问函数内部变量的，函数执行完成后，上下文即被销毁。
+        // 但如果在外层函数中返回一个函数，在返回的函数中使用了外层函数的变量。
+        // 这样外界就可以通过这个返回的函数获取外层函数内部的变量值。
+
+        // 闭包实现模块化，Redux中间件实现机制
+
+        // 内存管理
+        // 就是对内存生命周期的管理
+        // 分配内存空间，读写内存，释放内存空间
+
+        var foo = 'bar' // 在堆内存中给变量分配空间
+        alert(foo)  // 使用内存
+        foo = null // 释放内存空间
+
+        // 在 JavaScript 中，数据类型包括（未包含 ES Next 新数据类型）：
+
+        // 基本数据类型，如 Undefined、Null、Number、Boolean、String 等
+        // 引用类型，如 Object、Array、Function 等
+        // 基本数据类型保存在栈内存当中，引用类型保存在堆内存当中
+
+        // JavaScript 依赖宿主浏览器的垃圾回收机制
+        // 内存泄漏是指内存空间明明已经不再被使用，但由于某种原因并没有被释放的现象。
+
+        var element = document.getElementById("element")
+        element.mark = "marked"
+
+        // 移除 element 节点
+        function remove() {
+            element.parentNode.removeChild(element)
+        }
+
+        // 移除节点后，变量element依然存在，该节点占有的内存无法被释放
+        // 这时就需要在remove中手动处理
+        element = null
+
+        //==============================
+
+        var element = document.getElementById('element')
+        element.innerHTML = '<button id="button">点击</button>'
+
+        var button = document.getElementById('button')
+        button.addEventListener('click', function () {
+            // ...
+        })
+
+        element.innerHTML = ''
+
+        // button元素已经从dom中移除，但是其事件处理句柄还在，所以依然无法被回收，需要手动removeEventListener
+
+        // ==============================
+
+        // 使用setInterval注意清理，clearInterval
+
+        // 闭包使用不当，极易造成内存泄漏，如果不再使用，需要手动清除
+        function foo() {
+            let value = 123
+
+            function bar() { alert(value) }
+
+            return bar
+        }
+
+        let bar = foo()
+        // 此时value变量会被保存在内存中，如果需要释放则
+        bar = null
+        // 这样的话，随着bar不再被引用，value也会被清除
+
+        // 内存泄漏例题分析
+        var array = []
+        function createNodes() {
+            let div
+            let i = 100
+            let frag = document.createDocumentFragment()
+            for (; i > 0; i--) {
+                div = document.createElement("div")
+                div.appendChild(document.createTextNode(i))
+                frag.appendChild(div)
+            }
+            document.body.appendChild(frag)
+        }
+        function badCode() {
+            array.push([...Array(100000).keys()])
+            createNodes()
+            setTimeout(badCode, 1000)
+        }
+
+        badCode()
+        // 我们递归调用 badCode，这个函数每次向 array 数组中写入新的由 100000 项从 0 到 1 组成的新数组，
+        // 在 badCode 函数使用完全局变量 array 之后，并没有手动释放内存，垃圾回收不会处理 array，导致内存泄漏；
+        // 同时，badCode 函数调用 createNodes 函数，每 1s 创建 100 个 div 节点。
+        // 打开Chrome memory 进行调试
+
+
+
+
+
+    </script>
+</body>
+
+</html>
