@@ -11,32 +11,31 @@
 <body>
 
     <script>
-
-
         // 作用域
         // es5 函数作用域  全局作用域
 
-        // es6 块级作用域  暂时性死区
+        // es6 新增块级作用域  暂时性死区
         // let和const声明变量的块级作用域
 
-        // var 生命的变量有变量提升特性，const let 没有
+        // var 声明的变量有变量提升特性，const let 没有
         // let const声明的变量在声明前访问会报错
         // 在声明前的区域就叫做暂时性死区
 
         // 执行上下文
-
         // JavaScript 执行主要分为两个阶段：
 
-        // 代码预编译阶段-简单的准备工作
-        // 代码执行阶段-执行代码
+        // 1.代码预编译阶段-简单的准备工作
+        // 2.代码执行阶段-执行代码
 
-        // 在通过语法分析，确认语法无误之后，JavaScript 代码在预编译阶段对变量的内存空间进行分配，我们熟悉的变量提升过程便是在此阶段完成的
+        // 在通过语法分析，确认语法无误之后，JavaScript代码在预编译阶段对变量的内存空间进行分配，
+        // 我们熟悉的变量提升过程便是在此阶段完成的
 
         // 预编译过程重要的三步操作
         // 进行变量声明
         // 变量声明进行提升，值为undefined
         // 非表达式的函数声明进行提升
 
+        // =================例题1-1===================
         function bar() {
             console.log('bar1')
         }
@@ -46,7 +45,7 @@
         }
 
         bar()
-        // ======================
+        // =================例题1-2===================
         var bar = function () {
             console.log('bar2')
         }
@@ -56,22 +55,22 @@
         }
 
         bar()
-        // ======================
+
         // 全部输出bar2，在预编译阶段，变量bar进行声明，但不赋值。函数bar进行创建并提升。运行阶段bar被赋值。
 
+        // =================例题2===================
         foo(10)
         function foo(num) {
             console.log(foo)
-            foo = num;
+            foo = num
             console.log(foo)
-            var foo
+            var foo // 此处声明会提升到函数第一行，所以第一个输出undefined
         }
         console.log(foo)
         foo = 1
         console.log(foo)
 
         // 输出
-
         // undefined
         // 10
         // ƒ foo(num) {
@@ -82,7 +81,7 @@
         // }
         // 1
 
-        // 结论　作用域在预编译阶段确定，但是作用域链是在执行上下文的创建阶段完全生成的。
+        // 结论：作用域在预编译阶段确定，但是作用域链是在执行上下文的创建阶段完全生成的。
         // 因为函数在调用时，才会开始创建对应的执行上下文。执行上下文包括了：变量对象、作用域链以及 this 的指向
 
         // 代码执行的整个过程说起来就像一条生产流水线。第一道工序是在预编译阶段创建变量对象（Variable Object），
@@ -111,11 +110,10 @@
 
         // 注意：
         // 正常来讲，函数执行完毕出栈时，函数内局部变量会在下一个垃圾回收节点被回收，该函数对应的执行上下文会被销毁，
-        // 这也就是我们在外界无法访问函数内部定义的变量的原因。
+        // 重点：这也就是我们在外界无法访问函数内部定义的变量的原因。
         // 也就是说，只有在函数执行时，相关函数可以访问该变量，该变量在预编译阶段进行创建，在执行阶段进行激活，在函数执行完毕后，相关上下文被销毁
 
         // 闭包
-
         // 函数嵌套函数时，内层函数引用了外层函数作用域下的变量，并且内层函数在全局环境下可访问，就形成了闭包。
 
         function numGenerator() {
@@ -136,13 +134,13 @@
         // 但如果在外层函数中返回一个函数，在返回的函数中使用了外层函数的变量。
         // 这样外界就可以通过这个返回的函数获取外层函数内部的变量值。
 
-        // 闭包实现模块化，Redux中间件实现机制
+        // 应用：闭包实现模块化，Redux中间件实现机制
 
         // 内存管理
         // 就是对内存生命周期的管理
         // 分配内存空间，读写内存，释放内存空间
 
-        var foo = 'bar' // 在堆内存中给变量分配空间
+        var foo = 'bar' // 在栈内存中给变量分配空间
         alert(foo)  // 使用内存
         foo = null // 释放内存空间
 
@@ -152,9 +150,10 @@
         // 引用类型，如 Object、Array、Function 等
         // 基本数据类型保存在栈内存当中，引用类型保存在堆内存当中
 
-        // JavaScript 依赖宿主浏览器的垃圾回收机制
+        // JavaScript依赖宿主浏览器的垃圾回收机制
         // 内存泄漏是指内存空间明明已经不再被使用，但由于某种原因并没有被释放的现象。
 
+        // =================例题3===================
         var element = document.getElementById("element")
         element.mark = "marked"
 
@@ -167,8 +166,7 @@
         // 这时就需要在remove中手动处理
         element = null
 
-        //==============================
-
+        // =================例题4===================
         var element = document.getElementById('element')
         element.innerHTML = '<button id="button">点击</button>'
 
@@ -180,12 +178,12 @@
         element.innerHTML = ''
 
         // button元素已经从dom中移除，但是其事件处理句柄还在，所以依然无法被回收，需要手动removeEventListener
-
-        // ==============================
+        // 需要注意的是，通过addEventListener()添加的匿名函数无法移除
 
         // 使用setInterval注意清理，clearInterval
-
         // 闭包使用不当，极易造成内存泄漏，如果不再使用，需要手动清除
+
+        // =================例题5===================
         function foo() {
             let value = 123
 
@@ -200,6 +198,7 @@
         // 这样的话，随着bar不再被引用，value也会被清除
 
         // 内存泄漏例题分析
+        // =================例题6===================
         var array = []
         function createNodes() {
             let div
@@ -222,12 +221,125 @@
         // 我们递归调用 badCode，这个函数每次向 array 数组中写入新的由 100000 项从 0 到 1 组成的新数组，
         // 在 badCode 函数使用完全局变量 array 之后，并没有手动释放内存，垃圾回收不会处理 array，导致内存泄漏；
         // 同时，badCode 函数调用 createNodes 函数，每 1s 创建 100 个 div 节点。
-        // 打开Chrome memory 进行调试
+        // 打开Chrome memory 进行调试，打开 Chrome devtool，我们选中 performance 标签
+        // Chrome memory 标签中，对 JS heap 中每一项，尤其是 size 较大的前几项展开调查
 
+        // =================例题7===================
+        const foo = (function () {
+            var v = 0
+            return () => {
+                return v++
+            }
+        }())
 
+        for (let i = 0; i < 10; i++) {
+            foo()
+        }
 
+        console.log(foo())
 
+        // 10
+        // 在循环执行时，执行 foo()，这样引用自由变量 10 次，v 自增 10 次，最后执行 foo 时，得到 10。
+        //（自由变量是指没有在相关函数作用域中声明，但是使用了的变量。）
 
+        // =================例题8===================
+        const foo = () => {
+            var arr = []
+            var i
+
+            for (i = 0; i < 10; i++) {
+                arr[i] = function () {
+                    console.log(i)
+                }
+            }
+
+            return arr[0]
+        }
+
+        foo()()
+
+        // 10
+        // 这时自由变量为 i，分析类似例题 1：foo() 执行返回的是 arr[0], arr[0] 此时是函数：
+
+        // function () {
+        //     console.log(i)
+        // }
+
+        // 变量 i 值为 10。
+
+        // =================例题9===================
+        var fn = null
+        const foo = () => {
+            var a = 2
+            function innerFoo() {
+                console.log(a)
+            }
+            fn = innerFoo
+        }
+
+        const bar = () => {
+            fn()
+        }
+
+        foo()
+        bar()
+
+        // 2
+        // 正常来讲，根据调用栈的知识，foo 函数执行完毕之后，其执行环境生命周期会结束，所占内存被垃圾收集器释放，上下文消失。
+        // 但是通过 innerFoo 函数赋值给 fn，fn 是全局变量，这就导致了 foo 的变量对象 a 也被保留了下来。
+        // 所以函数 fn 在函数 bar 内部执行时，依然可以访问这个被保留下来的变量对象，输出结果为 2。
+
+        // =================例题10===================
+        // 照上一题稍改一点
+        var fn = null
+        const foo = () => {
+            var a = 2
+            function innerFoo() {
+                console.log(c)
+                console.log(a)
+            }
+            fn = innerFoo
+        }
+
+        const bar = () => {
+            var c = 100
+            fn()
+        }
+
+        foo()
+        bar()
+
+        // 报错
+        // 变量 c 并不在其作用域链上，c 只是 bar 函数的内部变量。因此报错 ReferenceError: c is not defined。
+
+        // 如何利用闭包实现单例模式？
+        // 何为单例模式？保证一个类只有一个实例，并提供一个访问它的全局访问点。
+        // 使用闭包我们可以保持对实例的引用，不被垃圾回收机制回收
+        function Person() {
+            this.name = 'lucas'
+        }
+
+        const getSingleInstance = (function () {
+            var singleInstance
+            return function () {
+                if (singleInstance) {
+                    return singleInstance
+                }
+                return singleInstance = new Person()
+            }
+        })()
+
+        const instance1 = new getSingleInstance()
+        const instance2 = new getSingleInstance()
+
+        // instance1 === instance2。因为借助闭包变量 singleInstance，
+        // instance1 和 instance2 是同一引用的（singleInstance），这正是单例模式的体现。
+
+        // 本课我们通过介绍理论知识加例题实战的方式梳理了 JavaScript 中闭包、内存、执行上下文、作用域、作用域链等概念。
+        // 这些内容说基础，确实不算很难；说复杂，它绝对又能衍生出很多知识点。这些知识点不是 JavaScript 所特有的，
+        // 但是在前端开发中又极具自身语言风格。它绝不只是纯理论概念，只有解决真实的开发问题才有实际意义。
+        // 一个合格的高级前端工程师需要做的并不是如数家珍地背诵“闭包和 GC 原理”，而是根据面临的场景，
+        // 凭借扎实的基础，能够通过查阅资料，提升应用性能，分析内存事故和突破瓶颈。
     </script>
 </body>
 
