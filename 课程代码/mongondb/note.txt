@@ -19,7 +19,7 @@ $sudo ./mongod
 windows启动
 https://www.runoob.com/mongodb/mongodb-window-install.html
 net start MongoDB
-new stop MongoDB
+net stop MongoDB
 
 可视化工具
 RoBo 3T
