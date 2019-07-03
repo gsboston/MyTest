@@ -10,36 +10,40 @@
 
 <body>
     <div style="position:relative;width:200px;height:200px;border:1px solid red;margin-top:100px;overflow: auto;">
-        <p style="" id="p1">dasdas</p>
-        <p style="">dasdas</p>
-        <p style="">dasdas</p>
-        <p style="">dasdas</p>
-        <p style="">dasdas</p>
-        <p style="">dasdas</p>
-        <p style="">dasdas</p>
-        <p style="">dasdas</p>
-        <p style="">dasdas</p>
-        <p style="">dasdas</p>
-        <p style="">dasdas</p>
-        <p style="">dasdas</p>
-        <p style="">dasdas</p>
-        <p style="">dasdas</p>
-        <p style="">dasdas</p>
-        <p style="">dasdas</p>
-        <p style="">dasdas</p>
-        <p style="">dasdas</p>
-        <p id="p2" style="">dasdas</p>
+        <p id="p1">dasdas</p>
+        <p>dasdas</p>
+        <p>dasdas</p>
+        <p>dasdas</p>
+        <p>dasdas</p>
+        <p>dasdas</p>
+        <p>dasdas</p>
+        <p>dasdas</p>
+        <p>dasdas</p>
+        <p>dasdas</p>
+        <p>dasdas</p>
+        <p>dasdas</p>
+        <p>dasdas</p>
+        <p>dasdas</p>
+        <p>dasdas</p>
+        <p>dasdas</p>
+        <p>dasdas</p>
+        <p>dasdas</p>
+        <p id="p2">dasdas</p>
     </div>
 
     <script>
         // 几个典型的 API，通过对其不同程度，不同方式的实现，来覆盖 JavaScript 中的部分知识点和编程要领
 
-        // ==================1.递归实现offset======================
+        // jq的offset方法是获取当前元素上边框到document顶部距离的。
+        // JavaScript 的 offsetTop 来访问一个 DOM 节点上边框相对离其本身最近、且position值为非static的祖先元素的垂直偏移量
+
+        // ==================1-1.递归实现offset======================
         const offset = ele => {
             let result = {
                 top: 0,
                 left: 0
             }
+            let position
 
             const getOffset = (node, init) => {
                 // 如果不是元素节点，则直接返回。1为元素节点，
@@ -73,12 +77,94 @@
                 return result
             }
 
-            let position
-
             getOffset(ele, true)
 
             return result
         }
+
+        // ==================1-2.getBoundingClientRect实现offset======================
+        const offset = ele => {
+            let result = {
+                left: 0,
+                top: 0
+            }
+
+            // ie11下，直接返回
+            if (!ele.getClientRects().length) {
+                return result
+            }
+
+            if (window.getComputedStyle(ele)['display'] === 'display') {
+                return result
+            }
+
+            result = ele.getBoundingClientRect()
+
+            // 这里不太清楚为什么要获取这个
+            var docElement = ele.ownerDocument.documentElement
+
+            return {
+                top: result.top + window.pageYOffset - docElement.clientTop,
+                left: result.left + window.pageXOffset - docElement.clientLeft
+            }
+
+        }
+
+        // window.pageYOffset === window.scrollY 用法相同，都是获取滚动条位移
+
+        // node.ownerDocument.documentElement 的用法可能大家比较陌生，ownerDocument 是 DOM 节点的一个属性，
+        // 它返回当前节点的顶层的 document 对象。ownerDocument 是文档，documentElement 是根节点
+
+
+        // ==================2-1.reduce 实现 runPromiseInSequence======================
+
+        // reduce 简介 es5
+        var numbers = [1, 2, 3, 4];
+
+        function getSum(total, num, curIndex, arr) {
+            console.log(total, num, curIndex, arr);
+            return total + num;
+        }
+        function myFunction(item) {
+            // 第二个参数可选，传递给函数的初始值，不传递则数组中的第一个元素将作为 callback 的第一个参数。
+            numbers.reduce(getSum, 0);
+        }
+
+        // 按顺序运行Promise
+        // runPromiseInSequence 方法将会被一个每一项都返回一个 Promise 的数组调用，并且依次执行数组中的每一个 Promise，
+        const f1 = () => {
+            new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    console.log('p1 running')
+                    resolve(1)
+                }, 1000)
+            })
+        }
+
+        const f2 = () => {
+            new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    console.log('p2 running')
+                    resolve(2)
+                }, 1000)
+            })
+        }
+
+        const array = [f1, f2]
+
+        // 箭头函数不写函数体。默认return
+        const runPromiseInSequence = (array, value) => {
+            array.reduce(
+                (promiseChain, currentFunction) => promiseChain.then(currentFunction),
+                Promise.resolve(value)
+            )
+        }
+
+        runPromiseInSequence(array, 'init')
+
+        // ==================2-1.reduce 实现 pipe======================
+
+        
 
 
     </script>
