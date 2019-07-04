@@ -33,11 +33,12 @@
 
     <script>
         // 几个典型的 API，通过对其不同程度，不同方式的实现，来覆盖 JavaScript 中的部分知识点和编程要领
+        // 目录  1.offset  2.reduce  3.compose  4.apply/bind
 
         // jq的offset方法是获取当前元素上边框到document顶部距离的。
         // JavaScript 的 offsetTop 来访问一个 DOM 节点上边框相对离其本身最近、且position值为非static的祖先元素的垂直偏移量
 
-        // ==================1-1.递归实现offset======================
+        // ================== 1-1.递归实现offset ======================
         const offset = ele => {
             let result = {
                 top: 0,
@@ -82,7 +83,7 @@
             return result
         }
 
-        // ==================1-2.getBoundingClientRect实现offset======================
+        // ================== 1-2.getBoundingClientRect实现offset ======================
         const offset = ele => {
             let result = {
                 left: 0,
@@ -116,7 +117,7 @@
         // 它返回当前节点的顶层的 document 对象。ownerDocument 是文档，documentElement 是根节点
 
 
-        // ==================2-1.reduce 实现 runPromiseInSequence======================
+        // ================== 2-1.reduce 实现 runPromiseInSequence ======================
 
         // reduce 简介 es5
         var numbers = [1, 2, 3, 4];
@@ -162,9 +163,160 @@
 
         runPromiseInSequence(array, 'init')
 
-        // ==================2-1.reduce 实现 pipe======================
+        // ================== 2-1.reduce 实现 pipe ======================
+        // this的指向的是定义时所在的对象，而不是使用时所在的对象
+        // 不可以当做构造函数
+        // 不可以使用arguments对象，可以用rest参数代替
+        // rest参数是一种叫法，指的是(...variableName)这种写法的函数传参方式
+        // 不可以使用yield命令
+        // 箭头函数没有prototype属性
+        // 不能和new一起使用
 
+        // curry化函数，也叫柯里化函数，是一种由接受多个参数的函数转化为一次只接受一个参数的函数，
+        // 如果一个函数需要3哥参数，那curry化后的函数会接受一个参数并返回一个函数来接受下一个函数，
+        // 这个函数返回的函数去传如第三个参数，最后一个函数会应用了所有参数的函数结果。
+        const pipe = (...functions) => input => functions.reduce(
+            (acc, fn) => fn(acc),
+            input
+        )
+
+        const f1 = x => {
+            console.log('执行了f1')
+            return x + 1
+        }
+
+        const f2 = x => {
+            console.log('执行了f2')
+            return 2 * x
+        }
+
+        let result = pipe(f1, f2)(1)
+        console.log(result) // 4
+
+        // pipe代码相当于
+        function pipe(...functions) {
+            return function (input) {
+                functions.reduce(
+                    (acc, fn) => fn(acc),
+                    input
+                )
+            }
+        }
+        // curry化函数，
+        function pipe(input, ...functions) {
+            return functions.reduce(
+                (acc, fn) => fn(arr),
+                input
+            )
+        }
+        // 相当于
+        function pipe(input, ...fns) {
+            let total = input;
+            for (let f in fns) {
+                total = f(total)
+            }
+            return total;
+        }
+
+
+        // ================== 2-1.实现reduce ======================
+        // 参考来自 MDN 的 polyfill：
+        if (!Array.prototype.reduce) {
+            Object.defineProperty(Array.prototype, 'reduce', {
+                value: function (callback /*, initialValue*/) {
+                    if (this === null) {
+                        throw new TypeError('Array.prototype.reduce ' +
+                            'called on null or undefined')
+                    }
+                    if (typeof callback !== 'function') {
+                        throw new TypeError(callback +
+                            ' is not a function')
+                    }
+                    var o = Object(this)
+                    var len = o.length >>> 0
+                    var k = 0
+                    var value
+                    if (arguments.length >= 2) {
+                        value = arguments[1]
+                    } else {
+                        while (k < len && !(k in o)) {
+                            k++
+                        }
+                        if (k >= len) {
+                            throw new TypeError('Reduce of empty array ' +
+                                'with no initial value')
+                        }
+                        value = o[k++]
+                    }
+                    while (k < len) {
+                        if (k in o) {
+                            value = callback(value, o[k], k, o)
+                        }
+                        k++
+                    }
+                    return value
+                }
+            })
+        }
+
+        // reduce更好的实现方案是
+        Array.prototype.reduce = Array.prototype.reduce || function (func, initialValue) {
+            var arr = this
+            var base = typeof initialValue === 'undefined' ? arr[0] : initialValue
+            var startPoint = typeof initialValue === 'undefined' ? 1 : 0
+            arr.slice(startPoint)
+                .forEach(function (val, index) {
+                    base = func(base, val, index + startPoint, arr)
+                })
+            return base
+        }
+
+        var arr = [1, 2, 3, 4]
+        arr.reduce((preValue, curValue, index, arr) => {
+
+        }, "value")
+
+        // 本质上是相通的，区别就是用forEach代替while实现结果的累加
+
+        // 通过 Koa only 模块源码认识 reduce
+
+        var o = {
+            a: 'a',
+            b: 'b',
+            c: 'c'
+        }
+        only(o, ['a', 'b'])   // {a: 'a',  b: 'b'}
+        // 该方法返回一个经过指定筛选属性的新对象。 ​
+
+        // only 模块实现：
+        var only = function (obj, keys) {
+            obj = obj || {}
+            if ('string' == typeof keys) keys = keys.split(/ +/)
+            return keys.reduce(function (ret, key) {
+                if (null == obj[key]) return ret
+                ret[key] = obj[key]
+                return ret
+            }, {})
+        }
+
+        // ====================== 3.compose 实现的几种方案 ======================
+        // compose 其实和前面提到的 pipe 一样，就是执行一连串不定长度的任务（方法）,实际上，compose 和 pipe 的差别只在于调用顺序的不同
         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // ====================== 4.apply、bind 进阶实现 ======================
 
 
     </script>
