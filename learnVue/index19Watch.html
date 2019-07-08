@@ -26,6 +26,13 @@
                 },
                 'user_info.name':function(){
                     
+                },
+                // 以上两种办法无法监视到 数组中某一个对象的值发生变化
+                cart:{
+                    handler(n,o){
+                        // n 新值 o 老值
+                    },
+                    deep: true
                 }
             }
         })
