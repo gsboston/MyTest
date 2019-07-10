@@ -33,6 +33,9 @@
     <my-cart :name="name"></my-cart>
 
     <p>{{foo}}</p>
+    111 {{test}}
+    <my-input v-model="test" text="你好" @aa="fnTest"></my-input>
+    <!-- <input type="text" :value="test" @input="fnTest"> -->
   </div>
 </template>
 
@@ -43,7 +46,7 @@ import FormTest from './components/FormTest.vue';
 import KButton from './components/Button.vue';
 import Win from './components/Win.vue';
 import axios from "axios";
-
+import MyInput from './components/myInput.vue';
 
 export default {
   name: "app",
@@ -57,10 +60,12 @@ export default {
     MyCart,
     FormTest,
     KButton,
-    Win
+    Win,
+    MyInput
   },
   data() {
     return {
+       test:"222",
       titleVar:'element表单，rules校验规则',
       name: "开课吧购物车",
       showName: true,
@@ -108,6 +113,12 @@ export default {
     
   },
   methods: {
+    fnTest(e){
+      console.log('fnfnttt',e);
+
+      this.test=e;
+      // this.$emit('input',e.target.value);
+    },
     addGood(i) {
       // 获取goods中对应项
       const good = this.goods[i];
