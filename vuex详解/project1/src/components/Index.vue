@@ -16,7 +16,7 @@
 
     <input type="button" value="张三出现" @click="setOnline(5)" />
     <ul>
-      <li v-for="user in onlineUsers">
+      <li v-for="user in onlineUsers" :key="user.name">
         名字：{{user.name}}
         年龄：{{user.age}}
       </li>

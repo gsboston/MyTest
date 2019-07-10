@@ -8,7 +8,7 @@
     <input type="button" name="" value="添加1项" @click="arr.push(Math.random())">
 
     <transition-group name="bounce" tag="ul" class="list">
-      <li v-for="item,index in arr" :key="item">
+      <li v-for="(item,index) in arr" :key="item">
         {{index}}. {{item}} <a href="#" @click="del(index)">删除</a>
       </li>
     </transition-group>
