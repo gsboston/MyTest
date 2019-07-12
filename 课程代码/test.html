@@ -19,31 +19,25 @@
             /* 排列顺序，默认是正序， row-reverse倒序*/
             /* flex-direction: row-reverse; */
             /* flex-direction: column-reverse; */
-
             /* 自动换行 wrap：nowrap不换行，默认/wrap/wrap-reverse; */
             flex-wrap: wrap;
             /* flex-flow:column wrap; */
-
             /* 水平左 */
             /* justify-content: flex-start; */
             /* 中 */
             /* justify-content: center; */
             /* 水平右 */
             /* justify-content: flex-end;  */
-
-
             /* 常用 */
             /* 居中显示，两边也空有间隙 */
-            justify-content:space-around; 
+            justify-content: space-around;
             /* 两边不留空隙 */
             /* justify-content:space-between;  */
         }
 
-
-
-        .box div{
+        .box div {
             /* margin:auto 15px; */
-            margin:10px 20px;  
+            margin: 10px 20px;
         }
 
         .boxone {
@@ -68,19 +62,30 @@
         }
     </style>
 </head>
+<input type="text" id="ttt">
 
 <body>
-    <div class="box">
-        <div class="boxone">1</div>
-        <div class="boxtwo">2</div>
-        <div class="boxthree">3</div>
-        <div class="boxone">4</div>
-        <div class="boxtwo">5</div>
-        <div class="boxthree">6</div>
-        <div class="boxone">7</div>
-        <div class="boxtwo">8</div>
-        <div class="boxthree">9</div>
-    </div>
+    <script>
+        document.querySelector('#ttt').addEventListener('keyup', function () {
+
+        })
+
+        document.querySelector('#ttt').addEventListener('input', function () {
+            console.log('input');
+        })
+
+        Function.prototype.bind = Function.prototype.bind || function (context) {
+            var me = this;
+            var args = Array.prototype.slice.call(arguments, 1);
+            return function bound() {
+                var innerArgs = Array.prototype.slice.call(arguments);
+                var finalArgs = args.concat(innerArgs);
+                return me.apply(context, finalArgs);
+            }
+        }
+
+        
+    </script>
 </body>
 
 </html>

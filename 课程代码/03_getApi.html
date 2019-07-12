@@ -113,7 +113,7 @@
 
         // window.pageYOffset === window.scrollY 用法相同，都是获取滚动条位移
 
-        // node.ownerDocument.documentElement 的用法可能大家比较陌生，ownerDocument 是 DOM 节点的一个属性，
+        // node.ownerDocument.documentElement 的用法比较少见，ownerDocument 是 DOM 节点的一个属性，
         // 它返回当前节点的顶层的 document 对象。ownerDocument 是文档，documentElement 是根节点
 
 
@@ -128,10 +128,34 @@
         }
         function myFunction(item) {
             // 第二个参数可选，传递给函数的初始值，不传递则数组中的第一个元素将作为 callback 的第一个参数。
-            numbers.reduce(getSum, 0);
+            // numbers.reduce(getSum, 0);
+            numbers.reduce(function (total, num, curIndex, arr) {
+                console.log(total, num, curIndex, arr);
+                return total + num;
+            }, 0);
         }
 
-        // 按顺序运行Promise
+        // 无第二参数
+        let arrNew1 = [1, 2, 3, 4, 5];
+        const sum1 = arrNew1.reduce((preTotal, curNum, curIndex, arr) => {
+            console.log(preTotal, curNum, curIndex, arr);
+            return preTotal + curNum;
+        })
+        // 函数执行4次，首次执行时preTotal为1，函数返回最后累加的值
+
+        // 有第二参数
+        let arrNew2 = [1, 2, 3, 4, 5];
+        const sum2 = arrNew2.reduce((preTotal, curNum, curIndex, arr) => {
+            console.log(preTotal, curNum, curIndex, arr);
+            return preTotal + curNum;
+        },0)
+        // 函数执行5次，首次执行时preTotal为第二参数值，函数返回最后累加的值
+        // 总结，如果不传第二参数，那么相当于函数从数组第二个值开始，并且将第一个值最为第一次执行的返回值
+        // 如果传了第二个参数，那么函数从数组的第一个值开始，并且将参数作为函数第一次执行的返回值
+
+        // 两个使用场景
+
+        // 按顺序运行Promise============================================
         // runPromiseInSequence 方法将会被一个每一项都返回一个 Promise 的数组调用，并且依次执行数组中的每一个 Promise，
         const f1 = () => {
             new Promise((resolve, reject) => {
@@ -301,7 +325,7 @@
 
         // ====================== 3.compose 实现的几种方案 ======================
         // compose 其实和前面提到的 pipe 一样，就是执行一连串不定长度的任务（方法）,实际上，compose 和 pipe 的差别只在于调用顺序的不同
-        
+
 
 
 
