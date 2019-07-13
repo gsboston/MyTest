@@ -22,5 +22,6 @@ https://www.jb51.net/article/120563.htm
 offset实现，reduce实现
 compose实现
 apply、bind实现
+实现formitem
 
 
