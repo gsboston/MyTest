@@ -157,35 +157,35 @@
 
         // 按顺序运行Promise============================================
         // runPromiseInSequence 方法将会被一个每一项都返回一个 Promise 的数组调用，并且依次执行数组中的每一个 Promise，
-        const f1 = () => {
-            new Promise((resolve, reject) => {
+        const fn1 = () => {
+            return new Promise((resolve, reject) => {
                 setTimeout(() => {
-                    console.log('p1 running')
+                    console.log('fn1')
                     resolve(1)
                 }, 1000)
             })
         }
 
-        const f2 = () => {
-            new Promise((resolve, reject) => {
+        const fn2 = () => {
+            return new Promise((resolve, reject) => {
                 setTimeout(() => {
-                    console.log('p2 running')
+                    console.log('fn2')
                     resolve(2)
                 }, 1000)
             })
         }
 
-        const array = [f1, f2]
+        const arr = [fn1, fn2]
 
         // 箭头函数不写函数体。默认return
-        const runPromiseInSequence = (array, value) => {
+        const excPromiseInOrder = (array, value) => {
             array.reduce(
                 (promiseChain, currentFunction) => promiseChain.then(currentFunction),
                 Promise.resolve(value)
             )
         }
 
-        runPromiseInSequence(array, 'init')
+        excPromiseInOrder(arr, 'init')
 
         // ================== 2-1.reduce 实现 pipe ======================
         // this的指向的是定义时所在的对象，而不是使用时所在的对象
@@ -197,7 +197,7 @@
         // 不能和new一起使用
 
         // curry化函数，也叫柯里化函数，是一种由接受多个参数的函数转化为一次只接受一个参数的函数，
-        // 如果一个函数需要3哥参数，那curry化后的函数会接受一个参数并返回一个函数来接受下一个函数，
+        // 如果一个函数需要3个参数，那curry化后的函数会接受一个参数并返回一个函数来接受下一个函数，
         // 这个函数返回的函数去传如第三个参数，最后一个函数会应用了所有参数的函数结果。
         const pipe = (...functions) => input => functions.reduce(
             (acc, fn) => fn(acc),
@@ -288,17 +288,17 @@
             var arr = this
             var base = typeof initialValue === 'undefined' ? arr[0] : initialValue
             var startPoint = typeof initialValue === 'undefined' ? 1 : 0
-            arr.slice(startPoint)
-                .forEach(function (val, index) {
-                    base = func(base, val, index + startPoint, arr)
-                })
+            arr.slice(startPoint).forEach(function (val, index) {
+                base = func(base, val, index + startPoint, arr)
+            })
             return base
         }
 
         var arr = [1, 2, 3, 4]
-        arr.reduce((preValue, curValue, index, arr) => {
-
-        }, "value")
+        arr.reduce((total, currentValue, currentIndex, arr) => {
+            console.log(total, currentValue, currentIndex, arr)
+            return total + currentValue
+        }, 10)
 
         // 本质上是相通的，区别就是用forEach代替while实现结果的累加
 

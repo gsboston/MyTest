@@ -23,9 +23,11 @@
 </body>
 
 <script>
+  // vue-cli3 vue add router 即可引入路由模块
   //2.路由表  
   // 路由先匹配到谁就走谁，可以重复
   let router = new VueRouter({
+    mode:'history', // hash
     routes: [
       {
         name: 'news',
@@ -37,10 +39,20 @@
         component: {
           template: '<div>bbbbb</div>'
         },
+        // 路由配置中也可以加breforEnter 与beforeEach、beforeUpdate类似
         // 路由守卫，能看能控制
-        beforeUpdate(value, old_value, next) {
-          if (confirm('xxx?') == true) {
-            next();
+        beforeUpdate(to, from, next) {
+          // if (confirm('xxx?') == true) {
+          //   next();
+          // }
+          if(to.path !== '/login'){
+            if(window.isLogin){
+              next()
+            }else{
+              next('/login')
+            }
+          }else{
+            next()
           }
         }
       },
@@ -79,7 +91,8 @@
       // go(int)
 
 
-
+      // 获取查询参数， ?id=12
+      // this.$route.query.id
     },
     watch: {
       // 监视路由,此种方法不推荐，只能看不能干预
