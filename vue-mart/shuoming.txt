@@ -1,0 +1,2 @@
+vue create vue-mart
+vue add cube-ui
