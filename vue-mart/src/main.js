@@ -5,6 +5,9 @@ import router from './router'
 import store from './store'
 import axios from 'axios'
 
+// 导入执行一次就可以
+import interceptor from './http-interceptor'
+
 Vue.config.productionTip = false
 
 // 挂载全局的

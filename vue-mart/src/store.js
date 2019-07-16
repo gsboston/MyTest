@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    token: '',
+    token: localStorage.getItem('token') || '',
 
   },
   mutations: {
@@ -16,5 +16,10 @@ export default new Vuex.Store({
   },
   actions: {
 
+  },
+  getters: {
+    isLogin: state => {
+      return !!state.token; // 转换为布尔值
+    }
   }
 })

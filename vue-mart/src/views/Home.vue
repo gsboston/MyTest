@@ -13,6 +13,10 @@ export default {
   name: 'home',
   components: {
     HelloWorld
-  }
+  },
+  async created () {
+    const res = await this.$http.get('/api/goods')
+    console.log(res)
+  },
 }
 </script>
