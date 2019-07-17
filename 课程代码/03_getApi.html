@@ -403,7 +403,37 @@
         var fn = aa.bind({ a: 2 }, "p1111");
         fn("p2222");
 
-        
+        // 但是如果bind返回的函数如果作为构造函数，被new调用时，我们绑定的this就需要被忽略，this要绑定在实例上。
+        // 也就是说，对于改变this指向来说，new的优先级高于bind绑定。
+        // 代码修改为：
+        Function.prototype.bind = Function.prototype.bind || function (context) {
+            var me = this;
+            var args = Array.prototype.slice.call(arguments, 1);
+            var F = function () { };
+            // F 原型继承原函数的原型，
+            F.prototype = this.prototype;
+            var bound = function () {
+                var innerArgs = Array.prototype.slice.call(arguments);
+                var finalArgs = args.concat(innerArgs);
+                return me.apply(this instanceof F ? this : context || this, finalArgs);
+            }
+            // 
+            bound.prototype = new F();
+            return bound;
+        }
+
+        function foo(a) {
+            this.a = a
+        }
+
+        const obj1 = {}
+        var bar = foo.bind(obj1)
+        bar(2)
+        console.log(obj1.a) // 2
+        var baz = new bar(3)
+        console.log(baz.a) // 3  
+
+
     </script>
 </body>
 

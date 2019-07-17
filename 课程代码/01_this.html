@@ -344,25 +344,6 @@
         // 除了a的声明方式外，与上一题一致，但是结果输出undefined
         // 因为使用const和let声明的变量不会挂载到window全局对象当上
 
-        // ==================例题17============
-
-        // bind的简单实现
-
-        // context是要绑定的对象
-        Function.prototype.bind = function (context) {
-            var me = this;
-            // 获取调用bind时的参数，除第一个外
-            var args = Array.prototype.slice.call(arguments, 1);
-            // 返回一个新的函数
-            return function bound() {
-                // 获取调用bind返回函数时传递的参数。
-                var innerArgs = Array.prototype.slice.call(arguments);
-                // 将两次参数合并
-                var finalArgs = args.concat(innerArgs);
-                return me.apply(context, finalArgs);
-            }
-        }
-
     </script>
 </body>
 
