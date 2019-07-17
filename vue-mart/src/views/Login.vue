@@ -67,11 +67,9 @@ export default {
     async handleLogin(e) {
       e.preventDefault();
       console.log("登录");
-      const res = await this.$http.get("/api/login", {
-        params: {
-          username: this.model.username,
-          password: this.model.password
-        }
+      const res = await this.$http.post("/api/login", {
+        username: this.model.username,
+        password: this.model.password
       });
       console.log(res);
       const { code, token, message } = res.data;
