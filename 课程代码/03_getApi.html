@@ -367,17 +367,43 @@
 
 
 
-
-
-
-
-
-
-
-
         // ====================== 4.apply、bind 进阶实现 ======================
 
+        // bind的初级实现 60分
+        Function.prototype.bind = Function.prototype.bind || function (context) {
+            var me = this; // this就是原函数
+            // 将arguments转换为数组
+            var argsArray = Array.prototype.slice.call(arguments);
+            return function () {
+                return me.apply(context, argsArray.slice(1))
+            }
+        }
+        function aa() {
+            console.log(this.a);
+        }
+        var fn = aa.bind({ a: 2 }, "p1", 100);
+        fn();
+        // 将第一个参数（context）以外的其他参数，作为提供给原函数的预设参数，这也是基本的“ curry 化”基础。
 
+        // 上述实现方式，我们返回的参数列表里包含：argsArray.slice(1)，它的问题在于存在预置参数功能丢失的现象。
+        // 想象我们返回的绑定函数中，如果想实现预设传参（就像 bind 所实现的那样），就面临尴尬的局面。
+        // 真正实现“ curry 化”的“完美方式”是：
+        Function.prototype.bind = Function.prototype.bind || function (context) {
+            var me = this;
+            var args = Array.prototype.slice.call(arguments, 1);
+            return function () {
+                var innerArgs = Array.prototype.slice.call(arguments);
+                var finalArgs = args.concat(innerArgs);
+                return me.apply(context, finalArgs);
+            }
+        }
+        function aa(p1, p2) {
+            console.log(this.a + "=" + p1 + p2);
+        }
+        var fn = aa.bind({ a: 2 }, "p1111");
+        fn("p2222");
+
+        
     </script>
 </body>
 
