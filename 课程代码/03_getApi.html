@@ -38,7 +38,7 @@
         // jq的offset方法是获取当前元素上边框到document顶部距离的。
         // JavaScript 的 offsetTop 来访问一个 DOM 节点上边框相对离其本身最近、且position值为非static的祖先元素的垂直偏移量
 
-        // ================== 1-1.递归实现offset ======================
+        // ================== 1-1.递归实现offset ==================================================================
         const offset = ele => {
             let result = {
                 top: 0,
@@ -83,7 +83,7 @@
             return result
         }
 
-        // ================== 1-2.getBoundingClientRect实现offset ======================
+        // ================== 1-2.getBoundingClientRect实现offset ==================================================================
         const offset = ele => {
             let result = {
                 left: 0,
@@ -117,7 +117,7 @@
         // 它返回当前节点的顶层的 document 对象。ownerDocument 是文档，documentElement 是根节点
 
 
-        // ================== 2-1.reduce 实现 runPromiseInSequence ======================
+        // ================== 2-1.reduce 实现 runPromiseInSequence ==================================================================
 
         // reduce 简介 es5
         var numbers = [1, 2, 3, 4];
@@ -187,7 +187,7 @@
 
         excPromiseInOrder(arr, 'init')
 
-        // ================== 2-1.reduce 实现 pipe ======================
+        // ================== 2-1.reduce 实现 pipe ==================================================================
         // this的指向的是定义时所在的对象，而不是使用时所在的对象
         // 不可以当做构造函数
         // 不可以使用arguments对象，可以用rest参数代替
@@ -243,7 +243,7 @@
         }
 
 
-        // ================== 2-1.实现reduce ======================
+        // ================== 2-1.实现reduce ========================================================================================
         // 参考来自 MDN 的 polyfill：
         if (!Array.prototype.reduce) {
             Object.defineProperty(Array.prototype, 'reduce', {
@@ -325,7 +325,7 @@
             }, {})
         }
 
-        // ====================== 3.compose 实现的几种方案 ======================
+        // ====================== 3.compose 实现的几种方案 ==================================================================
         // compose 其实和前面提到的 pipe 一样，就是执行一连串不定长度的任务（方法）,实际上，compose 和 pipe 的差别只在于调用顺序的不同
 
         // compose 的参数是函数数组，返回的也是一个函数
@@ -367,7 +367,7 @@
 
 
 
-        // ====================== 4.apply、bind 进阶实现 ======================
+        // ====================== 4.apply、bind 进阶实现 ==================================================================
 
         // bind的初级实现 60分
         Function.prototype.bind = Function.prototype.bind || function (context) {
@@ -410,29 +410,40 @@
             var me = this;
             var args = Array.prototype.slice.call(arguments, 1);
             var F = function () { };
-            // F 原型继承原函数的原型，
+            // F的原型继承原函数的原型，利用空对象方式实现继承。
             F.prototype = this.prototype;
             var bound = function () {
                 var innerArgs = Array.prototype.slice.call(arguments);
                 var finalArgs = args.concat(innerArgs);
+                // 当返回的函数通过new关键字调用的时候 this instanceof F 为true 否则为false
+                // 因为new调用时，bound内的this指向自身实例。又因为bound的原型指向F的实例
+                // 所以当前this instanceof F 自然为true  同理this instanceof me 也为true
+
+                // 当bound作为普通函数执行时，this指向window
                 return me.apply(this instanceof F ? this : context || this, finalArgs);
             }
-            // 
+            // bound原型方式继承原函数。
             bound.prototype = new F();
             return bound;
         }
 
-        function foo(a) {
+        function Cat(a) {
             this.a = a
         }
 
-        const obj1 = {}
-        var bar = foo.bind(obj1)
-        bar(2)
-        console.log(obj1.a) // 2
-        var baz = new bar(3)
-        console.log(baz.a) // 3  
+        const o1 = {}
 
+        // 普通调用
+        var cat = Cat.bind(o1)
+        cat(2)
+        console.log(o1.a) // 2
+
+        // 作为构造函数调用
+        var c1 = new (Cat.bind(o1))(5);
+        console.log(c1) // Cat {a: 5}    // c1.__proto__.constructor==Cat true
+        console.log(c1.a) // 5
+
+        // 注意：一个函数只有通过new调用才可能是构造函数，如果不通过new调用，不论有何种继承关系，内部this都指向window
 
     </script>
 </body>

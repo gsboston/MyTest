@@ -36,7 +36,7 @@
         this.color = color;
     }
     var cat1 = new Cat("大毛", "黄色", "猫科动物");
-    console.log(cat1.species); // 动物
+    console.log(cat1.species); // 猫科动物
     //缺点，无法继承原型链上的属性和方法。
 
     //二、原型链继承模式==============================================================================================================
@@ -69,7 +69,7 @@
     console.log(cat1.species); // 动物
     var cat2 = new Cat("小毛", "黑色");
     //这里cat1&cat2的原型对象都指向同一个Animal的实例，访问属性的时候，如果cat1内没有该属性，就会向上找到Cat.prototype（Animal的一个实例）中。找到并返回
-    //但是这里调用cat1.species去赋值只是在cat1实例中添加一个species属性，并不会影响cat1原型对象（Animal实例）中的属性
+    //但是这里调用cat1.species去赋值，并没有向上寻找，而只是在cat1实例中添加一个species属性，并不会影响cat1原型对象（Animal实例）中的属性
     cat1.species = "猫科动物";
     console.log(cat2.species);//动物
     //但是尝试通过下面的方式去修改属性就会导致属性被共用
@@ -101,6 +101,7 @@
     Cat.prototype = Animal.prototype;
     //注意，这里不仅修改了Cat.prototype.constructor 也修改了Animal.prototype.constructor
     Cat.prototype.constructor = Cat;
+    // Animal.prototype.constructor = Animal;
     var cat1 = new Cat();
 
     console.log(cat1.species); // 动物
@@ -123,7 +124,7 @@
     //四、利用空对象作为中介===================================================================================================
     //解决共享prototype被修改的问题呢，
     //利用一个空对象作为中介。F是空对象，所以几乎不占内存。这时，修改Cat的prototype对象，就不会影响到Animal的prototype对象。
-    function Animal() { }
+    function Animal() { this.gender = "formall"; }
     function Cat() { }
 
     function extend(Child, Parent) {
@@ -136,12 +137,14 @@
         Child.prototype.constructor = Child;
         // 意思是为子对象设一个uber属性，这个属性直接指向父对象的prototype属性。
         // 这等于在子对象上打开一条通道，可以直接调用父对象的方法。这一行放在这里，只是为了实现继承的完备性，纯属备用性质。
-        Child.uber = Parent.prototype;
+        // Child.uber = Parent.prototype;
     }
 
     extend(Cat, Animal);
+    Animal.prototype.species = "动物";
     var cat1 = new Cat();
     console.log(cat1.species); // 动物
+    console.log(cat1.gender); // undefined
     // 这个extend函数，就是YUI库实现继承的方法。
 
     //优点
@@ -168,17 +171,27 @@
     function Cat(name) {
         Animal.call(this, name);
     }
-    Cat.prototype = Animal.prototype;
+    Cat.prototype = Object.create(Animal.prototype);
     Cat.prototype.constructor = Cat;
 
-    //优点
-    //可以继承实例属性
-    
-    //缺点
-    //子类添加原型属性后，父类原型也随之更新
+    var c1 = new Cat('cat1');
+    var a1 = new Animal('ani',10);
+
+    Animal.prototype.species = "动物";
+    console.log(c1.species); // 动物
+    Cat.prototype.catSpecies = "猫科动物";
+    console.log(a1.catSpecies); // undeifined
+
+    // 优点
+    // 可以继承实例属性
+    // 子类添加原型属性后，父类原型不会更新
+    // 子类不共用父类的实例属性
+
+    // 缺点
+    //
 
 
-    //六、拷贝继承，prototype属性=====================================================================================
+    //*六、拷贝继承，prototype属性=====================================================================================
     //上面是采用prototype对象，实现继承。我们也可以换一种思路，纯粹采用"拷贝"方法实现继承。
     //简单说，如果把父对象的所有属性和方法，拷贝进子对象，不也能够实现继承吗？
     function Animal() { }
