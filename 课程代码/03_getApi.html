@@ -369,7 +369,7 @@
 
         // ====================== 4.apply、bind 进阶实现 ==================================================================
 
-        // bind的初级实现 60分
+        // 1、bind的初级实现 60分
         Function.prototype.bind = Function.prototype.bind || function (context) {
             var me = this; // this就是原函数
             // 将arguments转换为数组
@@ -387,7 +387,8 @@
 
         // 上述实现方式，我们返回的参数列表里包含：argsArray.slice(1)，它的问题在于存在预置参数功能丢失的现象。
         // 想象我们返回的绑定函数中，如果想实现预设传参（就像 bind 所实现的那样），就面临尴尬的局面。
-        // 真正实现“ curry 化”的“完美方式”是：
+
+        // 2、真正实现“ curry 化”的“完美方式”是：
         Function.prototype.bind = Function.prototype.bind || function (context) {
             var me = this;
             var args = Array.prototype.slice.call(arguments, 1);
@@ -405,7 +406,8 @@
 
         // 但是如果bind返回的函数如果作为构造函数，被new调用时，我们绑定的this就需要被忽略，this要绑定在实例上。
         // 也就是说，对于改变this指向来说，new的优先级高于bind绑定。
-        // 代码修改为：
+
+        // 3、以为完美的实现：
         Function.prototype.bind = Function.prototype.bind || function (context) {
             var me = this;
             var args = Array.prototype.slice.call(arguments, 1);
@@ -418,6 +420,9 @@
                 // 当返回的函数通过new关键字调用的时候 this instanceof F 为true 否则为false
                 // 因为new调用时，bound内的this指向自身实例。又因为bound的原型指向F的实例
                 // 所以当前this instanceof F 自然为true  同理this instanceof me 也为true
+
+                // 为何要继承原函数？
+                // 因为new 调用bind后返回的函数，也是相当于将原函数作为构造函数调用，创建实例，如果不继承原函数，那么创建的实例与原函数没有任何关系
 
                 // 当bound作为普通函数执行时，this指向window
                 return me.apply(this instanceof F ? this : context || this, finalArgs);
@@ -445,6 +450,92 @@
 
         // 注意：一个函数只有通过new调用才可能是构造函数，如果不通过new调用，不论有何种继承关系，内部this都指向window
 
+        // 咋一看这种方式很完美啊，我当时看到这的时候也这么以为。后来才发现这只是以为的完美，其实好戏刚要上演
+        // 看下官方的实现，下面代码截取自es5-shim.js
+
+        function bind(that) {
+            var target = this;
+            if (!isCallable(target)) {
+                throw new TypeError('Function.prototype.bind called on incompatible ' + target);
+            }
+            var args = array_slice.call(arguments, 1);
+            var bound;
+            var binder = function () {
+                if (this instanceof bound) {
+                    // 构造函数调用情况
+                    var result = apply.call(
+                        target,
+                        this,
+                        array_concat.call(args, array_slice.call(arguments))
+                    );
+                    if ($Object(result) === result) {
+                        return result;
+                    }
+                    return this;
+                } else {
+                    // 正常调用情况
+                    return apply.call(
+                        target,
+                        that,
+                        array_concat.call(args, array_slice.call(arguments))
+                    );
+                }
+            };
+
+            var boundLength = max(0, target.length - args.length);
+            var boundArgs = [];
+            for (var i = 0; i < boundLength; i++) {
+                array_push.call(boundArgs, '$' + i);
+            }
+
+            bound = $Function(
+                'binder',
+                'return function (' + array_join.call(boundArgs, ',') + '){ return binder.apply(this, arguments); }'
+            )(binder);
+
+            if (target.prototype) {
+                Empty.prototype = target.prototype;
+                bound.prototype = new Empty();
+                Empty.prototype = null;
+            }
+
+            return bound;
+        }
+
+        // 其实每个函数都有 length 属性。对，就像数组和字符串那样。函数的 length 属性，用于表示函数的形参个数。
+        // 更重要的是函数的 length 属性值是不可重写的。
+
+        function fn(p1, p2) { }
+        console.log(fn.length)  // 2
+        fn.hasOwnProperty('length')  // true
+        fn.length = 4
+        console.log(fn.length)  // 2
+
+        // es5-shim 是为了最大限度地进行兼容，包括对返回函数 length 属性的还原。而如果按照我们之前实现的那种方式，length 值始终为零。
+
+        // 实现apply/call
+        Function.prototype.applyFn = function (targetObject, argsArray) {
+            if (typeof argsArray === 'undefined' || argsArray === null) {
+                argsArray = []
+            }
+
+            if (typeof targetObject === 'undefined' || targetObject === null) {
+                targetObject = this
+            }
+
+            targetObject = new Object(targetObject)
+
+            const targetFnKey = 'targetFnKey'
+            targetObject[targetFnKey] = this
+
+            // 隐式绑定 targetObject.targetFnKey为调用的函数，那么 targetObject.targetFnKey(); this指向targetObject
+            const result = targetObject[targetFnKey](...argsArray)
+            delete targetObject[targetFnKey]
+            return result
+        }
+
+        // 不难理解，函数体内的 this 指向了调用 applyFn 的函数。
+        // 为了将该函数体内的 this 绑定在 targetObject 上，我们采用了隐式绑定的方法：targetObject[targetFnKey](...argsArray)。
     </script>
 </body>
 
