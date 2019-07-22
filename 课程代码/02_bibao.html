@@ -178,7 +178,7 @@
         element.innerHTML = ''
 
         // button元素已经从dom中移除，但是其事件处理句柄还在，所以依然无法被回收，需要手动removeEventListener
-        // 需要注意的是，通过addEventListener()添加的匿名函数无法移除
+        // 需要注意的是，通过addEventListener()添加的匿名函数无法移除，所以要尽量传入具名函数。
 
         // 使用setInterval注意清理，clearInterval
         // 闭包使用不当，极易造成内存泄漏，如果不再使用，需要手动清除
@@ -230,7 +230,7 @@
             return () => {
                 return v++
             }
-        }())
+        })()
 
         for (let i = 0; i < 10; i++) {
             foo()
@@ -309,7 +309,7 @@
         foo()
         bar()
 
-        // 报错
+        // 报错 c is not defined
         // 变量 c 并不在其作用域链上，c 只是 bar 函数的内部变量。因此报错 ReferenceError: c is not defined。
 
         // 如何利用闭包实现单例模式？
