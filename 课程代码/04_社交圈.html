@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        // 一个社交网络有一组成员（member），每个成员有一个自己的名字，和存储其朋友信息的列表。请实现这样一个Member构造器。
+        function Member(name) {
+            this.name = name;
+            this.friends = [];
+        }
+
+        // 以上是对JS基础的考察，但是在这道题目的基础上，我进行了更深一步提问。希望对候选者的临场思维、JS基础甚至一些设计能力，又更进一步认识。
+        // 我要实现一个带环社交网络（社交圈）：
+        var a = new Member('Alice');
+        var b = new Member('Bob');
+        var c = new Member('Carol');
+        var d = new Member('Dieter');
+        var e = new Member('Eli');
+        var f = new Member('Fatima');
+
+        a.friends.push(b);
+        b.friends.push(c);
+        c.friends.push(e);
+        d.friends.push(b);
+        e.friends.push(d, f);
+
+        // 这种情况下，需要实现一个inNetwork方法，判断某目标成员是否在另一个对象成员的社交圈中。规定：顺着社交链能找到目标成员，就认为在社交圈中。否则，不在其社交圈。
+
+        // 接下来思考，搜索意味着需要遍历整个社交网络。我们应该：
+        // 1）以单个根节点开始，
+        // 2）然后添加发现的节点，
+        // 3）移除访问过的节点，防止死环
+
+        Member.prototype.inNetwork = function (target) {
+            var visited = {};
+            var worklist = [this]; // 用于存放社交链上的个体信息，初始时以“自己”作为根节点
+           
+            while (worklist.length > 0) {
+                // 将worklist里的最后一项成员删除并取出
+                var member = worklist.pop();
+                // 如果存在环的情况，需要避免重复访问
+                if (member.name in visited) {
+                    continue;
+                }
+                visited[member.name] = member;
+                if (member === target) {
+                    return true;
+                }
+                // 将当前成员的朋友列表加入worklist当中，他们都在根节点的社交链上
+                member.friends.forEach(function (friend) {
+                    worklist.push(friend);
+                })
+            }
+           
+            return false;
+        }
+
+        a.inNetwork(f) // true
+        // f.inNetwork(a) //false
+
+    </script>
+</body>
+
+</html>
