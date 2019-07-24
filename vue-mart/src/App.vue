@@ -8,13 +8,12 @@
     <cube-tab-bar 
       show-slider
       v-model="selectLabel" 
-      :data="tabs"
       @change="changeHandler">
-      <!-- <cube-tab v-for="(item, index) in tabs" :key="index" 
+      <cube-tab v-for="(item,index) in tabs" :key="index" 
         :icon="item.icon" :label="item.value">
         <span>{{item.label}}</span>
         <span class="badge" v-if="showBadge(item.label)">{{cartTotal}}</span>
-      </cube-tab> -->
+      </cube-tab>
     </cube-tab-bar>
   </div>
 </template>
@@ -43,7 +42,7 @@ export default {
     this.selectLabel = this.$route.path;
   },
   computed: {
-    ...mapGetters(["isLogin"])
+    ...mapGetters(["isLogin", "cartTotal"])
   },
   methods: {
     logout() {
@@ -51,6 +50,9 @@ export default {
     },
     changeHandler(val) {
       this.$router.push(val);
+    },
+    showBadge(label) {
+      return label == "Cart" && this.cartTotal > 0;
     }
   }
 };
@@ -111,5 +113,14 @@ export default {
   top: 0;
   padding-bottom: 36px;
   width: 100%;
+}
+
+.badge {
+  display: inline-block;
+  background: red;
+  color: white;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
 }
 </style>
