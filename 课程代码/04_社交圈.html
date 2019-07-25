@@ -42,7 +42,7 @@
         Member.prototype.inNetwork = function (target) {
             var visited = {};
             var worklist = [this]; // 用于存放社交链上的个体信息，初始时以“自己”作为根节点
-           
+
             while (worklist.length > 0) {
                 // 将worklist里的最后一项成员删除并取出
                 var member = worklist.pop();
@@ -59,7 +59,7 @@
                     worklist.push(friend);
                 })
             }
-           
+
             return false;
         }
 

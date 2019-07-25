@@ -141,7 +141,8 @@
         console.log(Array.prototype.hasOwnProperty("toString")); // false
         console.log(arr.toString()); // "[object Array]"
 
-        // 删除了Array上的toString方法，因此沿着原型链，arr最后调用了Object的toString方法，返回了和Object.prototype.toString.call(arr)相同的结果
+        // 删除了Array上的toString方法，因此沿着原型链，arr最后调用了Object的toString方法，
+        // 返回了和Object.prototype.toString.call(arr)相同的结果
     </script>
 </body>
 

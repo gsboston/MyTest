@@ -242,7 +242,6 @@
             return total;
         }
 
-
         // ================== 2-1.实现reduce ========================================================================================
         // 参考来自 MDN 的 polyfill：
         if (!Array.prototype.reduce) {
@@ -537,6 +536,8 @@
         // 不难理解，函数体内的 this 指向了调用 applyFn 函数的对象。
         // 为了将该函数体内的 this 绑定在 targetObject 上，我们采用了隐式绑定的方法：targetObject[targetFnKey](...argsArray)。
         // 相当于 targetObject.fn()
+
+
     </script>
 </body>
 
