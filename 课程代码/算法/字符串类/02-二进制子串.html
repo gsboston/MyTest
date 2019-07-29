@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        // 给定一个字符串 s，计算具有相同数量0和1的非空(连续)子字符串的数量，并且这些子字符串中的所有0和所有1都是组合在一起的。
+        // 输入: "00110011"
+        // 输出: 6
+        // 解释: 有6个子串具有相同数量的连续1和0：“0011”，“01”，“1100”，“10”，“0011” 和 “01”。
+
+        // 建立数据结构，堆栈，保存数据
+        let r = []
+
+        // 给定任意子输入都返回第一个符合条件的子串
+        let match = (str) => {
+            let j = str.match(/^(0+|1+)/)[0]
+            let o = (j[0] ^ 1).toString().repeat(j.length)
+            let reg = new RegExp(`^(${j}${o})`)
+            if (reg.test(str)) {
+                return RegExp.$1
+            } else {
+                return ''
+            }
+        }
+
+        // 通过for循环控制程序运行的流程
+        for (let i = 0, len = str.length - 1; i < len; i++) {
+            let sub = match(str.slice(i))
+            if (sub) {
+                r.push(sub)
+            }
+        }
+        console.log(r);
+
+
+        // 大众版解法 00110011  pre 前一组数的长度， curr当前组的长度，如果当前长度小于之前长度就是一组生效的
+        let countBinarySubstrings = function (str) {
+            let n = 0, pre = 0, curr = 1
+            for (let i = 0; i < str.length - 1; i++) {
+                if (str[i] == str[i + 1]) {
+                    curr++
+                } else {
+                    pre = curr
+                    curr = 1
+                }
+                if (pre >= curr) n++
+            }
+            return n
+        }
+
+        // 奇思妙想解法
+        let countBinarySubstrings = function (str) {
+            let n = 0;
+            let arr = str.match(/([1]+)|([0]+)/g);
+            // ["00", "11", "00", "11"]
+            for (let i = 0; i < arr.length - 1; i++) {
+                n += Math.min(arr[i].length, arr[i + 1].length);
+            }
+            return n
+        }
+    </script>
+</body>
+
+</html>
