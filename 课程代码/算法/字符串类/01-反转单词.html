@@ -11,6 +11,7 @@
 <body>
 
     <script>
+        // https://leetcode-cn.com/problems/reverse-words-in-a-string-iii/
         // 输入: "Let's take LeetCode contest"
         // 输出: "s'teL ekat edoCteeL tsetnoc" 
         var str = "Let's take LeetCode contest";
@@ -33,7 +34,7 @@
         // 更好的
 
         function revStr(str) {
-            return str.split(/\s/g).map(item => {
+            return str.split(/\s+/g).map(item => {
                 return item.split('').reverse().join('');
             }).join(' ');
         }
@@ -45,6 +46,9 @@
                 return item.split('').reverse().join('');
             }).join(' ');
         }
+
+        // let fn = str => str.split(' ').map(item => item.split('').reverse().join('')).join(' ');
+        // let fn = str => str.match(/[\w']+/g).map(item => item.split('').reverse().join('')).join(' ');
     </script>
 </body>
 

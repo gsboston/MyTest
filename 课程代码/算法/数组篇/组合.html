@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 给定两个整数 n 和 k，返回 1 ... n 中所有可能的 k 个数的组合。
+
+        // 示例:
+
+        // 输入: n = 4, k = 2
+        // 1 2 3 4
+        // 输出:
+        // [
+        //  [2,4],
+        //  [3,4],
+        //  [2,3],
+        //  [1,2],
+        //  [1,3],
+        //  [1,4]
+        // ]
+
+        let fn = function (n, k) {
+            if (n < k) {
+                return;
+            }
+            let result=[];
+            const arr = Array.apply(null, new Array(n)).map((elem, index) => index + 1);
+            // [1,2,3,4]
+            for (let i = 0; i < arr.length - k + 1; i++) {
+                let tmp=[];
+                for (let j = i + 1; j < i + k; j++) {
+                    console.log(j);
+                    tmp.push(arr[j]);
+                }
+                result=[].concat(tmp);
+            }
+            return result;
+        }
+
+
+    </script>
+</body>
+
+</html>
