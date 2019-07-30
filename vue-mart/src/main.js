@@ -4,14 +4,23 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios'
-
-// 导入执行一次就可以
 import interceptor from './http-interceptor'
+import KHeader from './components/Header.vue'
+// cube-ui
+import {createAPI} from 'cube-ui';
+import Notice from './components/Notice.vue';
+import notice from '@/services/notice';
 
 Vue.config.productionTip = false
 
-// 挂载全局的
+// 全局引入Header.vue
+Vue.component('k-header', KHeader)
+
 Vue.prototype.$http = axios;
+Vue.prototype.$notice = notice;
+
+// 创建$createNotice API
+createAPI(Vue, Notice, true); // 参数3表示单例模式
 
 new Vue({
   router,

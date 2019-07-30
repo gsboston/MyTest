@@ -4,8 +4,16 @@ import Home from './views/Home.vue'
 import Login from './views/Login.vue'
 import Cart from './views/Cart.vue'
 import store from './store'
+import History from './utils/history'
 
 Vue.use(Router)
+Vue.use(History)
+
+// 在实例化之前，扩展router
+Router.prototype.goBack = function () {
+  this.isBack = true;
+  this.back();
+}
 
 const router = new Router({
   mode: 'history',
@@ -52,6 +60,19 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     next();
+  }
+})
+
+// afterEach 记录历史记录
+router.afterEach((to, from) => {
+  if (router.isBack) {
+    // 后退
+    History.pop();
+    router.isBack = false;
+    router.transitionName = 'route-back';
+  } else {
+    History.push(to.path);
+    router.transitionName = 'route-forward';
   }
 })
 

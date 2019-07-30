@@ -1,7 +1,7 @@
 <template>
   <div id="app">
 
-    <transition name="route-move">
+    <transition :name="transitionName">
       <router-view class="child-view"/>
     </transition>
 
@@ -29,12 +29,15 @@ export default {
         { label: "Home", value: "/", icon: "cubeic-home" },
         { label: "Cart", value: "/cart", icon: "cubeic-mall" },
         { label: "Me", value: "/login", icon: "cubeic-person" }
-      ]
+      ],
+      transitionName: "route-forward"
     };
   },
   watch: {
     $route(newValue) {
       this.selectLabel = newValue.path;
+
+      this.transitionName = this.$router.transitionName;
     }
   },
   created() {
@@ -87,23 +90,28 @@ export default {
   right: 0;
   background-color: #edf0f4;
 }
-
 .cube-tab-bar-slider {
   top: 0;
 }
-
 /* 页面滑动动画 */
 /* 入场前 */
-.route-move-enter {
+.route-forward-enter {
   transform: translate3d(-100%, 0, 0);
 }
-/* 出场后 */
-.route-move-leave-to {
+.route-back-enter {
   transform: translate3d(100%, 0, 0);
 }
-
-.route-move-enter-active,
-.route-move-leave-active {
+/* 出场后 */
+.route-forward-leave-to {
+  transform: translate3d(100%, 0, 0);
+}
+.route-back-leave-to {
+  transform: translate3d(-100%, 0, 0);
+}
+.route-forward-enter-active,
+.route-forward-leave-active,
+.route-back-enter-active,
+.route-back-leave-active {
   transition: transform 0.3s;
 }
 
@@ -111,13 +119,13 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
-  padding-bottom: 36px;
   width: 100%;
+  padding-bottom: 36px;
 }
 
-.badge {
+span.badge {
   display: inline-block;
-  background: red;
+  background: #de3529;
   color: white;
   width: 1rem;
   height: 1rem;
