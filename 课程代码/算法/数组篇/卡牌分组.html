@@ -32,49 +32,26 @@
         // 解释：没有满足要求的分组。
 
         function group(arr) {
-            if (typeof arr.length === 'undefined' || arr.length < 2) {
-                return false;
+            if (typeof arr === 'undefined' || arr.length === 0) return false;
+            let obj = arr.reduce((pre, cur) => {
+                pre[cur] = !pre[cur] ? 1 : pre[cur] + 1
+                return pre
+            }, {})
+
+            let lengthArr = Object.values(obj)
+            const minLength = lengthArr.sort((a, b) => a - b).shift()
+
+            if (minLength < 2) return false
+
+            let getGcd = (a, b) => {
+                return b === 0 ? a : getGcd(b, a % b)
             }
-            arr.sort((a, b) => a - b);
-            let min = Number.MAX_SAFE_INTEGER;
-            let dst = [];
-            let result = true;
-            console.log('arr:', arr);
-            for (let i = 0, len = arr.length, tmp = []; i < len - 1; i++) {
-                tmp.push(arr[i]);
-                console.log(i + '=:', arr[i])
-                for (let j = i + 1; j < len; j++) {
-                    console.log(arr[j], arr[i]);
-                    if (arr[i] === arr[j]) {
-                        tmp.push(arr[j])
-                        if (j === len - 1) {
-                            if (tmp.length < min) {
-                                min = tmp.length;
-                            }
-                            dst.push([].concat(tmp));
-                        }
-                    } else {
-                        if (tmp.length < min) {
-                            min = tmp.length;
-                        }
-                        dst.push([].concat(tmp));
-                        tmp.length = 0;
-                        console.log('ij:', i, j);
-                        i = j - 1;
-                        break;
-                    }
-                }
-            }
-            console.log('dst:', dst);
-            console.log('min:', min);
-            dst.every(item => {
-                if (item.length % min !== 0) {
-                    result = false;
-                    return false;
-                }
-            })
-            return result;
+
+            return lengthArr.every(val => getGcd(val, minLength) === 1 ? false : true)
         }
+
+
+
     </script>
 </body>
 
