@@ -1,15 +1,13 @@
 <template>
   <div id="app">
-
     <transition :name="transitionName">
       <router-view class="child-view"/>
     </transition>
-
-    <cube-tab-bar 
-      show-slider
+   
+   <cube-tab-bar show-slider 
       v-model="selectLabel" 
       @change="changeHandler">
-      <cube-tab v-for="(item,index) in tabs" :key="index" 
+      <cube-tab v-for="(item, index) in tabs" :key="index" 
         :icon="item.icon" :label="item.value">
         <span>{{item.label}}</span>
         <span class="badge" v-if="showBadge(item.label)">{{cartTotal}}</span>
@@ -30,22 +28,21 @@ export default {
         { label: "Cart", value: "/cart", icon: "cubeic-mall" },
         { label: "Me", value: "/login", icon: "cubeic-person" }
       ],
-      transitionName: "route-forward"
+      transitionName: 'route-forward'
     };
   },
   watch: {
-    $route(newValue) {
-      this.selectLabel = newValue.path;
+    // 路由发生变化时，同步tabs选中
+    $route(route) {
+      this.selectLabel = route.path;
 
-      this.transitionName = this.$router.transitionName;
+      // 动态设置动画方式
+      this.transitionName = this.$router.transitionName
     }
   },
   created() {
     // 初始化页签设置
     this.selectLabel = this.$route.path;
-  },
-  computed: {
-    ...mapGetters(["isLogin", "cartTotal"])
   },
   methods: {
     logout() {
@@ -57,6 +54,9 @@ export default {
     showBadge(label) {
       return label == "Cart" && this.cartTotal > 0;
     }
+  },
+  computed: {
+    ...mapGetters(["isLogin", "cartTotal"])
   }
 };
 </script>

@@ -1,38 +1,34 @@
 <template>
   <div class="home">
-
+    <!-- 页头 -->
     <k-header title="开课吧商城"></k-header>
 
-    <cube-slide :data="slider" :interval="4000">
+    <!-- 轮播图 -->
+    <cube-slide :data="slider" :interval="5000">
       <cube-slide-item v-for="item in slider" :key="item.id">
         <router-link :to="`/detail/${item.id}`">
-          <img :src="item.img" class="slider_img">
+          <img :src="item.img" class="slider">
         </router-link>
       </cube-slide-item>
     </cube-slide>
 
+    <!-- 触发分类选择按钮 -->
+    <cube-button @click="showCatg">选择分类</cube-button>
+
     <!-- 商品列表 -->
     <goods-list :goods="filterGoods" @addCart="onAddCart"></goods-list>
 
-    <!-- 触发分类选择按钮 -->
-    <cube-button @click="showCatg">选择分类</cube-button>
     <!-- 商品分类列表 -->
-    <cube-drawer ref="drawer" title="请选择分类" 
-      :data="[drawerList]" @select="selectHandler"></cube-drawer>
+    <cube-drawer ref="drawer" title="请选择分类" :data="[drawerList]" @select="selectHandler"></cube-drawer>
 
-    <!-- 加购动画载体 -->
-    <div class="ball-wrap">
-      <transition @before-enter="beforeEnter"
-      @enter="enter"
-      @after-enter="afterEnter">
-        <div class="ball" v-show="ball.show">球</div>
-      </transition>
-    </div>
+    
   </div>
 </template>
 
 <script>
 import GoodsList from "@/components/GoodsList.vue";
+import create from "@/services/create";
+import BallAnim from "@/components/BallAnim.vue";
 
 const labels = {
   fe: "前端",
@@ -48,28 +44,63 @@ export default {
     return {
       slider: [],
       goods: [], // 所有商品列表
-      selectedKeys: [], // 分类过滤使用
-      keys: [], // 分类
-      ball: {
-        show: true,
-        el: null // 目标dom的引用
-      }
+      selectedKeys: [], // 分类过滤时使用
+      keys: [] // 分类
     };
   },
   components: {
     GoodsList
   },
   async created() {
-    // 多层级解构
+    // {data:{},statsu...}
     const { data: { data: goods, slider, keys } } = await this.$http.get(
       "/api/goods"
     );
-    console.log(slider);
+    console.log(goods, slider);
     this.slider = slider;
-
     this.goods = goods;
     this.keys = keys;
     this.selectedKeys = [...this.keys]; // 默认选中全部分类
+  },
+  methods: {
+    showCatg() {
+      // 显示分类列表
+      this.$refs.drawer.show();
+
+      // 创建Notice实例
+      // cube-ui方式
+      // const notice = this.$createNotice();
+      // notice.add({ content: "lalala", duration: 2 });
+
+      // 自定义方式
+      this.$notice.info({
+        duration: 3,
+        content: "一些消息内容"
+      });
+    },
+    selectHandler(val) {
+      this.selectedKeys = [...val];
+    },
+    onAddCart(el) {
+      // this.ball.el = el;
+      // this.ball.show = true; // 触发动画钩子
+      // 创建一个小球动画实例
+
+      // const anim = this.$createBallAnim({
+      //   el,
+      //   onTransitionend() {
+      //     anim.remove();
+      //   }
+      // });
+      // anim.start();
+
+      // 手动创建组件实例
+      const anim = create(BallAnim, { el });
+      anim.start();
+      anim.$on("transitionend", () => {
+        anim.remove();
+      });
+    }
   },
   computed: {
     filterGoods() {
@@ -82,48 +113,10 @@ export default {
     drawerList() {
       return this.keys.map(v => {
         return {
-          text: labels[v], // 转换为中文
-          value: v
+          value: v,
+          text: labels[v] //转换为中文标签
         };
       });
-    }
-  },
-  methods: {
-    showCatg() {
-      this.$refs.drawer.show();
-
-      // 创建notice实例
-      const notice = this.$createNotice();
-      notice.add({content:'lllllaaaaa'})
-    },
-    selectHandler(val) {
-      this.selectedKeys = [...val];
-    },
-    beforeEnter() {
-      // 动画初始值
-      // 获取点击的dom坐标
-      const dom = this.ball.el;
-      const rect = dom.getBoundingClientRect();
-      console.log(rect.top, rect.left);
-      const x = rect.left - window.innerWidth / 2;
-      const y = -(window.innerHeight - rect.top - 30);
-      el.style.display = "block";
-      el.style.transform = `translate3d(${x}px,${y}px,0)`;
-    },
-    enter(el, done) {
-      // 获取offsetHeight 触发重绘
-      document.body.offsetHeight;
-      // 设置动画结束点
-      el.style.transform = "translate3d(0,0,0)";
-      el.addEventListener("transitionend", done);
-    },
-    afterEnter(el) {
-      this.ball.show = false;
-      el.style.display = "none";
-    },
-    onAddCart(el) {
-      this.ball.el = el;
-      this.ball.show = true;
     }
   }
 };
@@ -134,21 +127,7 @@ export default {
   height: auto;
 }
 
-.slider_img {
+.cube-slide-item > a > img {
   width: 100%;
-  height: auto;
-}
-
-.ball-wrap {
-  .ball {
-    position: fixed;
-    left: 50%;
-    bottom: 10px;
-    z-index: 200;
-    color: red;
-    width: 30px;
-    height: 30px;
-    transition: all 0.5s cubic-bezier(0.49, -0.29, 0.75, 0.41);
-  }
 }
 </style>
