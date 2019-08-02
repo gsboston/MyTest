@@ -6,85 +6,144 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <style>
-        .box {
-            width: 500px;
-            /* height: 210px; */
-            background: pink;
-            /* 核心 这个父元素就是一个弹性盒子容器*/
-            display: flex;
-
-            /* 排列方向 row是水平,默认值，column竖排，垂直方向*/
-            /* flex-direction: row; */
-            /* 排列顺序，默认是正序， row-reverse倒序*/
-            /* flex-direction: row-reverse; */
-            /* flex-direction: column-reverse; */
-            /* 自动换行 wrap：nowrap不换行，默认/wrap/wrap-reverse; */
-            flex-wrap: wrap;
-            /* flex-flow:column wrap; */
-            /* 水平左 */
-            /* justify-content: flex-start; */
-            /* 中 */
-            /* justify-content: center; */
-            /* 水平右 */
-            /* justify-content: flex-end;  */
-            /* 常用 */
-            /* 居中显示，两边也空有间隙 */
-            justify-content: space-around;
-            /* 两边不留空隙 */
-            /* justify-content:space-between;  */
-        }
-
-        .box div {
-            /* margin:auto 15px; */
-            margin: 10px 20px;
-        }
-
-        .boxone {
-            /* flex:1; 弹性值，占比*/
-            width: 100px;
-            height: 100px;
-            background: red;
-        }
-
-        .boxtwo {
-            /* flex:2; */
-            width: 100px;
-            height: 100px;
-            background: orange;
-        }
-
-        .boxthree {
-            /* flex:1; */
-            width: 100px;
-            height: 100px;
-            background: yellow;
-        }
-    </style>
 </head>
-<input type="text" id="ttt">
 
 <body>
     <script>
-        document.querySelector('#ttt').addEventListener('keyup', function () {
+        // slice 取值，数组本身不变化 
 
+
+        // splice 删除，替换，数组本身会变化
+        var arr = [1, 2, 3, 4, 5];
+        arr.splice(2, 1, 7);
+        // arr [1,2,7,4,5]
+
+        // split 字符串=》数组 s.split(',');
+        var s = "1,2,3,4,5";
+        var arr = s.split(',');
+        // arr  ["1", "2", "3", "4", "5"]
+
+        //  push从尾加 pop删除数组最后一个元素 shift删除数组第一个元素 
+        // unshift从头加 
+        // concat 合并数组 
+        var arr1 = [1, 2, 3, 4];
+        var arr2 = [5, 6, 7, 8];
+        var a = arr1.concat(arr2);
+        //  [1, 2, 3, 4, 5, 6, 7, 8] 原数组没有变化。
+
+        // 函数式编程。纯函数。
+
+        // reduce
+        // 去掉，
+        var str = "123,,,4214,453,654,,,6547,,123,2314";
+
+        function fn() {
+            var result = "";
+            for (var i = 0; i < str.length; i++) {
+                if (str[i] == ',') {
+                    if (result[result.length - 1] != ',') {
+                        result += str[i];
+                    }
+                } else {
+                    result += str[i];
+                }
+            }
+            return result;
+        }
+
+        fn(str);
+
+        // zhengze
+        var reg = /,{2,}/g
+        str.replace(reg, ',');
+
+        // 扁平化数组
+        // 1.
+        var arr = [1, 2, 3, [4, 5, 6], 7, [8]];
+        var newarr = arr.toString().split(',');
+
+        // 2.reduce + 递归：自己调用自己*
+        function fn1(arr) {
+            return arr.reduce((preVal, newVal, index, arr) =>
+                [].concat(Array.isArray(preVal) && preVal ? fn1(preVal) : preVal, Array.isArray(newVal) && newVal ? fn1(newVal) : newVal)
+            )
+        }
+
+        // reduce
+        var arr = [1, 2, 3, 4];
+        arr.reduce((preVal, newVal, index, arr) => {
+            return preVal + newVal;
         })
 
-        document.querySelector('#ttt').addEventListener('input', function () {
-            console.log('input');
-        })
-
-        Function.prototype.bind = Function.prototype.bind || function (context) {
-            var me = this;
-            var args = Array.prototype.slice.call(arguments, 1);
-            return function bound() {
-                var innerArgs = Array.prototype.slice.call(arguments);
-                var finalArgs = args.concat(innerArgs);
-                return me.apply(context, finalArgs);
+        // 3.用遍历实现扁平化
+        var arr = [1, 2, 3, [4, 5, 6], 7, [8]];
+        var newArr = [];
+        function fn2(arr) {
+            for (var i = 0; i < arr.length; i++) {
+                // instanceof 判断一个对象是另一个构造函数的实例
+                if (arr[i] instanceof Array) {
+                    fn2(arr[i]);
+                } else {
+                    newArr.push(arr[i]);
+                }
             }
         }
 
-        
+
+        // 数组去重
+
+        var arr = [1, 2, 3, 4, 2, 3, 6, 9, 8, 6, 6, 7];
+
+        // 1.
+        var newArr = Array.from(new Set(arr));
+
+        // 2.通过对象方式 实现数组去重
+        function fn3(arr) {
+            var result = [];
+            var obj = {};
+            for (var i = 0; i < arr.length; i++) {
+                if (!obj[arr[i]]) {
+                    result.push(arr[i]);
+                    obj[arr[i]] = true;
+                }
+            }
+            return result;
+        }
+
+        // 排序
+        // 冒泡 插入
+        var arr = [7, 3, 8, 5, 4, 1, 9, 6, 2];
+        function sArr(arr) {
+            return arr.sort(function (a, b) {
+                return a - b;
+            })
+        }
+
+        // 深拷贝 浅拷贝
+        function deepCopy(obj) {
+            var result = Array.isArray(obj) ? [] : {};
+            for (var key in obj) {
+                result[key] = obj[key];
+            }
+            return result;
+        }
+
+        // 深拷贝
+        function deepCopy(obj) {
+            var result = Array.isArray(obj) ? [] : {};
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    if (typeof obj[key] === 'object' && obj[key] !== null) {
+                        result[key] = deepCopy(obj[key]);   //递归复制
+                    } else {
+                        result[key] = obj[key];
+                    }
+                }
+            }
+            return result;
+        }
+
+        /^[a-zA-Z].$/g
     </script>
 </body>
 
