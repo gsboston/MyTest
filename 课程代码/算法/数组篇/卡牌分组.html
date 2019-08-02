@@ -50,6 +50,30 @@
             return lengthArr.every(val => getGcd(val, minLength) === 1 ? false : true)
         }
 
+        // 
+        let getGcd = (a, b) => {
+            var result = a % b;
+            if (b === 0) {
+                return a;
+            } else {
+                return getGcd(b, result);
+            }
+        }
+
+        
+        // 求最大公约数，循环实现
+        function fn(a, b) {
+            var result = "";
+            var min = a < b ? a : b;
+            for (var i = min; i > 0; i--) {
+                if (a % i == 0 && b % i == 0) {
+                    result = i;
+                    break;
+                }
+            }
+            return result;
+        }
+
 
 
     </script>

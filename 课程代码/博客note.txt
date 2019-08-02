@@ -23,6 +23,7 @@ offset实现，reduce实现
 compose实现
 apply、bind实现
 实现formitem
+你想要的居中我都有
 
 nexttick
 

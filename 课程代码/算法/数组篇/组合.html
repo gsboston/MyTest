@@ -67,9 +67,8 @@
 
         var combine = function (n, k) {
             var results = [];
-            dfs(0, []);
-            
-            function dfs(index, array) {
+
+            let dfs = (index, array) => {
                 if (array.length == k) {
                     results.push(array)
                     return
@@ -78,6 +77,8 @@
                     dfs(i, array.concat(i))
                 }
             }
+
+            dfs(0, []);
 
             return results;
         };
