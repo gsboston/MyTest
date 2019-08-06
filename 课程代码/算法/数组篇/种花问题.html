@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        // https://leetcode-cn.com/problems/can-place-flowers/
+
+        // 假设你有一个很长的花坛，一部分地块种植了花，另一部分却没有。可是，花卉不能种植在相邻的地块上，它们会争夺水源，两者都会死去。
+
+        // 给定一个花坛（表示为一个数组包含0和1，其中0表示没种植花，1表示种植了花），和一个数 n 。能否在不打破种植规则的情况下种入 n 朵花？能则返回True，不能则返回False。
+
+        // 示例 1:
+
+        // 输入: flowerbed = [1, 0, 0, 0, 1], n = 1
+        // 输出: True
+        // 示例 2:
+
+        // 输入: flowerbed = [1, 0, 0, 0, 1], n = 2
+        // 输出: False
+        // 注意:
+
+        // 数组内已种好的花不会违反种植规则。
+        // 输入的数组长度范围为[1, 20000]。
+        // n 是非负整数，且不会超过输入数组的大小。
+
+        var arr = [0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0];
+        let fn = function (arr, n) {
+            arr = arr || [];
+            n = n || 0;
+            let pre = true;
+            let result = 0;
+            let sum = 0;
+            for (let i = 0; i < arr.length + 1; i++) {
+                if (i === arr.length && sum > 0) {
+                    result += Math.ceil(sum / 2);
+                } else if (arr[i] === 0 && pre) {
+                    sum++;
+                } else if (arr[i] === 0 && !pre) {
+                    pre = true;
+                } else {
+                    pre = false;
+                    result += Math.ceil((sum - 1) / 2);
+                    sum = 0;
+                }
+            }
+            return result >= n;
+        }
+
+        let fn = function (arr, n) {
+            arr = arr || [];
+            n = n || 0;
+            let pre = true, result = 0, sum = 0;
+            for (let i = 0; i < arr.length + 1; i++) {
+                if (i === arr.length && sum > 0) {
+                    result += Math.ceil(sum / 2);
+                } else if (arr[i] === 0) {
+                    pre ? sum++ : pre = true;
+                } else {
+                    pre = false;
+                    result += Math.ceil((sum - 1) / 2);
+                    sum = 0;
+                }
+            }
+            return result >= n;
+        }
+
+    </script>
+</body>
+
+</html>
