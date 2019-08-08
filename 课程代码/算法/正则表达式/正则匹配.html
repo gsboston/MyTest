@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+
+        // 模式匹配
+        function fn(str, mode) {
+            // 对模式变量进行正则筛选
+            let modeArr = mode.match(/([a-z.]*)|([a-z]+(?=([a-z]\*)|$))/g);
+            let cur = 0;
+            let strLen = str.length;
+
+            for (let i = 0, len = modeArr.length, m; i < len; i++) {
+                // 对于模式分为三类，  .*|a*|cdef
+                m = modeArr[i].split('');
+                // 如果第二位是星 标识有模式
+                if (m[1] === '*') {
+                    if (m[0] === '.') {
+                        cur = strLen;
+                        break;
+                    } else {
+                        while (str[cur] === m[0]) {
+                            cur++;
+                        }
+                    }
+                } else {
+                    for (let j = 0, jl = m.length; j < jl; j++) {
+                        if (m[j] !== str[cur]) {
+                            return false;
+                        } else {
+                            cur++;
+                        }
+                    }
+                }
+            }
+            return cur === strLen;
+        }
+    </script>
+</body>
+
+</html>
