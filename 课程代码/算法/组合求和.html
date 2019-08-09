@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        // https://leetcode-cn.com/problems/combination-sum/submissions/
+        // 给定一个无重复元素的数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+        // candidates 中的数字可以无限制重复被选取。
+        // 说明：
+        // 所有数字（包括 target）都是正整数。
+        // 解集不能包含重复的组合。 
+
+        // 示例 1:
+        // 输入: candidates = [2,3,6,7], target = 7,
+        // 所求解集为:
+        // [
+        // [7],
+        // [2,2,3]
+        // ]
+
+        // 示例 2:
+        // 输入: candidates = [2,3,5], target = 8,
+        // 所求解集为:
+        // [
+        //   [2,2,2,2],
+        //   [2,3,3],
+        //   [3,5]
+        // ]
+
+
+        let fn = (candidates, target) => {
+            candidates = candidates.sort((a, b) => a - b);
+            let result = [], tmp = [], len = candidates.length, min = 0;
+
+            let foo = (left, cur) => {
+                let redu = left - cur;
+                tmp.push(cur);
+
+                if (redu === 0) {
+                    result.push([...tmp]);
+                    tmp.pop();
+                    return;
+                }
+                for (let i = 0; i < len; i++) {
+                    if (redu < candidates[i]) {
+                        tmp.pop();
+                        break;
+                    }
+                    min = candidates[i] > min ? candidates[i] : min;
+                    if (candidates[i] < min) continue;
+                    foo(redu, candidates[i]);
+                }
+            }
+
+            for (let i = 0; i < len; i++ , tmp = []) {
+                min = candidates[i];
+                foo(target, candidates[i]);
+            }
+
+            return result;
+        }
+
+        // 递归
+        var combinationSum = function (candidates, target) {
+            let result = [];
+            for (let i = 0; i < candidates.length; i += 1) {
+                const candidate = candidates[i];
+                const left = target - candidate;
+                if (left === 0) {
+                    result.push([candidate]);
+                } else if (left > 0) {
+                    result = result.concat(
+                        combinationSum(candidates.slice(i), left).map(arr =>
+                            [candidate].concat(arr)
+                        )
+                    );
+                }
+            }
+            return result;
+        };
+
+        var combinationSum = function (candidates, target) {
+            candidates.sort((a, b) => a - b)
+            var item = [],
+                path = [];
+            get_combin(candidates, target, 0, item, path);
+
+            function get_combin(candidates, target, it, item, path) {
+                if (target < 0)
+                    // 如果大于target 直接返回不继续搜索
+                    return;
+                if (target == 0) {
+                    // 若得到路径，插入到item，不用清空path。因为需要继续搜索其余可能性
+                    path = path.slice()
+                    item.push(path);
+                    return
+                }
+                for (var i = it; i < candidates.length; i++) {
+                    path.push(candidates[i]);
+                    get_combin(candidates, target - candidates[i], i, item, path)
+                    // 无论是该路径大于target还是等于target，都需要对其删除最后一个元素，进行其余支路的搜索
+                    path.pop()
+                }
+            }
+            return item
+        }
+    </script>
+</body>
+
+</html>

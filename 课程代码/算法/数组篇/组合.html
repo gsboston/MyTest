@@ -11,6 +11,7 @@
 <body>
     <script>
         // 77
+        // https://leetcode-cn.com/problems/combinations/submissions/
         // 给定两个整数 n 和 k，返回 1 ... n 中所有可能的 k 个数的组合。
 
         // 示例:
@@ -27,63 +28,23 @@
         //  [1,4]
         // ]
 
-        let fn = function (n, k) {
-            if (n < k) return;
-            let result = [];
-            const arr = Array.apply(null, new Array(n)).map((elem, index) => index + 1);
-            if (arr.length === 1) {
-                return [[...arr]];
-            }
-            for (let i = 0, tmp = []; i < arr.length - k + 1; i++) {
-                for (let j = i + 1; j < arr.length; j++) {
-                    tmp.push(arr[i]);
-                    for (let l = 0; l < k - 1; l++) {
-                        tmp.push(arr[j + l]);
-                    }
-                    result.push([].concat(tmp));
-                    tmp.length = 0;
-                }
+        function fn(n, k) {
+            var result = [];
 
+            let dn = function (index, array) {
+                if (array.length === k) {
+                    result.push(array);
+                    return;
+                }
+                for (let i = index + 1; i <= n; i++) {
+                    dn(i, array.concat(i));
+                }
             }
+
+            dn(0, []);
+
             return result;
         }
-
-        let combine = function (n, k) {
-            let ans = [], res = []
-            function dfs(idx) {
-                if (res.length === k) {
-                    ans.push(res.map(item => item));
-                } else if (res.length < k) {
-                    for (let i = idx; i <= n; i++) {
-                        res.push(i);
-                        dfs(i + 1);
-                        res.pop();
-                    }
-                }
-            }
-            dfs(1)
-            return ans;
-        };
-
-        var combine = function (n, k) {
-            var results = [];
-
-            let dfs = (index, array) => {
-                if (array.length == k) {
-                    results.push(array)
-                    return
-                }
-                for (var i = index + 1; i <= n; i++) {
-                    dfs(i, array.concat(i))
-                }
-            }
-
-            dfs(0, []);
-
-            return results;
-        };
-
-
     </script>
 </body>
 
