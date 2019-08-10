@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        // https://leetcode-cn.com/problems/combination-sum-ii/
+        // 给定一个数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+
+        // candidates 中的每个数字在每个组合中只能使用一次。
+        // 说明：
+        // 所有数字（包括目标数）都是正整数。
+        // 解集不能包含重复的组合。 
+        // 示例 1:
+        // 输入: candidates = [10,1,2,7,6,1,5], target = 8,
+        // 所求解集为:
+        // [
+        // [1, 7],
+        // [1, 2, 5],
+        // [2, 6],
+        // [1, 1, 6]
+        // ]
+        // 示例 2:
+        // 输入: candidates = [2,5,2,1,2], target = 5,
+        // 所求解集为:
+        // [
+        //   [1,2,2],
+        //   [5]
+        // ]
+
+        function getSum(candidates, target) {
+            candidates.sort((a, b) => a - b);
+            let result = [], path = [], obj = {};
+
+            let fn = function (list, left, startIndex, path, result) {
+                if (left < 0) return;
+                if (left === 0) {
+                    result.push([].concat(path));
+                    return;
+                }
+                for (let i = startIndex; i < list.length; i++) {
+                    path.push(list[i]);
+                    fn(list, left - list[i], i + 1, path, result);
+                    path.pop();
+                }
+            }
+
+            fn(candidates, target, 0, path, result);
+
+            return result;
+        }
+
+
+    </script>
+</body>
+
+</html>

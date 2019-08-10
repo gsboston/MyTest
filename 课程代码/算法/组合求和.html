@@ -35,83 +35,54 @@
         //   [3,5]
         // ]
 
-
+        // 解法1
         let fn = (candidates, target) => {
-            candidates = candidates.sort((a, b) => a - b);
-            let result = [], tmp = [], len = candidates.length, min = 0;
+            candidates.sort((a, b) => a - b);
+            let result = [], path = [], len = candidates.length;
 
-            let foo = (left, cur) => {
-                let redu = left - cur;
-                tmp.push(cur);
-
-                if (redu === 0) {
-                    result.push([...tmp]);
-                    tmp.pop();
+            let foo = (list, left, it, result, path) => {
+                if (left < 0) return;
+                if (left === 0) {
+                    result.push([].concat(path));
                     return;
                 }
-                for (let i = 0; i < len; i++) {
-                    if (redu < candidates[i]) {
-                        tmp.pop();
-                        break;
-                    }
-                    min = candidates[i] > min ? candidates[i] : min;
-                    if (candidates[i] < min) continue;
-                    foo(redu, candidates[i]);
+                for (let i = it; i < len; i++) {
+                    path.push(list[i]);
+                    foo(list, left - list[i], i, result, path);
+                    // 不论何种情况返回都要删除数组最后一项，继续进行其他情况遍历
+                    path.pop();
                 }
             }
 
-            for (let i = 0; i < len; i++ , tmp = []) {
-                min = candidates[i];
-                foo(target, candidates[i]);
-            }
+            foo(candidates, target, 0, result, path);
 
             return result;
         }
 
-        // 递归
-        var combinationSum = function (candidates, target) {
+        // 递归解法2
+        var getSum = function (list, target) {
             let result = [];
-            for (let i = 0; i < candidates.length; i += 1) {
-                const candidate = candidates[i];
-                const left = target - candidate;
+            for (let i = 0; i < list.length; i += 1) {
+                const curNum = list[i];
+                const left = target - curNum;
                 if (left === 0) {
-                    result.push([candidate]);
+                    result.push([curNum]);
                 } else if (left > 0) {
-                    result = result.concat(
-                        combinationSum(candidates.slice(i), left).map(arr =>
-                            [candidate].concat(arr)
-                        )
-                    );
+                    // slice的作用就是去重，
+                    let arr = getSum(list.slice(i), left);
+                    // 将当前分支返回的result以此加入每次减的数值
+                    arr = arr.map(arr =>
+                        [curNum].concat(arr)
+                    )
+                    // 合并result
+                    result = result.concat(arr);
                 }
             }
             return result;
         };
 
-        var combinationSum = function (candidates, target) {
-            candidates.sort((a, b) => a - b)
-            var item = [],
-                path = [];
-            get_combin(candidates, target, 0, item, path);
 
-            function get_combin(candidates, target, it, item, path) {
-                if (target < 0)
-                    // 如果大于target 直接返回不继续搜索
-                    return;
-                if (target == 0) {
-                    // 若得到路径，插入到item，不用清空path。因为需要继续搜索其余可能性
-                    path = path.slice()
-                    item.push(path);
-                    return
-                }
-                for (var i = it; i < candidates.length; i++) {
-                    path.push(candidates[i]);
-                    get_combin(candidates, target - candidates[i], i, item, path)
-                    // 无论是该路径大于target还是等于target，都需要对其删除最后一个元素，进行其余支路的搜索
-                    path.pop()
-                }
-            }
-            return item
-        }
+      
     </script>
 </body>
 
