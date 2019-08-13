@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        // https://leetcode-cn.com/problems/number-of-dice-rolls-with-target-sum/
+        // 这里有 d 个一样的骰子，每个骰子上都有 f 个面，分别标号为 1, 2, ..., f。
+
+        // 我们约定：掷骰子的得到总点数为各骰子面朝上的数字的总和。
+
+        // 如果需要掷出的总点数为 target，请你计算出有多少种不同的组合情况（所有的组合情况总共有 f^d 种），模 10^9 + 7 后返回。
+        // 示例 1：
+        // 输入：d = 1, f = 6, target = 3
+        // 输出：1
+
+        // 示例 2：
+        // 输入：d = 2, f = 6, target = 7
+        // 输出：6
+        function tou(d, f, target) {
+            if (d === 1) {
+                return f < target ? 0 : 1;
+            }
+
+            let result = { count: 0 }, path = [];
+            let list = Array.apply(null, new Array(f));
+            list = list.map((elem, index) => index + 1); // [1,2,3,4,5,6]
+
+            let foo = function (list, left, it, path, result) {
+                if (left < (d - path.length)) return;
+                if (left < 0) return;
+
+                if (left === 0 && path.length === d) {
+                    result.count++;
+                    return;
+                }
+                if (path.length === d) return;
+
+                for (let i = it; i < list.length; i++) {
+                    path.push(1);
+                    foo(list, left - list[i], i, path, result);
+                    path.pop();
+                }
+            }
+
+            foo(list, target, 0, path, result);
+            return result.count === 1 ? 1 : result.count * 2;
+        }
+    </script>
+
+</body>
+
+</html>

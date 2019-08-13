@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        var arr = Array.apply(null, new Array(100)).map((item, index) => index);
+
+        function fn(arr, n) {
+            var start = 0;
+            var end = arr.length - 1;
+            var mid = 0;
+
+            while (start <= end) {
+                mid = Math.floor((end + start) / 2);
+                if (n === arr[mid]) return arr[mid];
+                if (n < arr[mid]) {
+                    end = mid - 1;
+                } else {
+                    start = mid + 1;
+                }
+                console.log(mid);
+            }
+            return mid
+        }
+
+    </script>
+</body>
+
+</html>

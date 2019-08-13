@@ -46,6 +46,7 @@
                     return;
                 }
                 for (let i = startIndex; i < list.length; i++) {
+                    if (i > startIndex && list[i] === list[i - 1]) continue;
                     path.push(list[i]);
                     fn(list, left - list[i], i + 1, path, result);
                     path.pop();
