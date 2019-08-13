@@ -13,13 +13,34 @@
     <script>
 
         // https://www.cnblogs.com/fonxian/p/10854656.html
+        // https://leetcode-cn.com/problems/unique-paths/
         // 不同路径问题
         f[m][n] = f[m - 1][n] + f[m][n - 1]
         // i = 0 或 j = 0 ，则f[i][j] = 0
 
         function fn(m, n) {
-            let dp = Array.apply(null,new Array(m).map)
+            // 构造二维数组
+            let dp = Array.apply(null, new Array(m)).map(
+                item => Array.apply(null, new Array(n)).map(
+                    item => 0
+                )
+            )
+
+            for (let i = 0; i < m; i++) {
+                for (let j = 0; j < n; j++) {
+                    if (i === 0 || j === 0) {
+                        dp[i][j] = 1;
+                    } else {
+                        dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+                    }
+                }
+            }
+
+            // 索引值
+            return dp[m - 1][n - 1];
         }
+
+
 
     </script>
 </body>
