@@ -5,7 +5,7 @@ let hexLiteral: number = 0x14 // 16
 let binaryLiteral: number = 0b10100 // 2
 let octalLiteral: number = 0o24 // 8
 
-let name: string = 'bob'
+let name2: string = 'bob'
 
 let list1: number[] = [1, 2, 3, 4]
 let list2: Array<number> = [1, 2, 3, 4] // 数组泛型，推荐第一种
@@ -15,7 +15,7 @@ let x: [string, number]
 x = ['halo', 10]
 // x = [10,'halo'] error
 console.log(x[0].substr(1))
-x[3] = 'world' // 可以这样赋值 并且值类型可以是上面定义的两种类型
+x[3] = 'world' // 这样越界赋值 3.1版本及以上 会报错
 
 // 枚举类型
 enum Color {
@@ -81,3 +81,44 @@ create(null)
 let someVal: any = 'this is a string'
 // let strLen: number = (<string>someVal).length
 let strLen: number = (someVal as string).length // 两种类型等价，推荐后者
+
+
+
+// 变量声明===================================================================================
+var a = 10;
+function f() {
+    var message = 'halo';
+    return message;
+}
+
+// 闭包 变量提升等同js一致
+
+let input: [number, number] = [1, 2];
+function f5([first, second]: [number, number]) {
+    console.log(first);
+    console.log(second);
+}
+f5(input);
+
+// 对象解构
+let o = {
+    a1: 'foo',
+    b1: 12,
+    c1: 'bar'
+}
+let { a1, b1 }: { a1: string, b1: number } = o;
+
+
+// 默认参数
+function fn4(o: { a: string, b?: number }) {
+    let { a, b = 1000 } = o;
+}
+
+function fn5({a,b=0}={a:''}):void{
+
+}
+// 可以传空，就以{a:''}为默认值解构，{a:'',b:0}
+// 可以传入一个对象，必须含有a属性，如果传入空对象报错。
+fn5({a:'yes'}) // 正确
+fn5() // 正确
+// fn5({}) // 报错
