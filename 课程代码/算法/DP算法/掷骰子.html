@@ -25,7 +25,7 @@
         // 输入：d = 2, f = 6, target = 7
         // 输出：6
 
-        // 解题思路 如示例2，2个骰子可以分解成1个骰子的情况
+        // 解题思路 如示例2，两个骰子可以分解成1个骰子的情况
         // dp[2][7] = dp[1][7-1] + dp[1][7-2] + dp[1][7-3] + dp[1][7-4] + dp[1][7-5] + dp[1][7-6]
 
 
@@ -33,7 +33,7 @@
         // d个数 f面数 target目标值
         function fn(d, f, target) {
             if (d > f) return 0;
-            let dp = Array.apply(null, new Array(f + 1)).map(
+            let dp = Array.apply(null, new Array(d + 1)).map(
                 (item, index) => Array.apply(null, new Array(target + 1)).map(item => 0)
             )
 

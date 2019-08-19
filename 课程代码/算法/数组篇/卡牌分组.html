@@ -43,14 +43,17 @@
 
             if (minLength < 2) return false
 
+            // 求最大公约数
             let getGcd = (a, b) => {
                 return b === 0 ? a : getGcd(b, a % b)
             }
 
+            // 如果求到最大公约数为1，则返回false.
+            // every 中返回一个false，结果就为false
             return lengthArr.every(val => getGcd(val, minLength) === 1 ? false : true)
         }
 
-        // 
+        //求最大公约数的方法1
         let getGcd = (a, b) => {
             var result = a % b;
             if (b === 0) {
@@ -61,7 +64,7 @@
         }
 
 
-        // 求最大公约数，循环实现
+        // 求最大公约数，循环实现，方法2
         function fn(a, b) {
             var result = "";
             var min = a < b ? a : b;
