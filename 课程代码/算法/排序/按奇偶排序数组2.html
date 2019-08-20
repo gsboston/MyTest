@@ -23,6 +23,25 @@
         // 输出：[4,5,2,7]
         // 解释：[4,7,2,5]，[2,5,4,7]，[2,7,4,5] 也会被接受。
 
+        // 题解：通过已知可得出 数组长度是偶数，排序的同时将奇偶分组即可
+
+        let arr = [4, 2, 5, 7];
+
+        function fn(arr) {
+            for (let i = 0; i < arr.length - 1; i++) {
+                if ((arr[i] % 2 === 0 && i % 2 === 0) || (arr[i] % 2 != 0 && i % 2 != 0)) continue;
+                let flag = i % 2;
+                for (let j = i + 1; j < arr.length; j++) {
+                    if ((arr[j] % 2 === 0 && flag === 0) || (arr[j] % 2 != 0 && flag != 0)) {
+                        arr[i] = arr[i] + arr[j];
+                        arr[j] = arr[i] - arr[j];
+                        arr[i] = arr[i] - arr[j];
+                        continue;
+                    }
+                }
+            }
+            return arr;
+        }
     </script>
 </body>
 
