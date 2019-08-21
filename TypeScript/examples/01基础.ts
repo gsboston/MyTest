@@ -2,9 +2,10 @@
 // tsc -v
 
 // 使用ts开发的时候需要配置一些配置文件，可以使用脚手架工具 TypeScript library starter
-// github
+// github https://github.com/alexjoverm/typescript-library-starter
 
-class User {
+// 定义类
+class User implements Person{
     fullName: string
     firstName: string
     lastName: string
@@ -15,6 +16,7 @@ class User {
     }
 }
 
+// 定义接口
 interface Person {
     firstName: string
     lastName: string
@@ -31,7 +33,7 @@ function greeter(person: Person) {
 // };
 let user = new User('Yee', 'Huang');
 
-// console.log(greeter(user));
+console.log(greeter(user));
 
 // 编译 tsc 01.ts
 // 同目录下会生成js文件

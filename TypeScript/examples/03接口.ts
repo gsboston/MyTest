@@ -1,3 +1,5 @@
+// 接口
+
 function printLabel(labelledObj: { label: string }) {
     console.log(labelledObj.label);
 }
@@ -7,8 +9,7 @@ let myObj = { size: 10, label: 'Size 10 Object' };
 printLabel(myObj);
 
 
-
-// 接口描述 interface
+// interface声明接口
 interface LabelledValue {
     label: string
 }
