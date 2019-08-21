@@ -1,6 +1,9 @@
 // npm i -g typescript
 // tsc -v
 
+// 使用ts开发的时候需要配置一些配置文件，可以使用脚手架工具 TypeScript library starter
+// github
+
 class User {
     fullName: string
     firstName: string
@@ -28,7 +31,7 @@ function greeter(person: Person) {
 // };
 let user = new User('Yee', 'Huang');
 
-console.log(greeter(user));
+// console.log(greeter(user));
 
 // 编译 tsc 01.ts
 // 同目录下会生成js文件
