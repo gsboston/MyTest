@@ -1,3 +1,4 @@
+// 普通类
 class Greeter {
     greeting: string
     constructor(message: string) {
@@ -12,7 +13,7 @@ let greeter = new Greeter('world')
 greeter.greet()
 
 
-// 继承==================================================================
+// 类继承
 class Animal2 {
     move(distance: number = 0) {
         console.log(`Animal moved ${distance}m`)
@@ -84,8 +85,9 @@ class Animal4 {
 }
 // ts是一个结构性的类型系统，当去比较两种不同类型的时候，并不在乎从来哪来，如果他们所有的成员类型都是兼容的话，
 // 我们认为他是类型兼容的。当比较私有的或者受保护成员类型的时候，这个情况就不同了。
-// 如果其中一个类型包含private、受保护成员，只有当另一个类型也包含这样一个private成员
+// 如果其中一个类型包含private、protected成员，只有当另一个类型也包含这样一个private成员
 // 并且他们都是来自同一处声明的时候，我们才认为这两个是类型兼容的。
+// private修饰的成员只能在当前类中访问，子类无法访问
 // 示例
 
 class Animal5 {
@@ -118,11 +120,12 @@ let rhino = new Rhino()
 let employee = new Employee('kevin')
 
 animal5 = rhino
-// 报错 因为e中的私有成员和a中的私有成员来源不一样
+// animal = employee // error
+// 第二行报错 因为e中的私有成员和a中的私有成员来源不一样
 // 而a和r共享了私有成员的定义。所以是兼容的，a和e是不兼容的
-// animal = employee
 
-// protected 
+
+// protected 受保护成员
 
 class Person {
     protected name: string
@@ -132,7 +135,6 @@ class Person {
         this.name = name
     }
 }
-
 
 class Employee2 extends Person {
     private department: string
@@ -148,8 +150,10 @@ class Employee2 extends Person {
 
 let howard = new Employee2('howard', 'sales')
 console.log(howard.getElebatorPitch());
-// 受保护的，只能在子类中使用，但是不能再外部使用
+// 受保护的成员，只能在子类中使用，但是不能再外部使用
 // console.log(howard.name)
+
+
 
 // readonly ==========================================
 class Person2 {
@@ -162,6 +166,7 @@ class Person2 {
 
 let john = new Person2('john')
 // john.name='ddd' // error
+
 
 // 参数属性（尽量不用）==============================================
 class Person3 {

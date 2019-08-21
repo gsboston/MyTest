@@ -66,7 +66,9 @@ mySearch = function (src: string, sub: string): boolean {
 
 
 // 可索引类型
+// 数字索引签名
 interface StringArray {
+    // 数字签名
     [index: number]: string
 }
 
@@ -75,8 +77,21 @@ let myArray: StringArray;
 myArray = ['bob', 'fred', 'smith'];
 let myStr: string = myArray[0];
 
+// 字符串索引签名
+interface StringArray2 {
+    // 字符串索引签名
+    [index: string]: string
+}
 
-// 
+let myArray22: StringArray2;
+
+myArray22 = { 'a': 'aaa', 'b': 'bbb' };
+let myStr22: string = myArray22['a'];
+console.log(myStr22) // aaa
+
+
+// ts支持两种类型的索引签名，字符串和数字， 数字签名返回的类型要是字符串签名索引返回的子类型
+// 因为访问数字索引的时候，会将数字转换为字符串
 class Animal {
     name: string
 }
@@ -91,7 +106,17 @@ interface NotOkay {
     // 数字签名返回的类型要是字符串签名索引返回的子类型
 }
 
-//
+let an1 = new Animal()
+let do1 = new Dog()
+let oo1: NotOkay = { 'bb': an1, 2: do1 }
+
+console.log(oo1[2]) // Dog {} 访问数字签名时，会将数字转换为字符串，
+// 也就是为什么数字签名的返回类型要是字符串签名返回类型的子类型
+console.log(oo1['bb']) // Animal {}
+
+
+// 字符串索引签名 
+// 字符串索引签名能够很好的描述dictionary模式，并且它们也会确保所有属性与其返回值类型相匹配
 interface NumberDictionaty {
     [index: string]: number
     length: number

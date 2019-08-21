@@ -24,6 +24,8 @@ abstract class Department {
     abstract printMeeting(): void
 }
 
+// 继承抽象类后，要实现抽象类中的抽象方法，对于实例方法可以直接使用
+// 并且如果实例化的对象设置为抽象类的类型时，实例化对象不能调用继承类的方法和属性
 class AccountingDepartment extends Department {
     constructor() {
         super('Accounting ad Auditing')
@@ -73,6 +75,7 @@ console.log(greeter2.greet())
 
 // 创建一个新的构造器
 let greetMaker: typeof Greeter2 = Greeter2
+// 修改静态属性
 greetMaker.standardGreeting = 'hey there'
 
 let greeter3: Greeter2 = new greetMaker()
