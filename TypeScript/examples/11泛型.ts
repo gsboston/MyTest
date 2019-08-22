@@ -57,7 +57,7 @@ stringNumeric.add = function (x, y) {
 
 
 // 泛型约束================
-
+// 记得之前那个
 interface Lengthwise {
     length: number
 }

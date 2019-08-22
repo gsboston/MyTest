@@ -100,7 +100,7 @@ let strLen2: number = (someVal as string).length // 两种类型等价，推荐�
 
 // 变量声明
 var a = 10;
-function f() {
+function f_02() {
     var message = 'halo';
     return message;
 }
