@@ -1,3 +1,4 @@
+// 函数 https://www.tslang.cn/docs/handbook/functions.html
 // 普通函数 与js一致
 function add(x, y) {
     return x + y
