@@ -177,11 +177,11 @@ class C {
     a: number
     b?: number
 }
-let c = new C()
-c.a = 12
+let c_13 = new C()
+c_13.a = 12
 // c.a = undefined // error
-c.b = 13
-c.b = undefined // 因为b是number 和 undefined的联合类型
+c_13.b = 13
+c_13.b = undefined // 因为b是number 和 undefined的联合类型
 // c.b = null // null不能赋值给undefined 和 联合类型
 
 function f1(sn: string | null): string {

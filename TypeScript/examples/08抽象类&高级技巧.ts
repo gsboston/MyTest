@@ -84,13 +84,13 @@ console.log(greeter3.greet())
 
 // 类作为接口使用================================================
 // 允许，但是不经常使用
-class Point {
-    x: number
-    y: number
+class Point1 {
+    x_p: number
+    y_p: number
 }
 
-interface Point3d extends Point {
-    z: number
+interface Point3d extends Point1 {
+    z_3d: number
 }
 
-let point3d: Point3d = { x: 1, y: 2, z: 3 }
+let point3d: Point3d = { x_p: 1, y_p: 2, z_3d: 3 }

@@ -1,11 +1,11 @@
 
 // 可选属性
-interface Square {
+interface Square_04 {
     color: string
     area: number
 }
 
-interface SquareConfig {
+interface SquareConfig_04 {
     color?: string
     width?: number
 
@@ -13,7 +13,7 @@ interface SquareConfig {
     [propName: string]: any // 允许出现除color width外的其他属性，并且类型任意
 }
 
-function createSquare(config: SquareConfig): Square {
+function createSquare(config: SquareConfig_04): Square_04 {
     let newSquare = { color: 'white', area: 100 }
     if (config.color) {
         newSquare.color = config.color

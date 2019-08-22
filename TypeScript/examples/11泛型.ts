@@ -74,13 +74,13 @@ function getProperty<T, K extends keyof T>(obj: T, key: K) {
     return obj[key]
 }
 
-let x2 = { a: 1, b: 2, c: 3, d: 4 }
-getProperty(x2, 'a')
+let x2_11 = { a: 1, b: 2, c: 3, d: 4 }
+getProperty(x2_11, 'a')
 // getProperty(x, 'm') // error
 
 
 // 类类型
-function create<T>(c: { new(): T }): T {
+function create2<T>(c: { new(): T }): T {
     return new c()
 }
 
@@ -91,16 +91,16 @@ class BeeKeeper {
 class LionKeeper {
     nametag: string
 }
-class Animal {
+class AnimalKeeper {
     numLengs: number
 }
-class Bee extends Animal {
+class Bee extends AnimalKeeper {
     keeper: BeeKeeper
 }
-class Lion extends Animal {
+class Lion extends AnimalKeeper {
     keeper: LionKeeper
 }
-function createInstance<T extends Animal>(c: new () => T): T {
+function createInstance<T extends AnimalKeeper>(c: new () => T): T {
     return new c()
 }
 createInstance(Lion).keeper.nametag

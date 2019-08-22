@@ -5,7 +5,7 @@
 // github https://github.com/alexjoverm/typescript-library-starter
 
 // 定义类
-class User implements Person{
+class User implements Person01{
     fullName: string
     firstName: string
     lastName: string
@@ -17,13 +17,13 @@ class User implements Person{
 }
 
 // 定义接口
-interface Person {
+interface Person01 {
     firstName: string
     lastName: string
 }
 
 // 类型注解：明确参数类型
-function greeter(person: Person) {
+function greeter(person: Person01) {
     return 'Hello ' + person.firstName + ' ' + person.lastName;
 }
 
