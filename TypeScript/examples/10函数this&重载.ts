@@ -23,9 +23,9 @@ let pickedCard = cardPicker()
 console.log('card:' + pickedCard.card + ' of ' + pickedCard.suit)
 // 这时会报错，this.suits是undefined，原理与js一致，createCardPicker内返回的函数在执行的时候
 // 执行上下文是全局，当前this指向的是全局对象。
-// 解决方案：箭头函数
-// 不过this.suits会被推断为any，因为this是来自这个对象字面量的一个函数表达式，无法推断this是deck对象
-// 解决方案
+// 解决方案：箭头函数，将return返回的函数改为箭头函数
+// 不过this.suits的类型会被推断为any，因为this是来自这个对象字面量的一个函数表达式，无法推断this是deck对象
+// 解决方案，给函数提供一个显式的this参数
 
 // function f(this:void){}
 
@@ -55,6 +55,10 @@ let deck2: Deck = {
         }
     }
 }
+let cardPicker2 = deck2.createCardPicker()
+let pickedCard2 = cardPicker2() 
+console.log('card:' + pickedCard2.card + ' of ' + pickedCard2.suit)
+// 这时this.suits就会被推断成Deck类型
 
 
 // 回调函数的this =====================================================
@@ -74,11 +78,13 @@ class Handler {
 
 let h = new Handler()
 
+// 定义一个UIElement类型的变量
 let uiElement: UIElement = {
     addClickListener() { }
 }
 
-// uiElement.addClickListener(h.onClickBad) 
+// uiElement.addClickListener(h.onClickBad) // error
+
 // 报错，传入的Handler中的onClickBad的this与接口声明的this不符
 // 步骤1
 // onClickBad(this: void, e: Event) {

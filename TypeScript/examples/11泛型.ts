@@ -1,28 +1,30 @@
 // 基本示例
+// 不确定参数类型和返回值类型时(参数和返回值类型一致)。
 function identity(arg: any): any {
     return arg + ''
 }
 // 如传入number 返回就不是number
+// 用到泛型，可以指代为任意一种类型
 function identity2<T>(arg: T): T {
     return arg
 }
 let output = identity2<string>('mystr')
 let output2 = identity2('mystr') // 类型推论，推荐
 
-// 泛型变量================
 
+// 泛型变量================
 function loggingIndentity<T>(arg: T): T {
-    // console.log(arg.length) // error,任意类型，如不是数组
+    // console.log(arg.length) // error,任意类型，如不是数组就不满足
     return arg
 }
-// =>
+// => 这样就可以了
 function loggingIndentity2<T>(arg: T[]): T[] {
     console.log(arg.length)
     return arg
 }
 
-// 泛型类型================
 
+// 泛型类型================
 function identity3<T>(arg: T): T {
     return arg
 }
@@ -30,12 +32,11 @@ function identity3<T>(arg: T): T {
 interface GenericIndetityFn<T> {
     (arg: T): T
 }
-// let myIndetity: { <T>(arg: T): T } = identity3
-let myIndetity: GenericIndetityFn<number> = identity
+let myIndetity1: { <T>(arg: T): T } = identity3
+let myIndetity2: GenericIndetityFn<number> = identity3
 
 
 // 泛型类==================
-
 class GenericNumber<T>{
     zeroValue: T
     add: (x: T, y: T) => T
@@ -66,6 +67,7 @@ function loggingIndentity3<T extends Lengthwise>(arg: T): T {
 }
 
 loggingIndentity3({ length: 1 })
+
 
 // 约束属性
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
