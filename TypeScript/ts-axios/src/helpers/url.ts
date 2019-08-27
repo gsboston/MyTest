@@ -16,6 +16,7 @@ function encode(val: string): string {
     .replace(/%5D/gi, ']')
 }
 
+// 遍历params 然后将结果放到键值对数组中，join成参数字符串
 export function buildURL(
   url: string,
   params?: any,
@@ -37,7 +38,7 @@ export function buildURL(
     Object.keys(params).forEach(key => {
       const val = params[key]
       if (val === null || typeof val === 'undefined') {
-        return
+        return // 跳到下次循环
       }
       let values = []
       if (Array.isArray(val)) {
@@ -61,6 +62,7 @@ export function buildURL(
 
   if (serializedParams) {
     const markIndex = url.indexOf('#')
+    // 去掉hash
     if (markIndex !== -1) {
       url = url.slice(0, markIndex)
     }
