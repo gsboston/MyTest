@@ -1,18 +1,17 @@
-var deck22 = {
-    suits: ['hearts', 'spades', 'clubs', 'diamonds'],
-    cards: Array(52),
-    createCardPicker: function () {
-        var _this = this;
-        return function () {
-            var pickedCard = Math.floor(Math.random() * 52);
-            var pickedSuit = Math.floor(pickedCard / 13);
-            return {
-                suit: _this.suits[pickedSuit],
-                card: pickedCard % 13
-            };
-        };
+var suits2 = ["hearts", "spades", "clubs", "diamonds"];
+function pickCard(x) {
+    console.log(1111);
+    if (typeof x == "object") {
+        var pickedCard = Math.floor(Math.random() * x.length);
+        return pickedCard;
     }
-};
-var cardPicker22 = deck22.createCardPicker();
-var pickedCard22 = cardPicker22();
-console.log('card:' + pickedCard22.card + ' of ' + pickedCard22.suit);
+    else if (typeof x == "number") {
+        var pickedSuit = Math.floor(x / 13);
+        return { suit: suits2[pickedSuit], card: x % 13 };
+    }
+}
+var myDeck = [{ suit: "diamonds", card: 2 }, { suit: "spades", card: 10 }, { suit: "hearts", card: 4 }];
+var pickedCard1 = myDeck[pickCard(myDeck)];
+console.log("card: " + pickedCard1.card + " of " + pickedCard1.suit);
+var pickedCard22 = pickCard(15);
+console.log("card: " + pickedCard22.card + " of " + pickedCard22.suit);

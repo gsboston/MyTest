@@ -1,6 +1,7 @@
 // 交叉类型-多种类型叠加================================
 function extend<T, U>(first: T, second: U): T & U {
-    let result = {} as T & U
+    // let result = {} as T & U
+    let result = <T & U>{}
 
     for (let id in first) {
         // result[id] = first[id] // error
@@ -18,9 +19,7 @@ function extend<T, U>(first: T, second: U): T & U {
 
 class Person {
     // name 为简写
-    constructor(public name: string) {
-
-    }
+    constructor(public name: string) {}
 }
 
 interface Loggable {
@@ -91,7 +90,7 @@ pet.layEggs()
 //     (pet as Bird).fly()
 // }
 
-// 类型保护机制-类型which
+// 类型保护机制-类型位次
 function isFish(pet: Fish | Bird): pet is Fish {
     return (pet as Fish).swim !== undefined
 }

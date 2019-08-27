@@ -24,7 +24,8 @@ console.log('card:' + pickedCard.card + ' of ' + pickedCard.suit)
 // 这时会报错，this.suits是undefined，原理与js一致，createCardPicker内返回的函数在执行的时候
 // 执行上下文是全局，当前this指向的是全局对象。
 // 解决方案：箭头函数，将return返回的函数改为箭头函数
-// 不过this.suits的类型会被推断为any，因为this是来自这个对象字面量的一个函数表达式，无法推断this是deck对象
+// 如果你给编译器设置了--noImplicitThis标记，ts会警告你有一个错误，
+// this.suits的this的类型会被推断为any，因为this是来自这个对象字面量的一个函数表达式，无法推断this是deck对象
 // 解决方案，给函数提供一个显式的this参数
 
 // function f(this:void){}
@@ -58,7 +59,7 @@ let deck2: Deck = {
 let cardPicker2 = deck2.createCardPicker()
 let pickedCard2 = cardPicker2() 
 console.log('card:' + pickedCard2.card + ' of ' + pickedCard2.suit)
-// 这时this.suits就会被推断成Deck类型
+// 此时this.suits的this就会被推断成Deck类型
 
 
 // 回调函数的this =====================================================
@@ -95,12 +96,17 @@ let uiElement: UIElement = {
 // onClickBad = (e: Event) => {
 //     this.type = e.type
 // }
+// 因为箭头函数不会捕获this，所以你总是可以把它们传给期望this: void的函数。
+// 缺点是每个 Handler对象都会创建一个箭头函数。 另一方面，方法只会被创建一次，添加到 Handler的原型链上。 
+// 它们在不同 Handler对象间是共享的。
 
 
 // 重载==========================================================
 // js本身是一个动态语言，函数也是可以根据不同的参数返回不同类型的数据
 
-// 两个重载
+// 两个重载，定义重载的时候，精确的放到前面，
+// 查找重载列表的时候，从上至下尝试，符合就使用。
+let suits = ["hearts", "spades", "clubs", "diamonds"];
 function pickCard2(x: { suit: string; card: number }[]): number
 function pickCard2(x: number): { suit: string; card: number }
 
@@ -112,3 +118,5 @@ function pickCard2(x): any {
         return { suit: '5', card: 12 }
     }
 }
+// 注意，function pickCard(x): any并不是重载列表的一部分，
+// 因此这里只有两个重载：一个是接收对象另一个接收数字。 以其它参数调用 pickCard会产生错误。

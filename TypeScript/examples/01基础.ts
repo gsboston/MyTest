@@ -23,7 +23,7 @@ interface Person01 {
 }
 
 // 类型注解：明确参数类型
-function greeter(person: Person01) {
+function greeterFn(person: Person01) {
     return 'Hello ' + person.firstName + ' ' + person.lastName;
 }
 
@@ -33,7 +33,7 @@ function greeter(person: Person01) {
 // };
 let user = new User('Yee', 'Huang');
 
-console.log(greeter(user));
+console.log(greeterFn(user));
 
 // 编译 tsc 01.ts
 // 同目录下会生成js文件
