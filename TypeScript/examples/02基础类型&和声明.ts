@@ -6,6 +6,8 @@ let hexLiteral: number = 0x14 // 16进制
 let binaryLiteral: number = 0b10100 // 2进制
 let octalLiteral: number = 0o24 // 8进制
 
+let obj2: Object = {}
+
 let name2: string = 'bob'
 
 let list1: number[] = [1, 2, 3, 4]
@@ -95,7 +97,6 @@ create(null)
 let someVal: any = 'this is a string'
 let strLen1: number = (<string>someVal).length
 let strLen2: number = (someVal as string).length // 两种类型等价，推荐后者
-
 
 
 // 变量声明
