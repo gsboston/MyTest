@@ -1,13 +1,11 @@
 <template>
     <div>
-        {{someval}}
         <input :type="type" :value="value" @input="onInput">
     </div>
 </template>
 
 <script>
 export default {
-  // inject: ["someval"],
   props: {
     value: {
       type: String,

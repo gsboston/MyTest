@@ -1,0 +1,21 @@
+vue工作机制
+new vue之后，进行初始化，生命周期、事件、props、methods、data、computed、watch等
+最重要的就是通过object。definedproperty设置setter、getter，实现响应式 依赖收集
+挂载函数$mount=》compile（）=》render function=》virtual dom tree
+
+响应式原理
+object。definedproperty
+
+依赖收集与追踪
+
+编译compile过程
+因为语句不识别，编译的过程进行依赖收集，数据模型和视图就有了绑定关系，产生依赖关系，模型发生变化，通知依赖更新
+
+双向绑定原理
+v-model指令，编译的时候解析出vmodel，将vmodel的元素添加事件监听，vmodel指定的事件回调函数，作为
+input事件的回调函数。input变化最新的值就更新到vue实例上，因为vue实例已经实现了数据响应化的setter函数会
+触发界面原来模型依赖的更新。
+
+vue数组操作，push如何修改
+
+{{a.b.c}}

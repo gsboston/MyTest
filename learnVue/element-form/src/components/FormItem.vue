@@ -1,9 +1,9 @@
 <template>
     <div>
-        <label for="">{{label}}</label>
+        <label>{{label}}</label>
         <div>
             <slot></slot>
-            <p class="err_p" v-if="errStatus">{{errMessage}}</p>
+            <p v-if="errStatus">{{errMessage}}</p>
         </div>
     </div>
 </template>
@@ -11,7 +11,7 @@
 <script>
 import Schema from "async-validator";
 export default {
-  inject: ["kForm"],
+  inject: ["myForm"],
   props: ["label", "prop"],
   data() {
     return {
@@ -24,11 +24,10 @@ export default {
     this.$on("validate", this.validator);
   },
   methods: {
-    // 校验逻辑
+    // 校验方法
     validator() {
-      //有两个input!  一个用户名 一个密码
-      const rules = this.kForm.rules[this.prop];
-      const value = this.kForm.model[this.prop];
+      const rules = this.myForm.rules[this.prop];
+      const value = this.myForm.model[this.prop];
 
       // 描述对象
       const descriptor = { [this.prop]: rules };
@@ -46,10 +45,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.err_p {
-  color: red;
-  font-size: 10px;
-}
-</style>

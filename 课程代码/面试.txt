@@ -1,0 +1,50 @@
+1、基础要好
+    1.js运行机制
+    2.es6
+
+2、通用技能，有一个深入即可
+    1.vue react 工程化 小程序
+    2.有一个源码级的技能
+
+
+简历：
+基本信息：姓名年龄手机邮箱
+学历
+工作经历
+开源项目
+技术点（源码级）
+
+技术栈：
+es6：let const 箭头函数 class promise 解构 import
+
+统计出当前网页出现多少钟html标签
+new Set([...document.getElementsByTagName("*")].map(v=>
+    v.tagName
+)).size
+
+vue和react的虚拟dom有何区别
+
+vue2为何引入虚拟dom
+    1.有watcher 每个变量变化，都知道，能直接更新
+        有watcher后直接就知道了diff的结果
+    2.虚拟dom是通过diff算法来算出哪里变了，再更新（依然更新dom，只不过让更新最少）
+    3.为啥需要虚拟dom
+         减少dom操作次数，虚拟dom就是js对象，描述dom结构
+    4.vue1的时候，每个组件{{}}都有一个watcher，vue2一个组件只有一个watcher
+    组件内部的众多变量修改，只通知组件，组件内部虚拟dom diff来算出修改的变量
+    
+
+object.defineproperty的缺点
+    1. 数组监听不到
+    2. vue拦截数组常用方法，通知更新
+
+vue的虚拟dom有啥特点
+   
+
+vue执行的流程
+    先把template解析成render函数，render函数返回虚拟dom，
+    从template转成render这一步是compile模块，这一步可以在webpack中搞定
+
+
+data里面的变量会有响应式，如果模板中不使用会占用资源
+写在mouted中this.xxx=xxxx 不是响应式

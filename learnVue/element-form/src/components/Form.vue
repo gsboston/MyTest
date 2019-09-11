@@ -9,7 +9,7 @@
         // 任意子集都可以访问from上的属性
         provide(){
             return {
-                kForm: this
+                myForm: this
             }
         },
         props:{

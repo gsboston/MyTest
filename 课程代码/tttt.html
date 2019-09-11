@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script src="https://csdnimg.cn/public/common/libs/jquery/jquery-1.9.1.min.js"></script>
+    <script>
+        var arr = [
+            "https://blog.csdn.net/weixin_42397257/article/details/100111857",
+            "https://blog.csdn.net/weixin_42397257/article/details/98892270",
+            "https://blog.csdn.net/weixin_42397257/article/details/96463384",
+            "https://blog.csdn.net/weixin_42397257/article/details/90576968",
+            "https://blog.csdn.net/weixin_42397257/article/details/90613932",
+            "https://blog.csdn.net/weixin_42397257/article/details/90385436",
+            "https://blog.csdn.net/weixin_42397257/article/details/89147378",
+            "https://blog.csdn.net/weixin_42397257/article/details/89147206",
+            "https://blog.csdn.net/weixin_42397257/article/details/100129704",
+            "https://blog.csdn.net/weixin_42397257/article/details/90453797"
+        ];
+
+        setInterval(function () {
+            var r1 = Math.floor(10*Math.random());
+            var r2 = Math.floor(10*Math.random());
+            var r3 = Math.floor(10*Math.random());
+            var r4 = Math.floor(10*Math.random());
+            var r5 = Math.floor(10*Math.random());
+            console.log(r1,r2,r3,r4);
+            $.get(arr[r1]);
+            $.get(arr[r2]);
+            $.get(arr[r3]);
+            $.get(arr[r4]);
+            $.get(arr[r5]);
+        }, 100000)
+    </script>
+</body>
+
+</html>
