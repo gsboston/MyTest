@@ -1,0 +1,21 @@
+缓存动态组件
+我们更希望那些标签的组件实例能够被在它们第一次被创建的时候缓存下来。为了解决这个问题，我们可以用一个 <keep-alive> 元素将其动态组件包裹起来。
+<keep-alive>
+  <component v-bind:is="currentTabComponent"></component>
+</keep-alive>
+注意这个 <keep-alive> 要求被切换到的组件都有自己的名字，不论是通过组件的 name 选项还是局部/全局注册。
+
+
+异步组件
+vue提供工厂函数
+Vue 只有在这个组件需要被渲染的时候才会触发该工厂函数，且会把结果缓存起来供未来重渲染
+const later = Vue.component('later', function (resolve) {
+    setTimeout(function () {
+        require(['./later.vue'], resolve)
+    }, 3000);
+});
+
+高级异步组件
+2.3.0后 异步
+异步组件工厂函数也可以返回一个如下格式的对象
+可以配置组件路径，成功失败渲染组件，延迟，超时

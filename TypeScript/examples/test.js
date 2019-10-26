@@ -1,5 +1,11 @@
-function fnTest(obj) {
-    console.log(obj.label);
-}
-var ob = { size: 10, label: 'Size 10 Object' };
-fnTest(ob);
+var Greeter22 = /** @class */ (function () {
+    function Greeter22(message) {
+        this.greeting = message;
+    }
+    Greeter22.prototype.greet = function () {
+        return 'halo,' + this.greeting;
+    };
+    return Greeter22;
+}());
+var greeter22 = new Greeter22('world');
+greeter22.greet();

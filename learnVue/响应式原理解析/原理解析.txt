@@ -4,7 +4,8 @@ new vue之后，进行初始化，生命周期、事件、props、methods、data
 挂载函数$mount=》compile（）=》render function=》virtual dom tree
 
 响应式原理
-object。definedproperty
+object。defineproperty
+vue3.0后使用es6的proxy代替defineProperty
 
 依赖收集与追踪
 

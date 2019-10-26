@@ -1,0 +1,99 @@
+https://www.jianshu.com/p/10b6074d772c
+https://segmentfault.com/a/1190000015440082
+
+vue执行的流程
+    先把template解析成render函数，render函数返回虚拟dom，
+    从template转成render这一步是compile模块，这一步可以在webpack中搞定
+
+左图页面没使用服务渲染，当请求user页面时，返回的body里为空，之后执行js将html结构注入到body里，结合css显示出来；
+
+右图页面使用了服务端渲染，当请求user页面时，返回的body里已经有了首屏的html结构，之后结合css显示出来
+
+SSR的优势
+1. 更利于SEO。爬虫工作原理类似，只会爬取源码，不会执行网站的任何脚本
+2. 更利于首屏渲染.首屏的渲染是html字符串，并不依赖于js文件，这就会使用户更快的看到页面的内容。
+尤其是针对大型单页应用，打包后文件体积比较大，普通客户端渲染加载所有所需文件时间较长，首页就会有一个很长的白屏等待时间
+
+SSR的局限
+1.服务端压力较大,高并发访问的情况，会大量占用服务端CPU资源；
+2.开发条件受限，在服务端渲染中，只有 beforeCreate 和 created 会在服务器端渲染(SSR)过程中被调用。
+这就是说任何其他生命周期钩子函数中的代码（例如 beforeMount 或 mounted），只会在客户端执行。
+这对引用库的选择产生了很大的限制；
+3.前端界面开发可操作性不高
+4.ssr 也不是万能的, 需要 node 服务器, 很耗费性能, 需要做好缓存和优化, 相当于空间换时间. 
+全站 ssr 明显不可取, 现在流行较多的是 首屏 ssr ,甚至 首屏部分 ssr
+
+CSR 优点
+1.FP最快
+2.客户端体验较好，因为在数据没更新之前，页面框架和元素是可以在dom生成的
+
+CSR 缺点
+整体加载速度慢
+seo不友好
+
+如何实现ssr
+//
+ ssr 应该有两个代码入口, 服务端和客户端, 通过 webpack 打包之后为别为 server-bundle 和 client-bundle,
+ 页面第一次呈现, 通过 server-bundle , 获取业务数据, 填充数据, 渲染组件, 发送 html 给浏览器,
+ 之后用户操作通过 client-bundle, 依旧是在浏览器范围内.
+//
+
+vue后端渲染主要插件：vue-server-renderer
+由于vue2.0的vdom，使ssr可以实现， 可以分为4部分
+router           server entry                     ->ServerBundle(node server)
+store         app.js           (source) -> webpack       |
+components       client entry                     ->ClientBundle（browser）
+
+1.源码部分包含公用的模块，router、store、components
+2.源码中app.js定义好vue实例，
+3.Server entry 与 Client entry：
+    为什么会有两个入口呢，如果有两个路由，一个是通过浏览器输入，另一个是通过当前路由点击跳转，
+    前者是通过服务器端请求数据渲染好页面返回给前端，走的是server entry，
+    后者是通过前端请求数据渲染页面，走的是client entry，
+    二者定义了一个钩子函数 asyncData，参数为store和router，在服务端执行，同步路由与数据。
+4.webpack打包：源码通过webpack打包，让node执行server entry打包的代码，浏览器执行client entry打包的代码。
+5.同步路由：不管走何种渲染，均使用同一套路由，在app.js中定义一个router对象，在两个entry均使用该对象。
+6.同步数据：服务端和客户端如何处理数据同步？服务端请求的数据会存放在stroe中，在server entry中将数据赋值给context.state
+           执行renderer.renderTostring时会将数据放在window.__INITIAL_STATE__ 返回给客户端，
+           Client entry 将会读取 window.__INITIAL_STATE__ 中的数据存放在 store 中。这样就可以在 store 中获取到数据。
+7.坑：vue做服务端渲染时，因为前后端都需要获取到数据，所以将数据存放在vuex的state中，当每次访问不同的页面时，
+    每个页面的数据都会存在vuex的state中，然后就内存溢出了。每次访问页面时都将数据通过{key: value}的形式存到store中。
+    每次访问不同的页面store中就会新增一条数据，导致最后store中数据过大加载缓慢。
+    只要每次访问页面，把数据存到同一个key下即可。
+
+
+serverBundle，v2提供了vue-server-render模块，并且它提供两种render，render/bundleRender
+renderer接收一个vue对象，然后进行渲染，这种对于简单的vue对象，可以这么去做。复杂项目直接require一个vue对象
+这个对于服务端代码的结构和逻辑不太友好，因为模块的状态会一直延续在每个渲染请求，要避免这次渲染请求的状态影响到后面
+
+所以就要用另一种bundleRender适用于复杂的项目，也是官方推荐的方式，
+通过webpack以server entry按照一定的要求打包生成一个 server-bundle,它相当于一个可以给服务端用的app的打包压缩文件，
+每一次调用都会重新初始化vue对象，
+保证了每次请求都是独立的，对于开发者来说，只需要专注于当前业务就可以，不用为服务端渲染开发更多的逻辑代码。
+renderer生成完成之后，都存在两个接口，分别是renderToString和renderToStream，一个是一次性将页面渲染成字符串文件，
+另外一个是流式渲染，适用于支持流的web服务器，可以是请求服务的速度更快。
+
+
+性能优化
+减少请求内容的体积：开启服务器Gzip压缩，JS、CSS文件压缩合并，减少cookies大小，SSR直接输出渲染后的HTML等；
+延迟加载：非重要的库、非首屏图片延迟加载，SPA的组件懒加载等；vue异步组件
+
+强缓存和协商缓存
+
+    1.强缓存是利用http头中的Expires和Cache-Control两个字段来控制的，用来表示资源的缓存时间
+    2.协商缓存：浏览器第一次请求一个资源的时候，服务器返回的header中会加上Last-Modify，
+    Last-modify是一个时间标识该资源的最后修改时间；当浏览器再次请求该资源时，
+    request的请求头中会包含If-Modify-Since，该值为缓存之前返回的Last-Modify。
+    服务器收到If-Modify-Since后，根据资源的最后修改时间判断是否命中缓存；
+    其中Etag：web服务器响应请求时，告诉浏览器当前资源在服务器的唯一标识
+
+Access-Control-Max-Age：缓存可以被缓存的时间
+
+DNS 预解析：浏览器会在加载网页时对网页中的域名进行解析缓存，这样在你单击当前网页中的连接时就无需进行DNS的解析，减少用户等待时间，提高用户体验。
+<link rel="dns-prefetch" href="www.ytuwlg.iteye.com" />
+
+Gzip页面压缩，像服务器发送压缩文件，同时服务器需要设置解析
+
+
+那么你可能需要预渲染。无需使用 web 服务器实时动态编译 HTML，而是使用预渲染方式，在构建时 (build time) 简单地生成针对特定路由的静态 HTML 文件。
+优点是设置预渲染更简单，并可以将你的前端作为一个完全静态的站点。
